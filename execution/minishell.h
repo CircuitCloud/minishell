@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/09 13:59:46 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/10 23:37:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ typedef	struct	s_command
 	char 			**ev; // environement variable (main(int ac, char **av, char **ev) for execve and path)
 	char		**args; // changing "t_argument to char "
 	t_redirection	*redir;
-}	t_command;
+	struct s_command		*left; // left child of tree
+	struct s_command		*right; // right child of tree
+}   t_command;
 
 typedef	struct	s_pipe
 {

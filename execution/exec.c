@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/09 14:56:50 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/11 00:43:43 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int main(int ac, char **av, char **ev)
 	(void)ac;
 	(void)av;
 	cmd = NULL;
-	p.args = malloc(sizeof(char *) * 3);
 	p.args[0] = "ls";
 	p.args[1] = "-la";
 	// p.args[2] = "pipe.c";
