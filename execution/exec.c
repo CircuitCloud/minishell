@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/12 22:55:39 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/12 23:01:00 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,62 +80,24 @@ int search(char **cmd, char **ev)
 	}
 	return (1);
 }
-// int main(int ac, char **av, char **ev)
-// {
-// 	pid_t pid;
-// 	t_command p;
-// 	char *cmd;
 
-// 	(void)ac;
-// 	(void)av;
-// 	cmd = NULL;
-// 	p.args[0] = "ls";
-// 	p.args[1] = "-la";
-// 	// p.args[2] = "pipe.c";
-// 	p.ev = ev;
-// 	if (search(&p.args[0], p.ev) == 0)
-// 	{
-// 		pid = fork();
-// 		if (pid == 0)
-// 		{
-// 			cmd = p.args[0];
-// 			p.args[0] = ft_strrchr(p.args[0], '/') + 1;
-// 			execve(cmd, p.args, p.ev);
-// 			perror("execve");
-// 		}
-// 		wait(&pid);
-// 	}
-// 	else
-// 		return (1);
-// 	return (0);
-// }
-
-// int main(int ac, char **av, char **ev)
-// {
-// 	pid_t pid;
-// 	t_command p;
-// 	char *cmd;
-
-// 	(void)ac;
-// 	(void)av;
-// 	cmd = NULL;
-// 	p.args[0] = "ls";
-// 	p.args[1] = "-la";
-// 	// p.args[2] = "pipe.c";
-// 	p.ev = ev;
-// 	if (search(&p.args[0], p.ev) == 0)
-// 	{
-// 		pid = fork();
-// 		if (pid == 0)
-// 		{
-// 			cmd = p.args[0];
-// 			p.args[0] = ft_strrchr(p.args[0], '/') + 1;
-// 			execve(cmd, p.args, p.ev);
-// 			perror("execve");
-// 		}
-// 		wait(&pid);
-// 	}
-// 	else
-// 		return (1);
-// 	return (0);
-// }
+void execute_program(char **args, char **ev)
+{
+	pid_t pid;
+	char *cmd;
+	
+	cmd = NULL;
+	if (search(&args[0], ev) == 0)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			cmd = args[0];
+			args[0] = ft_strrchr(args[0], '/') + 1;
+			execve(cmd, args, ev);
+			perror("execve");
+			exit (1);
+		}
+		wait(&pid);
+	}
+}

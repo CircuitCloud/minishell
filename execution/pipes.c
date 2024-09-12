@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/12 22:59:40 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/12 23:00:48 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,27 +60,6 @@ t_command *create_right(char **env)
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
-}
-
-void execute_program(char **args, char **ev)
-{
-	pid_t pid;
-	char *cmd;
-	
-	cmd = NULL;
-	if (search(&args[0], ev) == 0)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			cmd = args[0];
-			args[0] = ft_strrchr(args[0], '/') + 1;
-			execve(cmd, args, ev);
-			perror("execve");
-			exit (1);
-		}
-		wait(&pid);
-	}
 }
 
 int execute_pipe(t_command *root)
