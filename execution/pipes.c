@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/11 00:52:41 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:59:40 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ t_command *create_tree(char **env)
 	node = malloc(sizeof(t_command));
 	if (!node)
 		return (NULL);
-	node->args = malloc(sizeof(char *) * 1);
+	node->args = malloc(sizeof(char *) * 2);
 	node->args[0] = "|";
+	node->args[1] = NULL;
 	node->ev = env;
 	node->left = NULL;
 	node->right = NULL;
@@ -36,8 +37,8 @@ t_command *create_left(char **env)
 		return (NULL);
 	node->args = malloc(sizeof(char *) * 3);
 	node->args[0] = "ls";
-	node->args[1] = "-l";
-	node->args[2] = "-a";
+	node->args[1] = "-la";
+	node->args[2] = NULL;
 	node->ev = env;
 	node->left = NULL;
 	node->right = NULL;
@@ -51,63 +52,86 @@ t_command *create_right(char **env)
 	node = malloc(sizeof(t_command));
 	if (!node)
 		return (NULL);
-	node->args = malloc(sizeof(char *) * 2);
-	node->args[0] = "grep";
-	node->args[1] = "hi";
+	node->args = malloc(sizeof(char *) * 3);
+	node->args[0] = "cat";
+	node->args[1] = "pipes.c";
+	node->args[2] = NULL;
 	node->ev = env;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
 }
 
+void execute_program(char **args, char **ev)
+{
+	pid_t pid;
+	char *cmd;
+	
+	cmd = NULL;
+	if (search(&args[0], ev) == 0)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			cmd = args[0];
+			args[0] = ft_strrchr(args[0], '/') + 1;
+			execve(cmd, args, ev);
+			perror("execve");
+			exit (1);
+		}
+		wait(&pid);
+	}
+}
+
 int execute_pipe(t_command *root)
 {
 	int fd[2];
-	pid_t pid;
+	pid_t left_pid;
+	pid_t right_pid;
 
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
 		exit(1);
 	}
-	if (root->left)
+	if (root && root->left)
 	{
-		pid = fork();
-		if (pid == -1)
+		left_pid = fork();
+		if (left_pid == -1)
 		{
 			perror("fork");
 			exit(1);		
 		}
-		else if (pid == 0)
+		else if (left_pid == 0)
 		{
 			close(fd[0]);
-			dup2(fd[1], 0);
+			dup2(fd[1], 1);
 			close(fd[1]);
 			
-			execve(root->left->args[0], root->left->args, root->left->ev);
-			perror("execve");
+			execute_program(root->left->args, root->ev);
 		}
 	}
-	if (root->right)
+	if (root && root->right)
 	{
-		pid = fork();
-		if (pid == -1)
+		right_pid = fork();
+		if (right_pid == -1)
 		{
 			perror("fork");
 			exit(1);		
 		}
-		else if (pid == 0)
+		else if (right_pid == 0)
 		{
 			close(fd[1]);
-			dup2(fd[0], 1);
+			dup2(fd[0], 0);
 			close(fd[0]);
 			
-			execve(root->right->args[0], root->right->args, root->right->ev);
-			perror("execve");
+			execute_program(root->right->args, root->ev);
 		}
 	}
 	close(fd[0]);
 	close(fd[1]);
+	waitpid(left_pid, NULL, 0);
+	waitpid(right_pid, NULL, 0);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/10 23:37:05 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:58:14 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	ft_strncmp(const char *dest, const char *src, size_t n);
 size_t	ft_strlen(const char *str);
 int	ft_strcmp(char *dest, char *src);
 int search_bin(char **cmd, char *ev, char **env);
+void execute_program(char **args, char **ev);
 
 
 
