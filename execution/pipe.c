@@ -5,89 +5,132 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/28 19:22:35 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/07 09:40:31 by cahaik           ###   ########.fr       */
+/*   Created: 2024/09/12 23:29:35 by cahaik            #+#    #+#             */
+/*   Updated: 2024/09/12 23:33:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <limits.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include "minishell.h"
 
-// // ex 01 and ex02
-// int main()
-// {
-// 	int fd[2][2];
-// 	pid_t pid[2];
-// 	char buffer[100];   // Buffer to store the message read by the child
-// 	if (pipe(fd[0]) == -1 || pipe(fd[1]) == -1)
-// 	{
-// 		write(2 , "Error Creating pipe\n", 20);
-// 		return (1);
-// 	}
-// 	pid[0] = fork();
-// 	if (pid[0] < 0)
-// 	{
-// 		write(2, "Fork failed\n", 12);
-//         return 1;
-// 	}
-// 	else if (pid[0] == 0)
-// 	{
-// 		// Child process
-// 		close(fd[0][1]);// Close the write end of the pipe
-// 		read (fd[0][0], buffer, sizeof(buffer));// Read from the pipe
-// 		printf("child received : %s\n", buffer);
-// 		close (fd[1][0]);
-// 		write(fd[1][1], "edited\n", 7);
-// 		close(fd[1][1]);// Close the write end of the pipe
-// 		close(fd[0][0]);// Close the read end of the pipe
-// 		return (0);
-// 	}
-// 	pid[1] = fork();
-// 	if (pid[1] < 0)
-// 	{
-// 		write(2, "Fork failed\n", 12);
-//         return 1;
-// 	}
-// 	else if (pid[1] == 0)
-// 	{
-// 		return (0);
-// 	}
-// 		// parent process
-
-// 		// close(fd[0]);
-// 		close(fd[0][0]);
-// 		write(fd[0][1], "hello , I'm working on pipe\n", 28);// Write to the pipe
-// 		close(fd[0][1]);
-// 		close(fd[1][1]);
-// 		read (fd[1][0], buffer, sizeof(buffer));
-// 		printf("Parent received : %s\n", buffer);
-// 		close(fd[1][0]);
-// 		wait (NULL);
-// 		wait(NULL);
-// 	return (0);
-// }
-
-int main()
+t_command *create_tree(char **env)
 {
-	int fd[2][2];
-	int pid[3];
+	t_command *node;
+	
+	node = malloc(sizeof(t_command));
+	if (!node)
+		return (NULL);
+	node->args = malloc(sizeof(char *) * 2);
+	node->args[0] = "|";
+	node->args[1] = NULL;
+	node->ev = env;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
 
-	if (pipe(fd[0] == -1 || pipe(fd[1]) == -1))
+t_command *create_left(char **env)
+{
+	t_command *node;
+	
+	node = malloc(sizeof(t_command));
+	if (!node)
+		return (NULL);
+	node->args = malloc(sizeof(char *) * 3);
+	node->args[0] = "ls";
+	node->args[1] = "-la";
+	node->args[2] = NULL;
+	node->ev = env;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+t_command *create_right(char **env)
+{
+	t_command *node;
+	
+	node = malloc(sizeof(t_command));
+	if (!node)
+		return (NULL);
+	node->args = malloc(sizeof(char *) * 3);
+	node->args[0] = "cat";
+	node->args[1] = "pipes.c";
+	node->args[2] = NULL;
+	node->ev = env;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+int execute_pipe(t_command *root)
+{
+	int fd[2];
+	pid_t left_pid;
+	pid_t right_pid;
+
+	if (pipe(fd) == -1)
 	{
-		write(2, "Error creating pipes\n", 21);
-		return (1);
+		perror("pipe");
+		exit(1);
 	}
-	if ((pid[0] = forks()) == -1)
+	if (root && root->left)
 	{
-		write(2, "failed to fork\n", 15);
-		return (1);
+		left_pid = fork();
+		if (left_pid == -1)
+		{
+			perror("fork");
+			exit(1);		
+		}
+		else if (left_pid == 0)
+		{
+			close(fd[0]);
+			dup2(fd[1], 1);
+			close(fd[1]);
+			
+			execute_program(root->left->args, root->ev);
+		}
 	}
-	if (pid[0] == 0)
+	if (root && root->right)
 	{
-		close(fd[0][1]);
-		read(fd[0][0], )
+		right_pid = fork();
+		if (right_pid == -1)
+		{
+			perror("fork");
+			exit(1);		
+		}
+		else if (right_pid == 0)
+		{
+			close(fd[1]);
+			dup2(fd[0], 0);
+			close(fd[0]);
+			
+			execute_program(root->right->args, root->ev);
+		}
 	}
-	 
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(left_pid, NULL, 0);
+	waitpid(right_pid, NULL, 0);
+	return (1);
+}
+
+// creating one pipe
+int main(int ac, char **av, char **ev)
+{
+	t_command *root;
+	t_command *left;
+	t_command *right;
+
+	(void)ac;
+	(void)av;
+	root = create_tree(ev);
+	left = create_left(ev);
+	right = create_right(ev);
+
+	root->left = left;
+	root->right = right;
+
+	if (ft_strcmp(root->args[0], "|") == 0)
+		execute_pipe(root);
+	return (0);
 }

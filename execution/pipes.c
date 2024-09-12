@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/12 23:00:48 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/12 23:53:39 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,22 @@ t_command *create_right(char **env)
 	node->args = malloc(sizeof(char *) * 3);
 	node->args[0] = "cat";
 	node->args[1] = "pipes.c";
+	node->args[2] = NULL;
+	node->ev = env;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+t_command *create_right_child(char **env)
+{
+	t_command *node;
+	
+	node = malloc(sizeof(t_command));
+	if (!node)
+		return (NULL);
+	node->args = malloc(sizeof(char *) * 3);
+	node->args[0] = "grep";
+	node->args[1] = "root";
 	node->args[2] = NULL;
 	node->ev = env;
 	node->left = NULL;
@@ -120,15 +136,23 @@ int main(int ac, char **av, char **ev)
 	t_command *root;
 	t_command *left;
 	t_command *right;
+	t_command *root_child;
+	t_command *left_child;
+	t_command *right_child;
 
 	(void)ac;
 	(void)av;
 	root = create_tree(ev);
 	left = create_left(ev);
 	right = create_right(ev);
+	root_child = create_tree(ev);
+	left_child = right;
+	right_child = create_right_child(ev);
 
 	root->left = left;
-	root->right = right;
+	root->right = root_child;
+	left->left = left_child;
+	right->right = right_child;
 
 	if (ft_strcmp(root->args[0], "|") == 0)
 		execute_pipe(root);
