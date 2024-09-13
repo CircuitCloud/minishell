@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/12 23:53:39 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/13 21:38:00 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ int execute_pipe(t_command *root)
 			close(fd[0]);
 			dup2(fd[1], 1);
 			close(fd[1]);
-			
-			execute_program(root->left->args, root->ev);
+			execute_program(root->left);
+			exit (0);
 		}
 	}
 	if (root && root->right)
@@ -119,8 +119,8 @@ int execute_pipe(t_command *root)
 			close(fd[1]);
 			dup2(fd[0], 0);
 			close(fd[0]);
-			
-			execute_program(root->right->args, root->ev);
+			execute_program(root->right);
+			exit(0);
 		}
 	}
 	close(fd[0]);
@@ -137,23 +137,31 @@ int main(int ac, char **av, char **ev)
 	t_command *left;
 	t_command *right;
 	t_command *root_child;
-	t_command *left_child;
-	t_command *right_child;
+	t_command *left_right;
+	t_command *right_right;
 
 	(void)ac;
 	(void)av;
-	root = create_tree(ev);
+	// sleep(15);
+	root = create_tree(ev); 
 	left = create_left(ev);
-	right = create_right(ev);
-	root_child = create_tree(ev);
-	left_child = right;
-	right_child = create_right_child(ev);
+	right = create_tree(ev);
+	left_right = create_right(ev);
+	right_right = create_right_child(ev);
 
 	root->left = left;
-	root->right = root_child;
-	left->left = left_child;
-	right->right = right_child;
+	root->right = right;
+	right->left = left_right;
+	right->right = right_right;
+	
+	right = create_tree(ev);
+	left_right = create_right(ev);
+	right_right = create_right_child(ev);
 
+	root->right->right = right;
+	root->right->right->left = left_right;
+	root->right->right->right =right_right;
+	
 	if (ft_strcmp(root->args[0], "|") == 0)
 		execute_pipe(root);
 	return (0);

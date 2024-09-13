@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/12 23:01:00 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/13 21:21:53 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,28 @@ int search(char **cmd, char **ev)
 	return (1);
 }
 
-void execute_program(char **args, char **ev)
+void execute_program(t_command *root)
 {
 	pid_t pid;
 	char *cmd;
 	
 	cmd = NULL;
-	if (search(&args[0], ev) == 0)
+	if (!ft_strcmp(root->args[0], "|"))
+	{
+		execute_pipe(root);
+		return ;
+	}
+	else if (search(&root->args[0], root->ev) == 0)
 	{
 		pid = fork();
 		if (pid == 0)
 		{
-			cmd = args[0];
-			args[0] = ft_strrchr(args[0], '/') + 1;
-			execve(cmd, args, ev);
+			cmd = root->args[0];
+			root->args[0] = ft_strrchr(root->args[0], '/') + 1;
+			execve(cmd, root->args, root->ev);
 			perror("execve");
 			exit (1);
 		}
-		wait(&pid);
+		waitpid(pid, NULL, 0);
 	}
 }
