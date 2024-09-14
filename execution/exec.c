@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 15:28:21 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/14 17:33:48 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ void execute_program(t_command *root)
 		execute_pipe(root);
 		return ;
 	}
-	else if (search(&root->args[0], root->ev) == 0)
+	if (root->redir)
+		redirection(root);
+	if (search(&root->args[0], root->ev) == 0)
 	{
 		pid = fork();
 		if (pid == 0)
