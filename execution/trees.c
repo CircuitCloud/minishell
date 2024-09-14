@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 07:45:26 by cahaik            #+#    #+#             */
-/*   Updated: 2024/08/28 19:12:47 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/14 15:58:01 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,3 +133,4 @@ stdin to the read end
 
 pipefd[0] is for reading from the pipe
 pipefd[1] is for writing to the pipe
+*/
