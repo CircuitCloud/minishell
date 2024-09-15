@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 11:51:34 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 12:15:26 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_lstadd_back_env(t_ev **lst, t_ev *new)
 	}
 }
 
-int environ(char **env)
+t_ev *environ(char **env)
 {
 	int i;
 	t_ev *ev;
@@ -72,8 +72,15 @@ int environ(char **env)
 		valuue = ft_strdup(ft_strchr(env[i], '=') + 1);
 		len = ft_strlen(env[i]) - ft_strlen(valuue) - 1;
 		tmp = ft_lst_new_env(ft_strdup(env[i]), ft_substr(env[i], 0, len), valuue);
+		if (!tmp)
+			return (NULL);
 		ft_lstadd_back_env(&ev, tmp);
 		i++;
 	}
-	return (0);
+	// while(ev)
+	// {
+	// 	printf("line=%s\nname=%s\nvalue=%s\n", ev->line, ev->name, ev->value);
+	// 	ev = ev->next;
+	// }
+	return (ev);
 }

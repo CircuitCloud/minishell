@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 11:34:23 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 12:00:52 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void execution(t_command *root);
 void ft_lstadd_back_env(t_ev **lst, t_ev *new);
 t_ev *ft_lstlast_env(t_ev *lst);
 t_ev *ft_lst_new_env(char *line, char *name, char *value);
+t_ev *environ(char **env);
 t_command *create_right_child(char **env); // for testing 
 t_command *create_right(char **env); // for testing
 t_command *create_left(char **env); // for testing
