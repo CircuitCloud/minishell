@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/22 15:58:31 by cahaik            #+#    #+#             */
+/*   Updated: 2023/12/22 22:29:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	size_t	i;
+	t_list	*head;
 
-	i = 0;
-	while (dest[i] || src[i])
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
-		i++;
+		head = ft_lstlast(*lst);
+		head->next = new;
 	}
-	return (0);
 }

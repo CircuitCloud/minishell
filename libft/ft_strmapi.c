@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/17 06:14:15 by cahaik            #+#    #+#             */
+/*   Updated: 2024/01/08 22:23:38 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	size_t	i;
+	char			*ptr;
+	unsigned int	i;
 
 	i = 0;
-	while (dest[i] || src[i])
+	if (!s || !f)
+		return (NULL);
+	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!ptr)
+		return (NULL);
+	while (i < ft_strlen(s))
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
+		ptr[i] = f(i, s[i]);
 		i++;
 	}
-	return (0);
+	ptr[i] = '\0';
+	return (ptr);
 }

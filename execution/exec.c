@@ -6,11 +6,11 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 17:33:48 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 09:08:10 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int only_cmd(char **cmd, char **splited)
 {

@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/06 15:07:45 by cahaik            #+#    #+#             */
+/*   Updated: 2024/01/08 22:25:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+int	ft_isalpha(int c)
 {
-	size_t	i;
-
-	i = 0;
-	while (dest[i] || src[i])
-	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
-		i++;
-	}
-	return (0);
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	else
+		return (0);
 }

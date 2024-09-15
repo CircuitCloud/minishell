@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/12 08:49:07 by cahaik            #+#    #+#             */
+/*   Updated: 2024/01/08 22:49:07 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	i;
+	size_t		i;
+	char		*to;
+	const char	*from = src;
 
 	i = 0;
-	while (dest[i] || src[i])
+	to = dest;
+	if (src == dest)
+		return (dest);
+	if (!src && !dest)
+		return (NULL);
+	while (i < n)
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
+		to[i] = from[i];
 		i++;
 	}
-	return (0);
+	return (dest);
 }

@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/24 01:58:14 by cahaik            #+#    #+#             */
+/*   Updated: 2024/01/04 18:04:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	size_t	i;
+	t_list	*p;
+	t_list	*mynode;
 
-	i = 0;
-	while (dest[i] || src[i])
+	if (!lst || !del)
+		return ;
+	p = *lst;
+	while (p != NULL)
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
-		i++;
+		mynode = p;
+		p = p->next;
+		ft_lstdelone(mynode, del);
 	}
-	return (0);
+	*lst = NULL;
 }

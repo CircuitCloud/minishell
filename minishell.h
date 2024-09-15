@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 16:00:33 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 09:16:54 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,6 @@
 #ifndef HERE_DOC
 # define HERE_DOC 4
 #endif
-
-#ifndef TYPE_PIPE
-# define TYPE_PIPE 5
-#endif
-
-#ifndef  TYPE_REDIRECT
-# define TYPE_REDIRECT 6
-#endif
-
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -62,7 +53,6 @@ typedef	struct s_redirection
 
 typedef	struct	s_command
 {
-	int				type;
 	char			*cmnd;
 	char 			**ev; // environement variable (main(int ac, char **av, char **ev) for execve and path)
 	char		**args; // changing "t_argument to char "

@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/06 17:44:11 by cahaik            #+#    #+#             */
+/*   Updated: 2023/12/14 02:32:21 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+char	*ft_strchr(const char *str, int c)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (dest[i] || src[i])
+	if ((char)c == '\0')
+		return ((char *)str + ft_strlen(str));
+	while (*str != '\0')
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
-		i++;
+		if ((char)str[i] == (char)c)
+			return ((char *)str);
+		str++;
 	}
-	return (0);
+	return (NULL);
 }

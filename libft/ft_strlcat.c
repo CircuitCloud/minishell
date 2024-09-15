@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/09 09:19:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:08:25 by cahaik           ###   ########.fr       */
+/*   Created: 2023/12/09 11:40:19 by cahaik            #+#    #+#             */
+/*   Updated: 2024/01/08 22:50:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
-int	ft_strcmp(char *dest, char *src)
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
 	size_t	i;
+	size_t	n;
+	size_t	j;
 
-	i = 0;
-	while (dest[i] || src[i])
+	i = ft_strlen(dest);
+	n = i;
+	j = 0;
+	if (size <= ft_strlen(dest))
+		return (size + ft_strlen(src));
+	while (src[j] && i < (size - 1))
 	{
-		if (!((unsigned char)dest[i] == (unsigned char)src[i]))
-			return ((unsigned char)dest[i] - (unsigned char)src[i]);
-		i++;
+		dest[i++] = src[j++];
 	}
-	return (0);
+	dest[i] = '\0';
+	size = n + ft_strlen(src);
+	return (size);
 }

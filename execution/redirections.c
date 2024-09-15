@@ -6,11 +6,11 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 09:43:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 17:33:54 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 09:08:37 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void out_redirect(t_command *root)
 {

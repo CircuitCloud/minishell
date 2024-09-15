@@ -6,11 +6,11 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 17:28:20 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 09:08:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_command *create_tree(char **env)
 {

@@ -6,15 +6,15 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:20:17 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/14 17:33:26 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 09:17:19 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void execution(t_command *root)
 {
-	if (root->type == TYPE_PIPE)
+	if (root->args[0] == "|")
 		execute_pipe(root);
 	else
 		execute_program(root);
