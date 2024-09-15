@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 11:32:33 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 11:51:34 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,20 @@ void	ft_lstadd_back_env(t_ev **lst, t_ev *new)
 	}
 }
 
-int main(int ac, char **av, char **env)
+int environ(char **env)
 {
+	int i;
 	t_ev *ev;
 	t_ev *tmp;
-	char *valuue;
 	size_t len;
-	int i;
+	char *valuue;
 
-	(void)ac;
-	(void)av;
 	i = 0;
 	len = 0;
+	valuue = NULL;
 	while (env && env[i])
 	{
-		valuue = ft_strchr(env[i], '=') + 1;
+		valuue = ft_strdup(ft_strchr(env[i], '=') + 1);
 		len = ft_strlen(env[i]) - ft_strlen(valuue) - 1;
 		tmp = ft_lst_new_env(ft_strdup(env[i]), ft_substr(env[i], 0, len), valuue);
 		ft_lstadd_back_env(&ev, tmp);
