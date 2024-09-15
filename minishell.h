@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 09:16:54 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/15 11:34:23 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,16 @@ typedef	struct	s_pipe
 	t_command	*cmnd2;
 }	t_pipe;
 
+typedef struct s_ev
+{
+	char *line;
+	char *name;
+	char *value;
+	struct s_ev *next;
+} t_ev;
+
 int search(char **cmd, char **ev);
 int	ft_strncmp(const char *dest, const char *src, size_t n);
-size_t	ft_strlen(const char *str);
 int	ft_strcmp(char *dest, char *src);
 int search_bin(char **cmd, char *ev, char **env);
 void execute_program(t_command *root);
@@ -78,9 +85,13 @@ void out_redirect(t_command *root);
 void input_redirect(t_command *root);
 void redirection(t_command *root);
 void execution(t_command *root);
+void ft_lstadd_back_env(t_ev **lst, t_ev *new);
+t_ev *ft_lstlast_env(t_ev *lst);
+t_ev *ft_lst_new_env(char *line, char *name, char *value);
 t_command *create_right_child(char **env); // for testing 
 t_command *create_right(char **env); // for testing
 t_command *create_left(char **env); // for testing
 t_command *create_tree(char **env); // for testing
+
 
 #endif 
