@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:22:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 11:29:36 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/16 13:45:58 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int unset_(t_ev **ev, char **name)
 	int i;
 
 	i = 0;
-	while(name && name[i])
+	while(name && name[i]) 
 	{
 		unset_helper(ev, name[i]);
 		i++;	
