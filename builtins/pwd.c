@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 11:48:26 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 11:07:20 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/16 13:07:19 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 // pwd : Displays the path name of the working directory.
 
-int pwd_(t_ev *envir)
+int pwd_(void)
 {
-	if (!envir)
-		return (1);
-	while (envir)
+	char *str;
+	
+	str = getcwd(NULL, 0);
+	if (str)
 	{
-		if (ft_strcmp(envir->name, "PWD") == 0)
-		{
-				printf("%s\n", envir->value);
-				return (0);
-		}
-		envir = envir->next;
+		printf("%s\n", str);
+		free(str);
+		return (0);
 	}
-	write(2, "(null)\nPWD not fount\n", 23);
 	return (1);
 }
 
 // fach nsali should update type dyal ev f other files....
+

@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 11:07:00 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/16 13:01:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ t_ev *ft_lstlast_env(t_ev *lst);
 t_ev *ft_lst_new_env(char *line, char *name, char *value);
 t_ev *environ(char **env);
 int env_(t_ev *ev);
-int pwd_(t_ev *envir);
+int pwd_(void);
 int unset_helper(t_ev **ev, char *name);
 int unset_(t_ev **ev, char **name);
 
