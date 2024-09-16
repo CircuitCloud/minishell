@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 12:00:52 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/16 11:07:00 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_ev
 	char *name;
 	char *value;
 	struct s_ev *next;
+	struct s_ev *previous; // needed to use in unset
 } t_ev;
 
 int search(char **cmd, char **ev);
@@ -89,6 +90,11 @@ void ft_lstadd_back_env(t_ev **lst, t_ev *new);
 t_ev *ft_lstlast_env(t_ev *lst);
 t_ev *ft_lst_new_env(char *line, char *name, char *value);
 t_ev *environ(char **env);
+int env_(t_ev *ev);
+int pwd_(t_ev *envir);
+int unset_helper(t_ev **ev, char *name);
+int unset_(t_ev **ev, char **name);
+
 t_command *create_right_child(char **env); // for testing 
 t_command *create_right(char **env); // for testing
 t_command *create_left(char **env); // for testing

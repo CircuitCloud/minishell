@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 12:15:26 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/16 09:10:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ev	*ft_lst_new_env(char *line, char *name, char *value)
 	new->name = name;
 	new->value = value;
 	new->next = NULL;
+	new->previous = NULL;
 	return (new);
 }
 
@@ -53,6 +54,7 @@ void	ft_lstadd_back_env(t_ev **lst, t_ev *new)
 	{
 		head = ft_lstlast_env(*lst);
 		head->next = new;
+		new->previous = head ;
 	}
 }
 
