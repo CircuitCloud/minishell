@@ -6,80 +6,107 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:26:49 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 18:02:29 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/17 09:33:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// still not fhinished
-int exit_helper(char *arg)
+long long atoi_exit(char *str, int *err)
 {
-	int i;
+	size_t	i;
+	int		sign;
+	long long	cpy;
+	long long number;
 
 	i = 0;
-	while(arg && arg[i])
+	cpy = 0;
+	sign = 1;
+	number = 0;
+	while ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (!str[i] || str[i] == '-' || str[i] == '+')
 	{
-		if (ft_isdigit(arg[i]) == 1 || arg[i] == '-' || arg[i] == '+'
-		 || ((arg[i] == ' ') || (arg[i] >= 9 && arg[i] <= 13)))
-			i++;
-		else
-			return (255);
+		if (!str[i])
+			return (*err = -1, 255);
+		else if (str[i] == '-')
+			sign = -1;
+		i++;
 	}
-	return (ft_atoi(arg));
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		cpy = number;
+		number = (number * 10) + sign * (str[i] - '0');
+		if ((cpy > number && sign > 0) || (cpy < number && sign < 0))
+			return (*err = -1, 255);
+		i++;
+	}
+	while ((str[i] == ' ') || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (i != ft_strlen(str) && str[i] != '\0')
+		return (*err = -1, 255);
+	return (number);
+}
+
+int exit_helper(char *arg, int *err)
+{
+	long long number;
+	
+	number = atoi_exit(arg, err);
+	return (number);
 }
 
 void exit_(char ** arg)
 {
-	int i;
+	int err;
 	int size;
 	int status;
 
-	i = 0;
+	err = 0;
 	size = 0;
 	status = 0;
 	while(arg && arg[size])
 		size++;
 	if (size > 1)
 	{
-		status = exit_helper(arg[0]);
-		if (status == 255)
+		status = exit_helper(arg[0], &err);
+		if (err == -1)
 		{
 			printf("exit\nexit: %s: numeric argument required\n", arg[0]);
 			exit(status);
 		}
 		else
 			printf("exit\nminishell: exit: too many arguments\n");
+			//status = 1; // to fix it in global var
 			//readline for new prompt
-	}
-	else if (size == 0)
-	{
-		printf("exit\n");
-		exit(status);
-		// hata men baed global variable
 	}
 	else
 	{
-		status = exit_helper(arg[0]);
+		printf("exit\n");
+		if (size == 0 || ft_strcmp(arg[0], "--") == 0)
+			exit(status); // global variable status
+		status = exit_helper(arg[0], &err);
+		if (err == -1)
+			printf("minishell: exit: %s: numeric argument required\n", arg[0]);
 		exit(status);
 	}	
 }
 
-int main(int ac, char **av)
-{
-	char **arg;
-	int i;
+// int main(int ac, char **av)
+// {
+// 	char **arg;
+// 	int i;
 
-	arg = malloc(sizeof(char *) * (ac - 1));
+// 	arg = malloc(sizeof(char *) * (ac - 1));
 	
-	i = 0;
-	while(i < ac - 1)
-	{
-		arg[i] = av[i + 1];
-		// printf("%s\n", arg[i]);
-		i++; 
-	}
-	exit_(arg);
-	return (0);
-}
+// 	i = 0;
+// 	while(i < ac - 1)
+// 	{
+// 		arg[i] = av[i + 1];
+// 		// printf("%s\n", arg[i]);
+// 		i++; 
+// 	}
+// 	exit_(arg);
+// 	return (0);
+// }
  
