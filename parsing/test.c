@@ -1,7 +1,6 @@
 #include "../minishell.h"
 
 
-
 int array_length(char **array) 
 {
     int len = 0;
@@ -25,12 +24,12 @@ char **realloc_append(char **array, char *new_token)
 
 int is_token(char c)
 {
-    if (c == '\'' || c == '\"' || c == '|' || c == '<' || c == '>')
+    if (c == '|' || c == '<' || c == '>')
         return 1;
     return 0;
 }
 
-// char *bunny_ears(char *line, int start)
+// char *sub_quotes(char *line, int start)
 // {
 //     int i = start + 1;
 //     char quote = line[start];
@@ -42,38 +41,83 @@ int is_token(char c)
 //     return NULL; 
 // }
 
-int	bunny_ears(char *input, int start)
+// int	quotes_handler(char *input, int start)
+// {
+// 	int i;
+
+// 	i = start + 1;
+
+// 	while (input[i])
+// 	{
+// 		if (input[i] == input[start])
+// 			return (i);
+// 		i++;
+// 	}
+// 	return (-1);
+// }
+
+
+int	quotes_handler(char *input, int start, char c)
 {
-	int		i;
+	int i;
 
 	i = start + 1;
 
 	while (input[i])
 	{
-		if (input[i] == input[start])
-			return (i);
+		if (input[i] == c)
+			return (i + 1);
 		i++;
 	}
-
-	return (-1);
+	return (0);
 }
+
+
+// int find_token_pos(char *line, int *token_pos)
+// {
+//     int i ;
+//     i = token_pos[1] + 1;
+
+    
+//     while (line[i] && line[i] == ' ')
+//         i++;
+//     token_pos[0] = i;
+//     if (is_token(line[i]))
+//     {
+//         // if((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
+//         // {
+//         //     token_pos[1] = i + 2;
+//         //     return (1);
+//         // }
+//         token_pos[1] = i + 1;
+//         return (1);
+//     }
+//     if (line[i] == '\'' || line[i] == '\"')
+//     {
+//         token_pos[1] = quotes_handler(line, i, line[i]);
+//         return (1);
+//     }
+//     while (line[i] && line[i] != ' ' && !is_token(line[i + 1]))
+//             i++;
+//     token_pos[1] = i;
+//     return (0);
+// }
 
 int find_token_pos(char *line, int *token_pos)
 {
-    int i = token_pos[1] + 1;
+    // char    *line;
+    int     i;
+    i = token_pos[1] + 1;
+
     while (line[i] && line[i] == ' ')
-        i++; 
-    if (is_token(line[i]))
     {
-        token_pos[0] = i;
-        token_pos[1] = i + 1;
-        return 1;
+        i++;
     }
     token_pos[0] = i;
-    while (line[i] && line[i] != ' ' && !is_token(line[i]))
+    while (line[i] && !is_token(line[i + 1]))
         i++;
     token_pos[1] = i;
-    return 0;
+    return(0);
 }
 
 int lexer(t_command *data)
@@ -91,109 +135,24 @@ int lexer(t_command *data)
     while (1)
     {
         ret_val = find_token_pos(data->cmnd, token_pos);
-        if (ret_val == -1 || token_pos[1] >= ft_strlen(data->cmnd))
+        new_token = ft_substr(data->cmnd, token_pos[0], token_pos[1] - token_pos[0]);
+        data->args = realloc_append(data->args, new_token);
+        if (token_pos[1] >= ft_strlen(data->cmnd))
             break;
-        if (data->cmnd[token_pos[0]] == '"' || data->cmnd[token_pos[0]] == '\'')
-        {
-            quote_end = bunny_ears(data->cmnd, token_pos[0]);
-            if (quote_end != -1) 
-            {
-                new_token = ft_substr(data->cmnd, token_pos[0], quote_end - token_pos[0] + 1);
-                data->args = realloc_append(data->args, new_token);
-                token_pos[1] = quote_end + 1;
-            }
-            else
-                return (0);
-        }
-        else
-        {
-            new_token = ft_substr(data->cmnd, token_pos[0], token_pos[1] - token_pos[0]);
-            data->args = realloc_append(data->args, new_token);
-        }
         free(new_token);
     }
     return (1);
 }
 
-// int lexer(t_command *data)
-// {
-//     int token_pos[2] = {-1, -1}; 
-//     int ret_val;
-//     char *new_token;
-    
-//     data->args = (char **) malloc(sizeof(char *));
-//     if (!data->args)
-//         return (0);
-//     data->args[0] = NULL;
-
-//     while (1)
-//     {
-//         ret_val = find_token_pos(data->cmnd, token_pos);
-//         if (ret_val == -1 || token_pos[1] >= ft_strlen(data->cmnd))
-//             break;
-//         new_token = ft_substr(data->cmnd, token_pos[0], token_pos[1] - token_pos[0]);
-//         data->args = realloc_append(data->args, new_token);
-//         free(new_token);
-//     }
-//     return (1);
-// }
-
-// void lexer(t_command *input)
-// {
-//     int     i;
-//     char    *command;
-//     int     index;
-//     int end_quote ;
-//     int start;
-
-//     index = 0;
-//     input->args = malloc(sizeof(char *));
-//     command = ft_strtrim(input->cmnd, " ");
-//     i = 0;
-
-//     while (command[i])
-//     {
-//         if (is_token(command[i]) && (command[i] == '"' || command[i] == '\''))
-//         {
-//             end_quote = bunny_ears(command, i);
-//             if (end_quote != -1)
-//             {
-//                 input->args[index] = ft_substr(command, i, end_quote - i + 1);
-//                 index++;
-//                 i = end_quote;
-//             }
-//         }
-//         else if (is_token(command[i])) 
-//         {
-//             input->args[index] = ft_substr(command, i, 1);
-//             index++;
-//             i++;
-//         }
-//         else
-//         {
-//             start = i;
-//             while (command[i] && !is_token(command[i]) && command[i] != ' ')
-//                 i++;
-//            if (start != i) 
-//             {
-//                 input->args[index] = ft_substr(command, start, i - start);
-//                 index++;
-//             }
-//         }
-//         i++;
-//     }
-//     input->args[index] = NULL;
-// }
-
 
 int main() 
 {
     t_command cmd;
-    char *input_str = "echo 'klj' 'hello world' |    grep 'hello' > eoutput.txt";
+    char *input_str = "echog'klj'io\"l\"'l| uiu <<> >>    'hello world'    '|'  grep 'hello' &> eoutput.txt";
     cmd.cmnd = input_str;
     cmd.args = NULL; 
     lexer(&cmd);
-    printf("Tokens generated by the lexer:\n");
+    printf("Tokens generated by the lexer: %s\n", input_str);
     for (int i = 0; cmd.args[i] != NULL; i++) 
     {
         printf("Token[%d]: %s\n", i, cmd.args[i]);
