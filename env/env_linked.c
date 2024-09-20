@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 09:10:56 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/20 14:49:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,38 @@ void	ft_lstadd_back_env(t_ev **lst, t_ev *new)
 	}
 }
 
+int create_struct(char *env, t_ev **ev)
+{
+	t_ev *tmp;
+	size_t len;
+	char *valuue;
+	
+	len = 0;
+	tmp = NULL;
+	valuue = NULL;
+	valuue = ft_strdup(ft_strchr(env, '=') + 1);
+	len = ft_strlen(env) - ft_strlen(valuue) - 1;
+	tmp = ft_lst_new_env(ft_strdup(env), ft_substr(env, 0, len), valuue);
+	if (!tmp)
+		return (1);
+	ft_lstadd_back_env(ev, tmp);
+	return (0);
+}
+
 t_ev *environ(char **env)
 {
 	int i;
 	t_ev *ev;
-	t_ev *tmp;
-	size_t len;
-	char *valuue;
+	int tmp;
 
 	i = 0;
-	len = 0;
-	valuue = NULL;
+	ev = NULL;
+	tmp = 0;
 	while (env && env[i])
 	{
-		valuue = ft_strdup(ft_strchr(env[i], '=') + 1);
-		len = ft_strlen(env[i]) - ft_strlen(valuue) - 1;
-		tmp = ft_lst_new_env(ft_strdup(env[i]), ft_substr(env[i], 0, len), valuue);
-		if (!tmp)
+		tmp = create_struct(env[i], &ev);
+		if (tmp == 1)
 			return (NULL);
-		ft_lstadd_back_env(&ev, tmp);
 		i++;
 	}
 	// while(ev)

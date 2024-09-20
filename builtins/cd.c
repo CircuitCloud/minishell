@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/17 15:28:28 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/20 09:30:41 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,19 +77,19 @@ int cd_(t_ev **ev, char *arg)
 	return (0);
 }
 
-int main(int ac, char **av, char ** env)
-{
-	char **arg;
-	int i;
-	t_ev *ev;
-	t_ev *ennv;
+// int main(int ac, char **av, char ** env)
+// {
+// 	char **arg;
+// 	int i;
+// 	t_ev *ev;
+// 	t_ev *ennv;
 	
-	i = 0;
-	ev = environ(env);
-	ennv = ev;
-	cd_(&ennv , av[1]);
-	// printf("%s\n", getcwd(NULL, 0));
-	env_(ev);
+// 	i = 0;
+// 	ev = environ(env);
+// 	ennv = ev;
+// 	cd_(&ennv , av[1]);
+// 	// printf("%s\n", getcwd(NULL, 0));
+// 	env_(ev);
 	
-	return (0);
-}
+// 	return (0);
+// }

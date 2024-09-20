@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 13:01:56 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/20 15:01:40 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int env_(t_ev *ev);
 int pwd_(void);
 int unset_helper(t_ev **ev, char *name);
 int unset_(t_ev **ev, char **name);
+int create_struct(char *env, t_ev **ev);
+void export_(char **args, t_ev **ev);
 
 t_command *create_right_child(char **env); // for testing 
 t_command *create_right(char **env); // for testing
