@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:38:39 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/15 15:08:57 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/09/23 18:59:14 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int env_(t_ev *ev)
 {
 	while(ev)
 	{
-		printf("%s\n", ev->line);
+		if (ev->value != NULL)
+			printf("%s\n", ev->line);
 		ev = ev->next;
 	}
 	return (0);
