@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 17:19:33 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/09/14 00:23:48 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/09/29 05:24:28 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,42 @@ int	open_quotes_check(char *input)
 }
 
 
-int	pipes_mispalced_check(char *input)
+// int	tokens_mispalced_check(char *input, char c)
+// {
+// 	int	i;
+// 	i = 0;
+
+// 	if(!input)
+// 		return(1);
+// 	if(input[i] == c)
+// 		return (1);
+// 	while (input[i])
+// 	{
+// 		if(input[i] == c)
+// 		{
+// 			i++;
+// 			while (input[i] == ' ')
+// 				i++;
+// 			if (input[i] == '\0' || input[i] == c)
+// 				return (1);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+int	consecutive_operators_check(char *input, char c)
 {
 	int	i;
 	i = 0;
-
-	if(!input)
-		return(1);
-	if(input[i] == '|')
-		return (1);
 	while (input[i])
 	{
-		if(input[i] == '|')
+		if(input[i] == c)
 		{
 			i++;
-			while (input[i] == ' ')
+			while (input[i]== ' ')
 				i++;
-			if (input[i] == '\0' || input[i] == '|')
+			if (is_token(input[i]))
 				return (1);
 		}
 		i++;
@@ -111,5 +130,5 @@ int main(int ac, char **av)
 	(void) ac;
 	char	*str;
 	str = "    echo \"""""\"He said 'hi'\"";
-	printf("%d", duplicate_operator(av[1], '|'));
+	printf("%d", consecutive_operators_check(av[1], '<'));
 }

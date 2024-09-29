@@ -6,218 +6,117 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 19:39:34 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/09/16 23:15:08 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/09/29 05:10:24 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	is_token(char c)
+int array_length(char **array) 
 {
-	int	i;
+    int len = 0;
+    while (array[len])
+        len++;
+    return len;
+}
 
-	i = 0;
-	// while (c)
-	// {
-		if(c == '|' || c == '\'' || c == '\"' || c == '>' || c == '<')
-			return (1);
-	// }
+int is_token(char c)
+{
+    if (c == '|' || c == '<' || c == '>')
+        return 1;
+    return 0;
+}
+
+int	quotes_handler(char *input, int start, char c)
+{
+	int i;
+
+	i = start + 1;
+
+	while (input[i])
+	{
+		if (input[i] == c)
+			return (i + 1);
+		i++;
+	}
 	return (0);
 }
 
-char	*extarct_from_quotes(char *input, int index)
+
+int find_token_pos(char *line, int *token_pos)
 {
-	int		i;
-	int		start;
-	int		end;
-	char	*str;
+    int i ;
+    i = token_pos[1] + 1;
 
-	i = 0;
-	start = -1;
-	end = -1;
-	while (input[i])
-	{
-		if(i == index)
-		{
-			start = i;
-			break;
-		}
-		i++;
-	}
-	if(start == -1)
-		return(NULL);
-	i++;
-	while (input[i])
-	{
-		if(input[i] == input[start])
-		{
-			end = i + 1;
-			break;
-		}
-		i++;
-	}
-	if(end == -1)
-		return(NULL);
-	return (str = ft_substr(input, start, end - start), str);
-}
-
-// int	*extarct_from_quotes(char *input, int index)
-// {
-// 	int		i;
-// 	int		start;
-// 	int		end;
-// 	char	*str;
-
-// 	i = 0;
-// 	start = -1;
-// 	end = -1;
-// 	while (input[i])
-// 	{
-// 		if(i == index)
-// 		{
-// 			start = i;
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	if(start == -1)
-// 		return(-1);
-// 	i++;
-// 	while (input[i])
-// 	{
-// 		if(input[i] == input[start])
-// 		{
-// 			end = i + 1;
-// 			break;
-// 		}
-// 		i++;
-// 	}
-// 	return (end);
-// }
-
-// int	token_position_finder(char *input)
-// {
-// 	int	i;
-// 	int	pos;
-
-// 	i = 0;
-// 	while (input[i])
-// 	{
-// 		if(is_token(input[i]))
-// 			pos = i;
-// 		i++;
-// 	}
-// }
-
-char	*ft_not_token(char *sub_input)
-{
-	int	i;
-	i = 0;
-
-	while (sub_input[i] && !is_token(sub_input[i]))
-	{
-		// printf("%c", input[i]);
-		i++;
-	}
-	return (ft_substr(sub_input, 0, i));
-}
-// void	lexer(t_command *input)
-// {
-// 	int		i;
-// 	char	*command;
-// 	int		index;
-// 	int		start;
-
-// 	index = 0;
-// 	input -> args = malloc(sizeof(char *));
-// 	command = ft_strtrim(input->cmnd, " ");
-// 	i = 0;
-
-// 	while (command[i])
-// 	{
-// 		if(command[i] == '"' || command[i] == '\'')
-// 		{
-// 			input->args[index] = extarct_from_quotes(command, i);
-// 			i+= ft_strlen(input->args[index]);
-// 			index++;
-// 		}
-// 		if(is_token(command[i]))
-// 		{
-// 			input->args[index] = command[i];
-// 			index++;
-// 			i++;
-// 		}
-// 		start = i;
-// 		while (command[i] && !is_token(command[i]) && command[i] != ' ')
-// 		{
-// 			i++;
-// 		}
-// 		input->args[index] = ft_substr(command, start, i - start);
-// 		index++;		
-// 	}
-// 	input->args[index] = NULL;
-	
-// }
-char **lexer(t_command *input)
-{
-    int i = 0;
-    int index = 0;
-    char *command;
-	int start;
-	 	
-    input->args = malloc(sizeof(char *)); 
-    command = ft_strtrim(input->cmnd, " "); 
-    
-    while (command[i])
+    while (line[i] && line[i] == ' ')
+        i++;
+    token_pos[0] = i;
+    if (is_token(line[i]))
     {
-		// printf("Processing command[%d]: %c\n", i, command[i]);
-        if (command[i] == ' ')
-        {
-            i++;
-        }
-        if (command[i] == '"' || command[i] == '\'')
-        {
-			// printf("----%s---\n", extarct_from_quotes(command, i));
-			printf("555\n");
-            input->args[index] = extarct_from_quotes(command, i); 
-            i += ft_strlen(input->args[index]); 
-            index++;
-        }
-        if (is_token(command[i]))
-        {
-            input->args[index] = ft_substr(command, i, 1); 
-            index++;
-            i++;
-        }
-        start = i;
-        while (command[i] && !is_token(command[i]) && command[i] != ' ')
-            i++;
-		if (start != i) 
-		{
-            input->args[index] = ft_substr(command, start, i - start);
-            index++;
-        }
-		i++;
+        // if((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
+        // {
+        //     token_pos[1] = i + 1;
+        //     return (1);
+        // }
+        token_pos[1] = i + 1;
+        return (1);
     }
-    input->args[index] = NULL;
-	return (input->args);
+    if (line[i] == '\'' || line[i] == '\"')
+    {
+        token_pos[1] = quotes_handler(line, i, line[i]);
+        return (1);
+    }
+    while (line[i] &&(line[i] != ' ' && !is_token(line[i + 1])))
+            i++;
+    token_pos[1] = i;
+    return (0);
 }
 
 
-int main()
+int lexer(t_command *data)
 {
-	t_command *str;
-	int i = 0;
-	char **res;
-	
-	str->cmnd = "ech\"o\" st'u'ffab|cdef $SHLV|Lpizza";
-	// res = ft_not_token(str);
-	res = lexer(str);
-	// printf("%s\n", res);
-	while (res[i])
-	{
-		printf("%s\n", res[i]);
-		i++;
-	}
-	// printf("---%s\n", extarct_from_quotes(str->cmnd, 14));
+    int token_pos[2] = {-1, -1}; 
+    int ret_val;
+    char *new_token;
+    int i = 0;
+    int quote_end;
+
+    t_tokens    *new_token_struct;
+    // data = (t_command*) malloc(sizeof(t_command));
+    // data->args = (char **) malloc(sizeof(char *));
+    // if (!data->args)
+    //     return (0);
+    // data->args[0] = NULL;
+    while (1)
+    {
+        ret_val = find_token_pos(data->cmnd, token_pos);
+        new_token = ft_substr(data->cmnd, token_pos[0], token_pos[1] - token_pos[0]);
+        new_token_struct = ft_lstneww(new_token, 0);
+        ft_lstadd_backk(&(data->tokens_list), new_token_struct);
+        // data->args = realloc_append(data->args, new_token);
+        if (token_pos[1] >= ft_strlen(data->cmnd))
+            break;
+        free(new_token);
+        // free(new_token_struct);
+    }
+    return (1);
 }
+
+// int main()
+// {
+//     t_command cmd; 
+//     int i =0;
+//     cmd.tokens_list = NULL; 
+//     char *input_str = "echo o\"hl\"llo\"olll'l'o\"| |  u\"iu, < 'hello world'    '|'  grep 'hello' & > eoutput.txt";
+//     cmd.cmnd = input_str;
+//     lexer(&cmd); 
+//     t_tokens *current = cmd.tokens_list;
+//     printf("Tokens generated by the lexer: %s\n", input_str);
+//     while (current)
+//     {
+//         printf("tokens[%d] : %s\n", i, current->value);
+//         current = current->next;
+//         i++;
+//     }
+//     return 0;
+// }
