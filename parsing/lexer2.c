@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 22:27:58 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/01 23:23:37 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/01 23:28:21 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,14 @@ int lexer(t_command *data)
 	str = data->cmnd;
 	tok = data -> tokens_list;
 	i = 0;
-	
-	int start ;
-	start = i;
-	while (str[i] && str[i] != ' ')
+	while (str[i] && i < ft_strlen(str))
 	{
-		i++;
+		if(!is_token(str[i]))
+			j = words_handler(str, &i);
+		token = ft_substr(str, i, j);
+		printf("----%s\n", token);
+		i =  i + ft_strlen(token);
 	}
-	token = ft_substr(str, i, start - i);
     return (i);
 }
 
