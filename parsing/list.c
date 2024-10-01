@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 21:46:23 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/09/29 03:23:17 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/09/30 05:54:09 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,3 @@ void	ft_lstadd_backk(t_tokens **lst, t_tokens *new)
 }
 
 
-// int main()
-// {
-//     t_command cmd;
-//     cmd.tokens_list = NULL; 
-//     char *token1 = "echo";
-//     char *token2 = "hello";
-//     char *token3 = "world";
-//     t_tokens *t1 = ft_lstneww(token1, 0);
-//     t_tokens *t2 = ft_lstneww(token2, 0);
-//     t_tokens *t3 = ft_lstneww(token3, 0);
-//     ft_lstadd_backk(&(cmd.tokens_list), t1);
-//     ft_lstadd_backk(&(cmd.tokens_list), t2);
-//     ft_lstadd_backk(&(cmd.tokens_list), t3);
-//     t_tokens *current = cmd.tokens_list;
-//     while (current)
-//     {
-//         printf("Token: %s\n", current->value);
-//         current = current->next;
-//     }
-
-//     return 0;
-// }

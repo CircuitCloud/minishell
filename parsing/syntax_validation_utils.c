@@ -6,12 +6,11 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 17:19:33 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/09/29 05:24:28 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/09/30 20:37:25 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 
 int	is_valid_start_char(char *input, char c)
 {
@@ -124,11 +123,11 @@ int	consecutive_operators_check(char *input, char c)
 	return (0);
 }
 
-#include<stdio.h>
-int main(int ac, char **av)
-{
-	(void) ac;
-	char	*str;
-	str = "    echo \"""""\"He said 'hi'\"";
-	printf("%d", consecutive_operators_check(av[1], '<'));
-}
+// #include<stdio.h>
+// int main(int ac, char **av)
+// {
+// 	(void) ac;
+// 	char	*str;
+// 	str = "    echo \"""""\"SHe said yyuy'hihi'\"";
+// 	printf("%d", consecutive_operators_check(av[1], '<'));
+// }

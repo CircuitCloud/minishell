@@ -4,7 +4,7 @@ LIBFT = ../libft/libft.a
 # OBJ = syntax_validation_utils.o
 EXECUTABLE = main
 
-SRC = syntax_validation_utils.c lexer.c list.c
+SRC =  lexer2.c list.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -15,7 +15,7 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C ../libft
-	$(CC)  -o $(EXECUTABLE) $(OBJ) $(LIBFT)
+	$(CC)  -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
