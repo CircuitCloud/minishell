@@ -4,7 +4,7 @@ LIBFT = ../libft/libft.a
 # OBJ = syntax_validation_utils.o
 EXECUTABLE = main
 
-SRC =  lexer2.c list.c
+SRC =  lexer.c list.c
 
 OBJ = $(SRC:.c=.o)
 

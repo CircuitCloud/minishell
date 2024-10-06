@@ -5,170 +5,200 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 19:39:34 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/09/30 22:15:11 by ykamboua         ###   ########.fr       */
+/*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
+/*   Updated: 2024/10/03 21:32:04 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-
-
-
-int array_length(char **array) 
+// int is_token(char c) 
+// {
+//     return (c == '|' || c == '<' || c == '>');
+// }
+int is_token(char c, char c_1) 
 {
-    int len = 0;
-    while (array[len])
-        len++;
-    return (len);
-}
-
-
-char **realloc_append(char **array, char *new_token) 
-{
-    int len = array_length(array);
-    char **new_array = realloc(array, sizeof(char *) * (len + 2));
-    if (!new_array) 
-    {
-        return NULL;
-    }
-    new_array[len] = ft_strdup(new_token); 
-    new_array[len + 1] = NULL;
-    return new_array;
-}
-
-
-int is_token(char c)
-{
-    if (c == '|' || c == '<' || c == '>')
-        return 1;
-    return 0;
-}
-
-int	quotes_handler(char *input, int start, char c)
-{
-	int i;
-
-	i = start + 1;
-	while (input[i])
-	{
-		if (input[i] == c)
-			return (i + 1);
-		i++;
-	}
-	return (0);
-}
-
-int find_token_pos(char *line, int *token_pos)
-{
-    int i;
-
-    i = token_pos[1] + 1;
-    while (line[i] && line[i] == ' ')
-        i++;
-    token_pos[0] = i;
-    if (is_token(line[i]))
-    {
-        // if((line[i] == '>' && line[i + 1] == '>') || (line[i] == '<' && line[i + 1] == '<'))
-        // {
-        //     token_pos[1] = i + 1;
-        //     return (1);
-        // }
-        token_pos[1] = i + 1;
+    if((c == '<' && c_1 == '<') || (c == '>' && c == '>'))
         return (1);
-    }
-    if (line[i] == '\'' || line[i] == '\"')
-    {
-        token_pos[1] = quotes_handler(line, i, line[i]);
+    else if(c == '|' || c == '<' || c == '>')
         return (1);
-    }
-    while (line[i] &&(line[i] != ' ' && !is_token(line[i + 1])))
-            i++;
-    token_pos[1] = i;
-    return (0);
+    else
+        return (0);
 }
 
-
-int lexer(t_command *data)
+int define_type(char c, char c_1) 
 {
-    int token_pos[2] = {-1, -1}; 
-    int ret_val;
-    char *new_token;
-    int i = 0;
-    int quote_end;
+    int type;
 
-    t_tokens    *new_token_struct;
-    // data = (t_command*) malloc(sizeof(t_command));
-    // data->args = (char **) malloc(sizeof(char *));
-    // if (!data->args)
-    //     return (0);
-    // data->args[0] = NULL;
-    if(!open_quotes_check(data -> cmnd))
+    type = 0;
+    if(c == '|')
+        type = PIPE;
+    else if(c == '<')
     {
-        while (1)
+        if(c_1 == '<')
         {
-            ret_val = find_token_pos(data->cmnd, token_pos);
-            
-            new_token = ft_substr(data->cmnd, token_pos[0], token_pos[1] - token_pos[0]);
-            new_token_struct = ft_lstneww(new_token, 0);
-            ft_lstadd_backk(&(data->tokens_list), new_token_struct);
-            // data->args = realloc_append(data->args, new_token);
-            if (token_pos[1] >= ft_strlen(data->cmnd))
-                break;
-            free(new_token);
-            // free(new_token_struct);
-            // new_token_struct = NULL;
+            return(type = HERDOC);
+            // return(type);
+        }
+        type = I_RED;
+    }
+    else if(c == '>')
+    {
+        if(c_1 == '>')
+        {
+            type = APPEND;
+            return (type);
+        }
+        type = O_RED;
+    }
+    return (type);
+}
+
+int append_special_tokens(t_command *data, char c, char c_1)
+{
+    int         type;
+    int         res;
+    char    *token;
+    t_tokens    *new_node;
+    
+    type = define_type(c, c_1);
+    
+    if(type == PIPE)
+    {
+        token = ft_strdup("|");
+        res = 1;
+    }
+    else if(type == I_RED)
+    {
+        token = ft_strdup("<");
+        res = 1;
+    }
+    else if(type == O_RED)
+    {
+        token = ft_strdup(">");
+        res = 1;
+    }
+    else if(type == HERDOC)
+    {
+        token = ft_strdup("<<");
+        res = 2;
+    }
+    else if(type == APPEND)
+    {
+        token = ft_strdup(">>");
+        res = 2;
+    }
+    new_node = ft_lstneww(token, type);
+    ft_lstadd_backk(&(data->tokens_list), new_node);
+    return (res);
+}
+int is_whitespace(char c) 
+{
+    return (c == ' ' || c == '\t' || c == '\n');
+}
+
+int quotes_handler(char *input, int start, char quote_char) 
+{
+    int i = start + 1;
+
+    while (input[i]) 
+	{
+        // printf("---%c\n", input[i]);
+        
+        if (input[i] == quote_char)
+			// break;
+            {
+                // printf("***%d\n", i);
+                return i;
+            }
+          
+        i++;
+    }
+    // printf("&&&%d\n", i);
+    printf("--00--(%c)\n", input[i]);
+    return -1;
+}
+
+
+
+int word_handler(char *input, int start) 
+{
+    int i = start;
+
+    while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
+    {
+        if (input[i] == '\'' || input[i] == '\"') 
+        {
+            i = quotes_handler(input, i, input[i]);
+            if (i == -1) 
+            {
+                printf("saad lquoootes !\n");
+                exit(1);
+                // return (-1);
+            }
+        }
+        if(input[i] == ' ' || is_token(input[i], input[i + 1]))
+            break;
+        i++;
+    }
+    return i;
+}
+
+void lexer(t_command	*data)
+{
+    int i = 0;
+    int start;
+    char *token;
+    int type;
+	t_tokens	*new_token;
+    while (data->cmnd[i]) 
+	{
+        while (is_whitespace(data->cmnd[i]))
+            i++;
+		if(!is_token(data->cmnd[i], data->cmnd[i + 1]) )
+		{
+			start = i;
+        	i = word_handler(data->cmnd, i);
+			token = ft_substr(data->cmnd, start, i - start);
+			if (token && ft_strlen(token))
+			{
+				new_token = ft_lstneww(token, WORD);
+				ft_lstadd_backk(&(data->tokens_list), new_token);
+			}
+        	free(token);
+			// free(new_token);
+		}
+        if(is_token(data->cmnd[i], data->cmnd[i + 1]))
+        {
+            i+= append_special_tokens(data, data->cmnd[i], data->cmnd[i + 1]);
         }
     }
-    return (1);
 }
-///arrrgs_________________________________________________________________________
-// int main()
-// {
-//     t_command cmd;
 
-//     int i =0;
-//     cmd.tokens_list = NULL;
-//     // char *input_str = "echo m\"hl\"llo\"olll'l'o\" | |  u\"iu, < 'hello world'    '|'  grep 'hello' & > eoutput.txt";
-//     char *input_str;
-//     input_str = readline("minii>");
-//     // while((input_str = readline("mini>")))
-//     // {
-//         cmd.cmnd = input_str;
-//         lexer(&cmd); 
-//         printf("Tokens generated by the lexer: %s\n", input_str);
-//         while (cmd.args[i])
-//         {
-//             printf("tokens[%d] : %s\n", i, cmd.args[i]);
-//             i++;
-//         }
-//     //}
-//     return (0);
-// }
-
-
-///linked liiist
 int main()
 {
-    t_command cmd; 
-    int i =0;
-    cmd.tokens_list = NULL; 
-    // char *input_str = "echo m\"hl\"llo\"olll'l'o\" | |  u\"iu, < 'hello world'    '|'  grep 'hello' & > eoutput.txt";
-    char *input_str;
-    input_str = readline("minii>");
-    // while((input_str = readline("mini>")))
-    // {
-        cmd.cmnd = input_str;
-        lexer(&cmd); 
-        t_tokens *current = cmd.tokens_list;
-        printf("Tokens generated by the lexer: %s\n", input_str);
-        while (current)
+    t_command data;
+    t_tokens *token_node;
+    char *str;
+
+    str = readline("minii>");
+    while (str)
+    {
+        data.cmnd = str;
+        data.tokens_list = NULL;
+        lexer(&data);
+        token_node = data.tokens_list;
+        while (token_node != NULL) 
         {
-            printf("tokens[%d] : %s\n", i, current->value);
-            current = current->next;
-            i++;
+            printf("Token : (%s)\n", token_node->value);
+            // printf("Token : (%d)\n", token_node->type);
+            token_node = token_node->next;
         }
-    //}
-    return (0);
+        free(str);  
+        str = readline("minii>");
+    }
+    return 0;
 }
-// < > | >> <<
