@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/15 11:48:26 by cahaik            #+#    #+#             */
-/*   Updated: 2024/10/09 05:18:19 by cahaik           ###   ########.fr       */
+/*   Created: 2024/09/25 16:43:47 by cahaik            #+#    #+#             */
+/*   Updated: 2024/10/09 02:52:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void pwd_(t_ev *ev)
+void sig_handler(int sig)
 {
-	char *str;
-	
-	str = getcwd(NULL, 0);
-	if (str)
+	if (sig == SIGINT)
 	{
-		printf("%s\n", str);
-		free(str);
-		return ;
-	}
-	while (ev)
-	{
-		if (ft_strcmp(ev->name, "OLDPWD") == 0)
-		{
-			printf("%s\n", ev->value);
-			return ;
-		}
-		ev = ev->next;
+		rl_on_new_line();
+		printf("\n");
+		rl_replace_line("", 1);
+		rl_redisplay();
 	}
 }
 
-// fach nsali should update type dyal ev f other files....
+void signals(void)
+{
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+}

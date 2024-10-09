@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:22:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 13:45:58 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/10/09 05:54:49 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_lstdelone_unset(t_ev *lst)
 	free(lst);
 }
 
-int unset_helper(t_ev **ev, char *name)
+void unset_helper(t_ev **ev, char *name)
 {
 	t_ev *backup;
 	t_ev *prev;
@@ -44,10 +44,13 @@ int unset_helper(t_ev **ev, char *name)
 		prev = move;
 		move = move->next;
 	}
-	return (0);
+	return ;                                                         
+	
+	
+	0
 }
 
-int unset_(t_ev **ev, char **name)
+void unset_(t_ev **ev, char **name)
 {
 	int i;
 
@@ -57,7 +60,6 @@ int unset_(t_ev **ev, char **name)
 		unset_helper(ev, name[i]);
 		i++;	
 	}
-	return (0);
 }
 
 // int main(int ac, char **av, char **env)

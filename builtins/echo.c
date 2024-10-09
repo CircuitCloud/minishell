@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:55:36 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/16 12:52:28 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/10/09 03:12:37 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int check_for_n(char *arg)
 	}
 	return (0);
 }
-int echo_(char **arg)
+
+void echo_(char **arg)
 {
 	int i;
 	int option;
@@ -53,21 +54,4 @@ int echo_(char **arg)
 	}
 	if (option == 0)
 		printf("\n");
-	return (0);
 }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_ev *ev;
-// 	char **name;
-	
-// 	name = malloc(sizeof(char *) * 5);
-// 	name[0] = "-nnl";
-// 	// name[1]= "--n";
-// 	name[1]= "-nnnnnnnnnn";
-// 	name[2]= "_";
-// 	name[3] = "MallocNanoZone";
-// 	name[4] = "-nn";
-// 	echo_(name);
-// 	return (0);
-// }

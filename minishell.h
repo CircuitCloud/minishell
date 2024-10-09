@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:57:53 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/23 18:39:28 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/10/09 03:11:02 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "libft/libft.h"
+
+extern int g_exit_status;
 
 typedef	struct	s_argument
 {

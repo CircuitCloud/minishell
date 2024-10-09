@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/09/20 09:30:41 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/10/09 03:11:21 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int getter(t_ev *env, char *arg, t_ev **ev)
 	else
 	{
 		perror("chdir");
+		g_exit_status = 1;
 		return (1);
 	}
 	return (0);
