@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/03 21:32:04 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/08 19:59:44 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,14 +124,16 @@ int quotes_handler(char *input, int start, char quote_char)
 
 
 
-int word_handler(char *input, int start) 
+int word_handler(char *input, int start, int *type) 
 {
     int i = start;
 
+    *type = WORD;
     while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
     {
         if (input[i] == '\'' || input[i] == '\"') 
         {
+            *type = QUOTED;
             i = quotes_handler(input, i, input[i]);
             if (i == -1) 
             {
@@ -161,11 +163,11 @@ void lexer(t_command	*data)
 		if(!is_token(data->cmnd[i], data->cmnd[i + 1]) )
 		{
 			start = i;
-        	i = word_handler(data->cmnd, i);
+        	i = word_handler(data->cmnd, i, &type);
 			token = ft_substr(data->cmnd, start, i - start);
 			if (token && ft_strlen(token))
 			{
-				new_token = ft_lstneww(token, WORD);
+				new_token = ft_lstneww(token, type);
 				ft_lstadd_backk(&(data->tokens_list), new_token);
 			}
         	free(token);
@@ -191,9 +193,11 @@ int main()
         data.tokens_list = NULL;
         lexer(&data);
         token_node = data.tokens_list;
+        expand_env((data.tokens_list));
         while (token_node != NULL) 
         {
             printf("Token : (%s)\n", token_node->value);
+            // printf("type : (%d)\n", token_node->type);
             // printf("Token : (%d)\n", token_node->type);
             token_node = token_node->next;
         }
