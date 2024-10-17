@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/11 00:21:09 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:58:35 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,83 @@
 // 	return (NULL);
 // }
 
+char	*extract_var(char *str, int *pos)
+{
+	int	start;
+	
+	start = *pos;
+	while (str[*pos] && ft_isalpha(str[*pos]) && ft_isalnum(str[*pos]) && !is_whitespace(str[*pos]))
+	{
+		(*pos)++;
+	}
+	return(ft_substr(str, start, *pos - start));
+}
 
 
 
+
+char	*get_env_token(char *token)
+{
+	char	*str, *tmp;
+	char 	*var_name;
+	int		i, start, end;
+	int		j;
+	int		single_quoted;
+
+	single_quoted = 0;
+	str = ft_strdup("");
+	i = 0;
+	j = 0;
+	while (token[i])
+	{
+		while ((token[i] && token[i] != '$' )|| single_quoted)
+		{
+			if(token[i] && token[i] == '\'' && !single_quoted)
+				single_quoted = 1;
+			else if(token[i] && token[i] == '\'' && single_quoted)
+				single_quoted = 0;
+			tmp =str;
+			str= ft_strjoin(str, ft_substr(token, i, 1));
+			// printf("--%s\n", str);
+			free(tmp);
+			i++;
+		}
+		if (token[i] == '$' && !single_quoted)
+		{
+			i++;
+			if(!ft_isalpha(token[i]) && !ft_isalnum(token[i]) && token[i] != '_')
+			{
+				tmp = str;
+				str = ft_strjoin(str, "$");
+				free(tmp);
+            }
+            start = i;
+            var_name = extract_var(token, &i);
+            char *env_value;
+			env_value= getenv(var_name);
+            if (!env_value) 
+			{
+                env_value = "";
+            }
+            tmp = str;
+            str = ft_strjoin(str, env_value);
+            free(tmp);
+            free(var_name);
+		}
+		// i++;
+	}
+	printf("0---%s\n", str);
+	return(str);
+}
 
 void	expand_env(t_tokens *tokens)
 {
 	while (tokens)
 	{
-		get_env_token(tokens);
+		if(tokens->type == WORD || tokens->type == QUOTED)
+		{
+			tokens->value = get_env_token(tokens->value);
+		}
 		tokens = tokens->next;
 	}
 }
@@ -86,3 +154,5 @@ void	expand_env(t_tokens *tokens)
 // 	}
 	
 // }
+
+

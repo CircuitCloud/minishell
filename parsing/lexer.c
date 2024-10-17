@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/08 19:59:44 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:56:36 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int word_handler(char *input, int start, int *type)
     {
         if (input[i] == '\'' || input[i] == '\"') 
         {
-            *type = QUOTED;
+            *type = WORD;
             i = quotes_handler(input, i, input[i]);
             if (i == -1) 
             {
@@ -193,7 +193,8 @@ int main()
         data.tokens_list = NULL;
         lexer(&data);
         token_node = data.tokens_list;
-        expand_env((data.tokens_list));
+        expand_env(data.tokens_list);
+        remove_quotes((data.tokens_list));
         while (token_node != NULL) 
         {
             printf("Token : (%s)\n", token_node->value);
