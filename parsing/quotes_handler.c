@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:27:54 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/15 22:18:23 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/26 03:59:40 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*quotes_eliminator(char *token)
 
 	while (token[i])
 	{
-		///kat7ydiiii gaa3 lquootes yaalala rej3i 4eda gadi zmmmr
 		if ((token[i] == '"' && !single_quoted) || (token[i] == '\'' && !double_quoted))
 		{
 			if(token[i] == '\'')
@@ -54,7 +53,7 @@ void	remove_quotes(t_tokens *tokens)
 {
 	while (tokens)
 	{
-		if(tokens->type == WORD || tokens->type == QUOTED)
+		if(tokens->type == WORD)
 		{
 			tokens->value = quotes_eliminator(tokens->value);
 		}

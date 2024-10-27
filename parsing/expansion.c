@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/15 18:58:35 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/27 00:13:30 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ char	*extract_var(char *str, int *pos)
 }
 
 
-
-
 char	*get_env_token(char *token)
 {
 	char	*str, *tmp;
@@ -105,7 +103,7 @@ char	*get_env_token(char *token)
             var_name = extract_var(token, &i);
             char *env_value;
 			env_value= getenv(var_name);
-            if (!env_value) 
+            if (!env_value)
 			{
                 env_value = "";
             }
@@ -116,7 +114,7 @@ char	*get_env_token(char *token)
 		}
 		// i++;
 	}
-	printf("0---%s\n", str);
+	// printf("0---%s\n", str);
 	return(str);
 }
 
