@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/26 23:13:57 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/10/31 05:17:43 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef	struct s_redirection
 	struct s_redirection	*next_redir;
 }	t_redirection;
 
+
 typedef	struct	s_command
 {
 	char			*cmnd;
@@ -63,6 +64,12 @@ typedef	struct	s_command
 	struct s_command		*left; // left child of tree
 	struct s_command		*right; // right child of tree
 }   t_command;
+
+typedef	struct	s_hdoc_inputs
+{
+	char					*value;
+	struct s_hdoc_inputs	*next;
+} t_hdoc_inputs;
 
 typedef	struct	s_pipe
 {
@@ -86,4 +93,7 @@ int is_whitespace(char c);
 //quuotes
 // void	remove_quotes_from_tokens(t_tokens *tokens);
 void	remove_quotes(t_tokens *tokens);
+
+//hdooc
+t_hdoc_inputs	*hdoc_parser(t_tokens *tokens);
 #endif
