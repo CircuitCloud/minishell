@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 01:15:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/31 05:38:30 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/01 05:02:28 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ t_hdoc_inputs	*create_hdoc_inode(char *line)
 	hdoc_inode->next = NULL;
 	return (hdoc_inode);
 }
-t_hdoc_inputs	*hdoc_parser(t_tokens *tokens)
+
+int	hdoc_parser(t_tokens *tokens)
 {
 	t_tokens	*current;
 	char	*delimiter = NULL;
 	t_hdoc_inputs	*inputs = NULL;
 	t_hdoc_inputs	*last;
 	char	*line;
+	int		fd;
+	
 	int	i;
 	
 	i = 0;
@@ -48,36 +51,31 @@ t_hdoc_inputs	*hdoc_parser(t_tokens *tokens)
 		}
 		current = current->next;
 	}
-	// current = current->next;
-	// while (current && (strncmp(current->value, delimiter, strlen(delimiter)) == 0))
-	// {
-	// 	inputs[i] = current->value;
-	// 	i++;
-	// 	current = current->next;
-	// }
-	// line = readline(">");
-	while (1)
+	if(delimiter)
 	{
-		line = readline(">");
-		if(!line)
-			break;
-		
-		if(strncmp(line, delimiter, strlen(delimiter)) == 0)
+		fd = open("inputs.txt", O_CREAT | O_WRONLY | O_TRUNC, 0600);
+		if(fd < 0)
 		{
-			free(line);
-			break;
+			printf("error fd < 0\n");
 		}
-
-		t_hdoc_inputs *new_node = create_hdoc_inode(line);
-		free(line);
-		if(!inputs)
-			inputs = new_node;
-		else
-			last->next = new_node;
-		last = new_node;
-		// inputs->next = create_hdoc_inode(line);
+		while (1)
+		{
+			line = readline(">");
+			if(!line)
+				break;			
+			if(strncmp(line, delimiter, strlen(delimiter) + 1) == 0)
+			{
+				free(line);
+				break;
+			}
+			write(fd, line, strlen(line));
+			write(fd, "\n", 1);
+			free(line);
+		}
+		close(fd);
+		return (fd);
 	}
-	return (inputs);
+	return (-1);
 }
 
 
@@ -105,6 +103,7 @@ int main()
 	t_tokens	*str2;
 	str2 = ft_lstnewww("dddd",0);
 	t_tokens	*str3;
+	
 	str3 = ft_lstnewww("stop",0);
 	
 	t_tokens	*str4;
@@ -118,14 +117,15 @@ int main()
 	int i ;
 	i = 0;
 
-	t_hdoc_inputs *inputs;
+	// t_hdoc_inputs *inputs;
+	int inputs;
 	inputs = hdoc_parser(str);
-
-	while (inputs)
-	{
-		printf("%s\n", inputs->value);
-		inputs= inputs->next;
-	}
+	printf("%d\n", inputs);
+	// while (inputs)
+	// {
+	// 	printf("%s\n", inputs->value);
+	// 	inputs= inputs->next;
+	// }
 	
 	// printf("%s", hdoc_parser(str));
 }

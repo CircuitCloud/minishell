@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/26 04:00:15 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/02 06:45:21 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,9 @@ void lexer(t_command	*data)
 
 int main()
 {
-	t_command data;
+	t_command 	data;
+	t_command	*tree;
+	
 	t_tokens *token_node;
 	char *str;
 
@@ -187,13 +189,22 @@ int main()
 		token_node = data.tokens_list;
 		expand_env(data.tokens_list);
 		remove_quotes((data.tokens_list));
-		while (token_node != NULL) 
+		tree = build_ast(data.tokens_list);
+		// printf("%s\n",tree->cmnd);
+		int i = 0;
+		while (tree->args[i])
 		{
-			printf("Token : (%s)\n", token_node->value);
-			// printf("type : (%d)\n", token_node->type);
-			// printf("Token : (%d)\n", token_node->type);
-			token_node = token_node->next;
+			printf("%s\n", tree->args[i]);
+			i++;
 		}
+		
+		// while (token_node) 
+		// {
+		// 	printf("Token : (%s)\n", token_node->value);
+		// 	// printf("type : (%d)\n", token_node->type);
+		// 	// printf("Token : (%d)\n", token_node->type);
+		// 	token_node = token_node->next;
+		// }
 		free(str);  
 		str = readline("minii>");
 	}
