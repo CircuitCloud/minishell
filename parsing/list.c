@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 21:46:23 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/03 01:40:03 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/06 05:47:22 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@ t_tokens	*ft_lstneww(char *cmnd, int type)
 {
 	t_tokens	*command;
 
-	command = (t_tokens *)malloc(sizeof(t_tokens));
+	command = (t_tokens *)ft_calloc(1, sizeof(t_tokens));
 	if (!command)
 		return (NULL);
-	command -> value = ft_strdup(cmnd);;
+	command -> value = ft_strdup(cmnd);
+	if (!command->value)
+		return (NULL);
 	command -> type = type;
-	command -> next = NULL;
 	return (command);
 }
 
@@ -40,7 +41,7 @@ void	ft_lstadd_backk(t_tokens **lst, t_tokens *new)
 {
 	t_tokens	*last;
 
-	if (!lst)
+	if (!lst || !new)
 		return ;
 	if (!*lst)
 	{
@@ -50,29 +51,3 @@ void	ft_lstadd_backk(t_tokens **lst, t_tokens *new)
 	last = ft_lstlastt(*lst);
 	last -> next = new;
 }
-
-// int main()
-// {
-// 	t_tokens *token;
-// 	t_tokens *token1;
-// 	t_tokens *token2;
-// 	t_tokens *token3;
-// 	t_tokens *current;
-	
-// 	token = ft_lstneww("hello ", 0);
-// 	token1 = ft_lstneww("ya  ", 0);
-// 	token2= ft_lstneww("a ", 0);
-// 	token3 = ft_lstneww("smitq ", 0);
-
-// 	ft_lstadd_backk(&(token), token1);
-// 	ft_lstadd_backk(&(token1), token2);
-// 	ft_lstadd_backk(&(token2), token3);
-
-// 	current = token;
-// 	while (current)
-// 	{
-// 		printf("%s\n", current->value);
-// 		current = current->next;
-// 	}
-	
-// }

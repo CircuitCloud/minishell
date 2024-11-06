@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/02 08:37:13 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/06 04:18:36 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,79 @@ t_redirection	*init_redir_struct(int type, char *file, char *delimiter, int fd)
 	redir = malloc(sizeof(t_redirection));
 
 	redir->type = type;
-	redir->file = file;
-	redir->delimiter = delimiter;
+	// if()
+
+	if (type == HERDOC) 
+	{
+		redir->delimiter = ft_strdup(delimiter);
+		redir->file = NULL;
+    }
+	else 
+	{
+		redir->file = ft_strdup(file);
+		redir->delimiter = NULL;
+    }
+	// redir->file =  file ? ft_strdup(file) : NULL;
+	// redir->delimiter = delimiter ? ft_strdup(delimiter) : NULL;
 	redir->fd = fd;
+	redir->next_redir= NULL;
 	return (redir);
 }
 
-t_command	*create_redir_cmnd(char *cmnd, int type, char *file, char *delimiter, int fd)
+
+t_command	*init_pipe_cmnd()
 {
-	t_command	*redir_cmnd;
+	t_command	*pipe_cmnd;
 
-	redir_cmnd = malloc(sizeof(t_command));
-	if (!redir_cmnd) 
+	pipe_cmnd = malloc(sizeof(t_command));
+	if (!pipe_cmnd)
 		return (NULL);
-	redir_cmnd->cmnd = ft_strdup(cmnd);
-	redir_cmnd->args =NULL;
-	redir_cmnd->ev = NULL;
+	pipe_cmnd->cmnd = ft_strdup("|");
+	pipe_cmnd->args = NULL;
+	pipe_cmnd->type = PIPE;
+	// single_command->args[args_index + 1] = NULL;
+	pipe_cmnd->ev = NULL;
+	// single_command->tokens_list = NULL;
+	pipe_cmnd->redir = NULL;
+	pipe_cmnd->left = NULL;
+	pipe_cmnd->right = NULL;
 	
-	redir_cmnd->redir = init_redir_struct(type, file, delimiter, fd);
+    return (pipe_cmnd);
+}
 
-	redir_cmnd->left = NULL;
-	redir_cmnd->right = NULL;
+// t_command	*add_redir_cmnd(char *cmnd, int type, char *file, char *delimiter, int fd)
+// {
+// 	t_command	*redir_cmnd;
 
-	return (redir_cmnd);
+// 	redir_cmnd = malloc(sizeof(t_command));
+// 	if (!redir_cmnd) 
+// 		return (NULL);
+// 	redir_cmnd->cmnd = ft_strdup(cmnd);
+// 	redir_cmnd->args =NULL;
+// 	redir_cmnd->ev = NULL;
+	
+// 	redir_cmnd->redir = init_redir_struct(type, file, delimiter, fd);
+
+// 	redir_cmnd->left = NULL;
+// 	redir_cmnd->right = NULL;
+
+// 	return (redir_cmnd);
+// }
+
+void	add_redir_cmnd(t_command *command, t_redirection *redir)
+{
+	if (!(command->redir))
+		command->redir = redir;
+	else
+	{
+		t_redirection	*current;
+		current = command->redir;
+		while (current->next_redir)
+		{
+			current = current->next_redir;
+		}
+		current->next_redir = redir;
+	}
 }
 
 t_command	*build_ast(t_tokens *tokens)
@@ -89,10 +139,11 @@ t_command	*build_ast(t_tokens *tokens)
 	t_tokens	*current;
 	t_tokens	*word;
 	t_command	*single_command;
-	t_command	*redir_command;
+	t_redirection	*redir_command;
 	t_command	*root;
 	t_command	*last_cmnd;
-	
+	char *file_or_delim;
+
 	// char		**stored_args;
 	int			i;
 	int			args_len;
@@ -104,7 +155,7 @@ t_command	*build_ast(t_tokens *tokens)
 	while (current)
 	{
 		//word cmnd
-		if(current && current->type == WORD)
+		if (current && current->type == WORD)
 		{
 			args_len = 0;
 			word = current;
@@ -113,7 +164,7 @@ t_command	*build_ast(t_tokens *tokens)
 				args_len++;
 				word= word->next;
 			}
-			single_command = create_simple_command(current->value, args_len - 1);
+			single_command = create_simple_command(current->value, args_len);
 			//hhh;
 			while(current && current->type == WORD)
 			{
@@ -122,27 +173,40 @@ t_command	*build_ast(t_tokens *tokens)
 				current = current->next;
 			}
 			single_command->args[i] = NULL;
+			if (!root)
+				root = single_command;
+			else
+			{
+				last_cmnd->right = single_command;
+				printf("linnnnnnking %s -> right to %s\n", last_cmnd->cmnd, single_command->cmnd);
+			}
+			last_cmnd = single_command;
 		}
-
-		
 		//redirection
-
-		if(current && (current->type == I_RED || current->type == O_RED || current->type == APPEND || current->type == HERDOC))
+		if (current && (current->type == I_RED || current->type == O_RED || current->type == APPEND || current->type == HERDOC))
 		{
-			redir_command = create_redir_cmnd(current->value, current->type, current->next->value, NULL, 0);
+			file_or_delim = current->next ? current->next->value : NULL;
+			if (current && current->type == HERDOC)
+				redir_command = init_redir_struct(current->type, NULL, file_or_delim , 0);
+			else
+				redir_command = init_redir_struct(current->type, file_or_delim , NULL, 0);
+			// redir_command = init_redir_struct(current->type, current->next->value,current->next->value, 0);
+			add_redir_cmnd(last_cmnd, redir_command);
 			current = current->next;
 		}
-		
-		if (!root)
-			root = single_command;
-		else
-			last_cmnd->right = single_command;
-		last_cmnd = single_command;
-		
-		
-		
-		if(current)
+		if(current && current->type == PIPE)
+		{
+			t_command	*pipe_cmnd;
+			pipe_cmnd = init_pipe_cmnd();
+			
+			pipe_cmnd->left = root;
+			current = current->next;
+			pipe_cmnd->right = build_ast(current);
+			root = pipe_cmnd;
+			break;
+		}
+		if (current)
 			current = current->next;
 	}
-	return(root);
+	return (root);
 }

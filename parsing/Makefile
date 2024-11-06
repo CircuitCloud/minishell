@@ -10,13 +10,12 @@ OBJ = $(SRC:.c=.o)
 
 # LIBFT :
 # 	make -C ../libft
-
+# $(CC)  -fsanitize=address -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -g
 all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C ../libft
-	$(CC)  -fsanitize=address -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -g
-
+	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
