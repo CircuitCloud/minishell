@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/06 07:39:21 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/07 02:18:54 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int word_handler(char *input, int start)
 	
 	i = start;
 
-	if(!input || start < 0 || start >= strlen(input))
+	if(!input || start < 0 || start >= ft_strlen(input))
 		return(-1);
 	// *type = WORD;
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
@@ -176,14 +176,12 @@ void print_ast(t_command *node, int level)
     if (!node)
         return;
 	
-    for (int i = 0; i < level; i++)
-        printf("  ");
-
-    printf("Command: ---%s\n", node->cmnd);
+    printf("------- Command: ---------\n\n\n");
+	printf("  %s\n", node->cmnd);
     if (node->args) 
 	{
 		int i = 0;
-        printf("arguments:----");
+        printf("arguments : ");
         while (node->args[i]) 
 		{
             printf("(%s)", node->args[i]);
@@ -194,12 +192,12 @@ void print_ast(t_command *node, int level)
 
     if (node->redir) 
 	{
-        printf("rdirections:-----\n");
+        printf("rdirections : \n");
 		while (node->redir)
 		{
-			printf("file :    %s\n", node->redir->file);
-			printf("delimiii :   %s\n", node->redir->delimiter);
-			printf("%d\n", node->redir->type);
+			printf("	file :    %s\n", node->redir->file);
+			printf("	delimiii :   %s\n", node->redir->delimiter);
+			printf("	%d\n", node->redir->type);
 			node->redir= node->redir->next_redir;
 		}
 		
@@ -208,12 +206,12 @@ void print_ast(t_command *node, int level)
 
     if (node->left)
 	{
-        printf("Llllleft:\n");
+        printf("----------Llllleft:\n");
         print_ast(node->left, level + 1);
     }
     if (node->right) 
 	{
-        printf("Right:\n");
+        printf("----------Right:\n");
         print_ast(node->right, level + 1);
     }
 }
