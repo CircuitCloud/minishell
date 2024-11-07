@@ -1,0 +1,12 @@
+Makefile
+executioon
+file
+file1
+l
+libft
+main
+main.c
+main.o
+minishell.h
+parsing
+minii>
