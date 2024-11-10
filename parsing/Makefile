@@ -4,7 +4,7 @@ LIBFT = ../libft/libft.a
 # OBJ = syntax_validation_utils.o
 EXECUTABLE = main
 
-SRC =  lexer.c quotes_handler.c expansion.c list.c ast_op.c build_ast.c 
+SRC =  lexer2.c quotes_handler.c expansion.c list.c ast_op.c build_ast.c  lexer_utils.c  env_list.c
 # SRC = hdoc_parsing.C
 OBJ = $(SRC:.c=.o)
 
@@ -15,9 +15,10 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C ../libft
-	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) 
-%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT)
+
+# %.o : %.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	make -C ../libft clean
