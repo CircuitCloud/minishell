@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 01:15:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/01 05:02:28 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/10 06:07:28 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,42 +90,4 @@ t_tokens	*ft_lstnewww(char *cmnd, int type)
 	command -> type = type;
 	command -> next = NULL;
 	return (command);
-}
-
-int main()
-{
-	t_tokens	*str;
-	str = ft_lstnewww("hello", 0);
-
-	t_tokens	*str1;
-	str1 = ft_lstnewww("<<",0);
-
-	t_tokens	*str2;
-	str2 = ft_lstnewww("dddd",0);
-	t_tokens	*str3;
-	
-	str3 = ft_lstnewww("stop",0);
-	
-	t_tokens	*str4;
-	str4 = ft_lstnewww("789",0);
-	
-	str->next= str1;
-	str1->next= str2;
-	str2->next= str3;
-	str3->next= str4;
-	
-	int i ;
-	i = 0;
-
-	// t_hdoc_inputs *inputs;
-	int inputs;
-	inputs = hdoc_parser(str);
-	printf("%d\n", inputs);
-	// while (inputs)
-	// {
-	// 	printf("%s\n", inputs->value);
-	// 	inputs= inputs->next;
-	// }
-	
-	// printf("%s", hdoc_parser(str));
 }

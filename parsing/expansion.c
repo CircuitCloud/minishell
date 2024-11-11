@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/27 00:13:30 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/11 04:40:44 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@
 char	*extract_var(char *str, int *pos)
 {
 	int	start;
-	
+
 	start = *pos;
-	while (str[*pos] && ft_isalpha(str[*pos]) && ft_isalnum(str[*pos]) && !is_whitespace(str[*pos]))
+	while (str[*pos] && (ft_isalpha(str[*pos]) || ft_isalnum(str[*pos]) || str[*pos] == '_') && !is_whitespace(str[*pos]) )
 	{
 		(*pos)++;
 	}
@@ -64,67 +64,163 @@ char	*extract_var(char *str, int *pos)
 }
 
 
-char	*get_env_token(char *token)
+// char	*get_env_token(char *token, t_ev *ev)
+// {
+// 	char	*str;
+// 	char	*tmp;
+// 	char 	*var_name;
+// 	int		i, start, end;
+// 	int		j;
+// 	int		single_quoted;
+
+// 	single_quoted = 0;
+// 	str = ft_strdup("");
+// 	i = 0;
+// 	j = 0;
+// 	while (token[i])//helo$USER
+// 	{
+// 		while ((token[i] && token[i] != '$') || single_quoted)
+// 		{
+// 			if(token[i] == '\'' && !single_quoted)
+// 				single_quoted = 1;
+// 			else if(token[i] == '\'' && single_quoted)
+// 				single_quoted = 0;
+// 			// tmp = str;
+// 			str = ft_strjoin(str, ft_substr(token, i, 1));
+// 			// printf("--%s\n", str);
+// 			// free(tmp);
+// 			i++;
+// 		}
+// 		if (token[i] == '$' && !single_quoted)
+// 		{
+// 			i++;
+// 			if(!ft_isalpha(token[i]) || token[i] != '_')
+// 			{
+// 				// tmp = str;
+// 				str = ft_strjoin(str, "$");
+// 				// free(tmp);
+//             }
+// 				start = i;
+// 				var_name = extract_var(token, &i);
+// 				char *env_value;
+// 				env_value= search_ev_value(var_name, ev);
+// 				// printf("******0000%s\n",env_value);//---------------------
+// 				if (!env_value)
+// 				{
+// 					env_value = "";
+// 				}
+// 				// tmp = str;
+// 				str = ft_strjoin(str, env_value);
+// 			// free(tmp);
+//  			free(var_name);
+// 		}
+// 		// i++;
+// 	}
+// 	// printf("0---%s\n", str);
+// 	return(str);
+// }
+
+
+char	*get_env_token(char *token, t_ev *ev)
 {
-	char	*str, *tmp;
+	char	*str;
+	char	*tmp;
 	char 	*var_name;
 	int		i, start, end;
 	int		j;
 	int		single_quoted;
+	int		double_quoted;
 
 	single_quoted = 0;
+	double_quoted = 0;
 	str = ft_strdup("");
 	i = 0;
 	j = 0;
-	while (token[i])
+
+	while (token[i]) //helo$USER
 	{
-		while ((token[i] && token[i] != '$' )|| single_quoted)
+	
+		if(token[i] == '\"' && !double_quoted)
 		{
-			if(token[i] && token[i] == '\'' && !single_quoted)
-				single_quoted = 1;
-			else if(token[i] && token[i] == '\'' && single_quoted)
-				single_quoted = 0;
-			tmp =str;
-			str= ft_strjoin(str, ft_substr(token, i, 1));
+			double_quoted = 1;
+			// i++;
+		}
+		else if(token[i] == '\"' && double_quoted)
+		{
+			double_quoted = 0;
+			// i++;
+		}
+		// while ((token[i] && token[i] != '$') || single_quoted)
+		// {
+		if(token[i] == '\'' && !single_quoted)
+		{
+			single_quoted = 1;
+			// i++;
+		}
+		else if(token[i] == '\'' && single_quoted)
+		{
+			single_quoted = 0;
+			// i++;
+		}
+			
+			// tmp = str;
+			// str = ft_strjoin(str, ft_substr(token, i, 1));
+			// printf("--%s\n", str);
+			// free(tmp);
+			// i++;
+		//}
+		// }
+		
+
+		if (token[i] == '$' && ((!double_quoted && !single_quoted) || (double_quoted && single_quoted) || double_quoted))
+		{
+			i++;
+			if(ft_isalpha(token[i]) || token[i] == '_')
+			{
+				// tmp = str;
+				// str = ft_strjoin(str, "$");
+				// free(tmp);
+				// start = i;
+				var_name = extract_var(token, &i);
+				char *env_value;
+				env_value= search_ev_value(var_name, ev);
+				//---------------------
+				if (!env_value)
+					env_value = "";
+				//printf("******0000%s\n",env_value);
+				tmp = str;
+				str = ft_strjoin(str, env_value);
+				free(tmp);
+				free(var_name);
+			}
+			else if ( token[i] == '?' && !token[++i])
+					str = ft_itoa((0));
+			// ri bash nteste		
+		}
+		// i++;
+		else 
+		{
+			tmp = str;
+			str = ft_strjoin(str, ft_substr(token, i, 1));
 			// printf("--%s\n", str);
 			free(tmp);
 			i++;
 		}
-		if (token[i] == '$' && !single_quoted)
-		{
-			i++;
-			if(!ft_isalpha(token[i]) && !ft_isalnum(token[i]) && token[i] != '_')
-			{
-				tmp = str;
-				str = ft_strjoin(str, "$");
-				free(tmp);
-            }
-            start = i;
-            var_name = extract_var(token, &i);
-            char *env_value;
-			env_value= getenv(var_name);
-            if (!env_value)
-			{
-                env_value = "";
-            }
-            tmp = str;
-            str = ft_strjoin(str, env_value);
-            free(tmp);
-            free(var_name);
-		}
-		// i++;
+	
+		
 	}
 	// printf("0---%s\n", str);
 	return(str);
 }
 
-void	expand_env(t_tokens *tokens)
+
+void	expand_env(t_tokens *tokens, t_ev *ev)
 {
 	while (tokens)
 	{
-		if(tokens->type == WORD || tokens->type == QUOTED)
+		if(tokens->type == WORD)
 		{
-			tokens->value = get_env_token(tokens->value);
+			tokens->value = get_env_token(tokens->value, ev);
 		}
 		tokens = tokens->next;
 	}

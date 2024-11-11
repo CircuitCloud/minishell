@@ -1,10 +1,10 @@
 CC = gcc
-# CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror 
 LIBFT = libft/libft.a
 # OBJ = syntax_validation_utils.o
 EXECUTABLE = main
 
-SRC =  parsing/lexer.c parsing/quotes_handler.c parsing/expansion.c \
+SRC =   parsing/quotes_handler.c parsing/expansion.c \
 		parsing/list.c parsing/ast_op.c parsing/build_ast.c \
 		executioon/builtins/cd.c executioon/builtins/echo.c executioon/builtins/env.c \
 		executioon/builtins/exit.c executioon/builtins/export.c executioon/builtins/export_util.c \
@@ -12,7 +12,7 @@ SRC =  parsing/lexer.c parsing/quotes_handler.c parsing/expansion.c \
 		executioon/execution/exec.c executioon/execution/execution.c executioon/execution/pipes.c \
 		executioon/execution/redirection.c executioon/signals/signal.c executioon/ft_strcmp.c\
 		executioon/execution/heredoc.c executioon/execution/redirections_utils.c \
-		executioon/print_error.c main.c\
+		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
 # SRC = hdoc_parsing.C
 OBJ = $(SRC:.c=.o)
 
@@ -25,7 +25,7 @@ $(EXECUTABLE) : $(OBJ)
 	make -C libft
 	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@  
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
 	make -C libft clean
