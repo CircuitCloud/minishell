@@ -1,0 +1,15 @@
+total 152
+drwxr-xr-x  14 cahaik  candidates    476 Nov 12 06:53 .
+drwxr-xr-x  19 cahaik  candidates    646 Nov 11 23:40 ..
+-rw-r--r--   1 cahaik  candidates   6148 Nov 11 23:43 .DS_Store
+drwxr-xr-x  15 cahaik  candidates    510 Nov 11 23:48 .git
+-rw-r--r--   1 cahaik  candidates   1313 Nov 11 23:47 Makefile
+drwxr-xr-x  12 cahaik  candidates    408 Nov 12 03:53 executioon
+-rw-r--r--   1 cahaik  candidates    803 Nov 12 06:52 file1
+-rw-r--r--   1 cahaik  candidates      0 Nov 12 06:53 file2
+drwxr-xr-x  83 cahaik  candidates   2822 Nov 12 03:53 libft
+-rwxr-xr-x   1 cahaik  candidates  43096 Nov 12 06:52 main
+-rw-r--r--   1 cahaik  candidates   1778 Nov 12 01:28 main.c
+-rw-r--r--   1 cahaik  candidates   1688 Nov 12 03:53 main.o
+-rw-r--r--@  1 cahaik  candidates   5205 Nov 12 06:35 minishell.h
+drwxr-xr-x@ 24 cahaik  candidates    816 Nov 12 03:53 parsing

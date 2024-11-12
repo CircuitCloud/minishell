@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/11 03:57:15 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/12 07:03:11 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ int main(int ac, char **av, char **env)
 		tree->ev = ev;
 		p.exit_status = 0;
 		unlink_herdoc = *tree;
+		// if (!tree->redir)
+		// {
+		// 	printf("redir");
+		// 	exit(0);
+		// }
 		execution(tree, &p);
 		last_herdoc_number(unlink_herdoc, 1);
 		free(str);  

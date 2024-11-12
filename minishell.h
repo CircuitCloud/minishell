@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/11 03:57:58 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/12 06:35:54 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ int				search(char **cmd, t_ev *ev, t_status **p);
 int				redirect_check(t_command *root, t_status **p);
 int				search_bin(char **cmd, char *p, t_status **p_);
 int				_spaces(char *str, int *sign, int *i, int func);
-int				in_redir(t_redirection *root_redir, t_status **p);
-int				out_redir(t_redirection *root_redir, t_status **p);
-int				append_redir(t_redirection *root_redir, t_status **p);
+int				in_redir(t_redirection *root_redir, t_status **p, int command);
+int				out_redir(t_redirection *root_redir, t_status **p, int command);
+int				append_redir(t_redirection *root_redir, t_status **p, int command);
 int				ft_strncmp(const char *dest, const char *src, size_t n);
 void			signals(int c);
 void			pwd_(t_ev *ev);
@@ -152,7 +152,7 @@ void			value_helper(char **value, char *arg, char c);
 void			export_(char **args, t_ev **ev, t_status **p);
 void			execute_program(t_command *root, t_status **p);
 void			exit_many_args(t_status **p, int err, char *arg);
-void			last_heredocc(t_redirection *heredoc, char *name);
+void			last_heredocc(t_redirection *heredoc, char *name, int commad);
 void			out_redirect(t_redirection *root_redir, t_status* *p);
 void			input_redirect(t_redirection *root_redir, t_status **p);
 void			print_error(char *err, int type, t_status **p_, int exit_s);

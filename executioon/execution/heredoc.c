@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/09 05:46:51 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/12 06:35:04 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ void all_heredocs(t_redirection *heredoc, t_status **p)
 		(*p)->check_redir = 1;
 }
 
-void last_heredocc(t_redirection *heredoc, char *name)
+void last_heredocc(t_redirection *heredoc, char *name, int command)
 {
+	if (command == -1)
+		return ;
 	heredoc->fd = open(name, O_RDONLY);
 	dup2(heredoc->fd, 0);
 	close (heredoc->fd);
