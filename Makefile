@@ -4,7 +4,8 @@ LIBFT = libft/libft.a
 # OBJ = syntax_validation_utils.o
 EXECUTABLE = main
 
-SRC =   parsing/quotes_handler.c parsing/expansion.c \
+SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
+		parsing/quotes_handler.c parsing/expansion.c \
 		parsing/list.c parsing/ast_op.c parsing/build_ast.c \
 		executioon/builtins/cd.c executioon/builtins/echo.c executioon/builtins/env.c \
 		executioon/builtins/exit.c executioon/builtins/export.c executioon/builtins/export_util.c \

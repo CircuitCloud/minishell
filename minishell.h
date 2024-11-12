@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 06:35:54 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/12 12:58:10 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_ev
 typedef	struct	s_command
 {
 	char				*cmnd;
+	int					type;
 	t_ev				*ev;
 	char				**args;
 	t_tokens			*tokens_list;
@@ -166,5 +167,9 @@ void			print_ast(t_command *node, int level);
 void			all_heredocs(t_redirection *heredoc, t_status **p);
 int				last_herdoc_number(t_command copy, int option);
 int				status_exec_program(int status);
-
+//-------------------------syntax e4oo4 functions-------------------------------------
+int	is_valid_start(t_tokens *tokens, int d);
+int	is_valid_end(t_tokens *tokens, int d);
+int	duplicate_operator(t_tokens *tokens, int type);
+int	syntaxe_validation(t_tokens *token);
 #endif
