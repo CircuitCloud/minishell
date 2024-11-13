@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 12:50:12 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/13 03:30:46 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_redirection	*init_redir_struct(int type, char *file, char *delimiter, t_status
 		redir->file = ft_strdup(file);
 		redir->delimiter = NULL;
     }
-	redir->fd = -1;
 	return (redir);
 }
 

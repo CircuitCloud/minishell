@@ -1,7 +1,7 @@
 CC = gcc
 #CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror 
 LIBFT = libft/libft.a
-# OBJ = syntax_validation_utils.o
+
 EXECUTABLE = main
 
 SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
@@ -14,12 +14,9 @@ SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		executioon/execution/redirection.c executioon/signals/signal.c executioon/ft_strcmp.c\
 		executioon/execution/heredoc.c executioon/execution/redirections_utils.c \
 		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
-# SRC = hdoc_parsing.C
+
 OBJ = $(SRC:.c=.o)
 
-# LIBFT :
-# 	make -C ../libft
-# $(CC)  -fsanitize=address -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -g
 all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)

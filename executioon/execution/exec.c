@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/12 07:10:47 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/13 03:18:06 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,19 +138,20 @@ int status_exec_program(int status)
 
 int if_builtin(t_command *root, t_status **p)
 {
-    if (ft_strcmp(root->args[0], "echo") == 0)
+    
+    if (ft_strcmp(root->cmnd, "echo") == 0)
         echo_(root->args + 1, p);
-    else if (ft_strcmp(root->args[0], "cd") == 0)
+    else if (ft_strcmp(root->cmnd, "cd") == 0)
         cd_(&(root->ev), root->args[1], p);
-    else if (ft_strcmp(root->args[0], "env") == 0)
+    else if (ft_strcmp(root->cmnd, "env") == 0)
         env_(root->ev, p);
-    else if (ft_strcmp(root->args[0], "export") == 0)
+    else if (ft_strcmp(root->cmnd, "export") == 0)
         export_(root->args + 1 , &(root->ev), p);
-    else if (ft_strcmp(root->args[0], "pwd") == 0)
+    else if (ft_strcmp(root->cmnd, "pwd") == 0)
         pwd_(root->ev);
-    else if (ft_strcmp(root->args[0], "unset") == 0)
+    else if (ft_strcmp(root->cmnd, "unset") == 0)
         unset_(&(root->ev), (root->args + 1), p);
-    else if (ft_strcmp(root->args[0], "exit") == 0)
+    else if (ft_strcmp(root->cmnd, "exit") == 0)
         exit_(root->args + 1, p);
     else
         return (1);
@@ -181,18 +182,25 @@ void	execute_program(t_command *root, t_status **p)
     {
         if ((*p)->for_redir_check == 2)
         {
-            last_herdoc_number((*root), 1);
             dup2((*p)->newfd_out, 1);
             dup2((*p)->newfd_in, 0);
             close((*p)->newfd_out);
             close((*p)->newfd_in);
         }
-        return	;
+        return ;
     }
-    //printf("%s\n", ft_strrchr(root->args[0], '/'));
-    // if (ft_strrchr(root->args[0], '/'))
-    // 	check = 0;
-    // else
+    if (root->cmnd && !root->cmnd[0])
+    {
+        print_error("", 2, p, 127);
+        if ((*p)->for_redir_check == 2)
+        {
+            dup2((*p)->newfd_out, 1);
+            dup2((*p)->newfd_in, 0);
+            close((*p)->newfd_out);
+            close((*p)->newfd_in);
+        }
+        return ;
+    }
    check = search(&root->args[0], root->ev, p);
     if (check == 0)
     {
@@ -222,15 +230,5 @@ void	execute_program(t_command *root, t_status **p)
     }
     else if (check == 1)
         print_error(root->args[0], 1, p, 127);
-    else if (check == 2)
-        {
-            last_herdoc_number((*root), 1);
-            dup2((*p)->newfd_out, 1);
-            dup2((*p)->newfd_in, 0);
-            close((*p)->newfd_out);
-            close((*p)->newfd_in);
-        }
-        return	;
-    
-        
+    return	;
 }

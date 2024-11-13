@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/12 13:09:00 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/13 03:35:00 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,19 @@ int main(int ac, char **av, char **env)
 		// printf("3ela berra \n");
 		if(!syntaxe_validation(token_node))
 		{
-			printf("dakheel 3lyha \n");
-			expand_env(data.tokens_list, ev);
+			// printf("dakheel 3lyha \n");
+			expand_env(data.tokens_list, ev, &p);
 			remove_quotes((data.tokens_list));
 			tree = build_ast((data.tokens_list), ev, &p);
 			current_tree = tree;
 			tree->ev = ev;
 			p.exit_status = 0;
 			unlink_herdoc = *tree;
-			// execution(tree, &p);
+			execution(tree, &p);
 			last_herdoc_number(unlink_herdoc, 1);
-			print_ast(tree, 0);
+			// print_ast(tree, 0);
 		}
-		else
-			printf("syntax e4ooo4 \n");
+		
 		free(str);  
 		signals(1);
 		// printf("ltee7t \n");

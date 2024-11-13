@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 12:58:10 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/13 03:38:35 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,13 +106,13 @@ t_tokens	*ft_lstneww(char *cmnd, int type);
 t_tokens	*ft_lstlastt(t_tokens *lst);
 void		ft_lstadd_backk(t_tokens **lst, t_tokens *new);
 int is_token(char c, char c_1);
-int	open_quotes_check(char *input);
+// int	open_quotes_check(char *input);
 int quotes_handler(char *input, int start, char quote_char);
 char	*quotes_eliminator(char *token);
-void	quotes(t_tokens *tokens);
+// void	quotes(t_tokens *tokens);
 //expansion_________________________________________________________________________
-char    *get_env_token(char *token, t_ev *ev);
-void	expand_env(t_tokens *tokens, t_ev *ev);
+char    *get_env_token(char *token, t_ev *ev, t_status **p);
+void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p);
 int is_whitespace(char c);
 
 //quuotes

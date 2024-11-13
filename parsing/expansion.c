@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 15:41:04 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/13 03:38:29 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*extract_var(char *str, int *pos)
 
 
 
-char	*get_env_token(char *token, t_ev *ev)
+char	*get_env_token(char *token, t_ev *ev, t_status **p)
 {
 	char	*str;
 	// char	*tmp;
@@ -92,7 +92,7 @@ char	*get_env_token(char *token, t_ev *ev)
 				free(var_name);
 			}
 			else if ( token[i] == '?' && !token[++i])
-					str = ft_itoa((0));	
+					str = ft_itoa(((*p)->exit_status));	
 		}
 		// i++;
 			str = ft_strjoin(str, ft_substr(token, i, 1));
@@ -102,13 +102,13 @@ char	*get_env_token(char *token, t_ev *ev)
 }
 
 
-void	expand_env(t_tokens *tokens, t_ev *ev)
+void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p)
 {
 	while (tokens)
 	{
 		if(tokens->type == WORD)
 		{
-			tokens->value = get_env_token(tokens->value, ev);
+			tokens->value = get_env_token(tokens->value, ev, &p);
 		}
 		tokens = tokens->next;
 	}
