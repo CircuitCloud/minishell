@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/13 03:30:46 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 16:49:24 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,14 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 					args_len++;
 				word= word->next;
 			}
+			
 			args_len = args_len - file_delim_founded;
+			// printf("leen : (%d)\n", args_len);
 			if(current && current->type == WORD)
 				single_command = create_simple_command(current->value, args_len, ev);
 			else
 			{
-				single_command = create_simple_command(NULL, 0, ev);
+				single_command = create_simple_command(NULL, args_len, ev);
 			}
 			while(current && current->type == WORD)
 			{

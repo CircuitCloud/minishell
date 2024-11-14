@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 01:25:22 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 22:29:11 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ int is_token(char c, char c_1)
 
 int define_type(char c, char c_1)
 {
-	if(!c || !c_1)
-		return (0);
+	// if(!c || !c_1)
+	// 	return (0);
 	if (c == '|')
 		return(PIPE);
 	else if (c == '<')
 	{
-		if(c_1 == '<')
+		if(c_1 && c_1 == '<')
 			return (HERDOC);
 		return(I_RED);
 	}
 	else if (c == '>')
 	{
-		if(c_1 == '>')
+		if(c_1 && c_1 == '>')
 			return (APPEND);
 		return (O_RED);
 	}
@@ -115,7 +115,8 @@ int word_handler(char *input, int start)
 	i = start;
 
 	if(!input || start < 0 || start >= ft_strlen(input))
-		exit(1);
+		// exit(1);
+		return(-1);
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
 	{
 		if (input[i] == '\'' || input[i] == '\"')
@@ -124,7 +125,10 @@ int word_handler(char *input, int start)
 			if (i == -1) 
 			{
 				printf("Error: No closing quote found\n");
-				exit(1);
+				// char *str;
+				// str = readline("qotes>");
+				// exit(1);
+				return(-1);
 			}
 		}
 		if(input[i] == ' ' || is_token(input[i], input[i + 1]))
@@ -143,7 +147,8 @@ void lexer(t_command	*data)
 
 	i = 0;
 	if(!data || !data->cmnd)
-		exit(1);
+		// exit(1);
+		return;
 	while (data->cmnd[i])
 	{
 		while (is_whitespace(data->cmnd[i]))
@@ -153,16 +158,16 @@ void lexer(t_command	*data)
 			start = i;
 			i = word_handler(data->cmnd, i);
 			// if(i = -1)
-			// 	exit(1);
+				// exit(1);
 			token = ft_substr(data->cmnd, start, i - start);
-			if(!token)
+			// if(!token)
 			//----free
-				exit(1);
+				// exit(1);
 			if(token && ft_strlen(token))
 			{
 				new_token = ft_lstneww(token, WORD);
-				if(!new_token)
-					exit(1);
+				// if(!new_token)
+				// 	exit(1);
 				ft_lstadd_backk(&(data->tokens_list), new_token);
 			}
 			free(token);
@@ -181,6 +186,7 @@ void print_ast(t_command *node, int level)
         return;
 	
     printf("------- Command: ---------\n\n\n");
+	// if(node->cmnd)
 	printf("  %s\n", node->cmnd);
     if (node->args) 
 	{

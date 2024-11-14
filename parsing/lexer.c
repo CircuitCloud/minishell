@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/11 03:46:52 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 22:11:01 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ int word_handler(char *input, int start)
 	i = start;
 
 	if(!input || start < 0 || start >= ft_strlen(input))
-		exit(1);
+		// exit(1);
+		return(-1);
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
 	{
 		if (input[i] == '\'' || input[i] == '\"')
@@ -123,7 +124,9 @@ int word_handler(char *input, int start)
 			if (i == -1) 
 			{
 				printf("Error: No closing quote found\n");
-				exit(1);
+				// exit(1);
+		return(-1);
+
 			}
 		}
 		if(input[i] == ' ' || is_token(input[i], input[i + 1]))

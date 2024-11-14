@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/11 04:03:33 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 20:04:56 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*search_ev_value(char *exp_name, t_ev *env)
 			// printf("---zz%s\n", current->value);
 			return(current->value);
 		}
-		
 		current = current->next;
 	}
 	return(NULL);

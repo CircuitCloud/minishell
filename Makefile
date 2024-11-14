@@ -1,4 +1,4 @@
-CC = gcc
+CC = cc
 #CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror 
 LIBFT = libft/libft.a
 
@@ -21,7 +21,7 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C libft
-	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) 
+	$(CC) -fsanitize=address  -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 

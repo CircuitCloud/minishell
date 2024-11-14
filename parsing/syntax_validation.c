@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:05:39 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/12 23:47:51 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 22:40:52 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,23 @@ int	syntaxe_validation(t_tokens *token)
 		return (1);
 	if(is_valid_start(token, PIPE))
 	{
-		printf("vaaliiid start asiii\n");
+		printf("1vaaliiid start asiii\n");
 		return (1);
 	}
-	if(is_valid_end(token, PIPE) || is_valid_end(token, I_RED) || is_valid_end(token, O_RED) || is_valid_end(token, HERDOC) || is_valid_end(token, APPEND))
+	if(is_valid_end(token))
 	{
-		printf("vaalid end assiii\n");
+		printf("1vaalid end \n");
 		return(1);
 	}
-	if(duplicate_operator(token, PIPE) || duplicate_operator(token, I_RED) || duplicate_operator(token, O_RED) || duplicate_operator(token, APPEND) || duplicate_operator(token, HERDOC))
+	if(duplicate_operator(token, PIPE))
 	{
-		printf("duup opppe\n");
+		printf("duup pipe\n");
 		return (1);
 	}
+	if(valid_next(token))
+	{
+		printf("1val next\n");
+		return (1);
+	}	
 	return (0);
 }

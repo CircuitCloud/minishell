@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/13 03:38:29 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 22:07:15 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../minishell.h"
-
 
 
 char	*extract_var(char *str, int *pos)
@@ -28,6 +27,38 @@ char	*extract_var(char *str, int *pos)
 }
 
 
+
+// char	*get_env_token(char *token, t_ev *ev, t_status **p)
+// {
+// 	int	i;
+// 	char 	*var_name;
+// 	char 	*env_value;
+// 	char	*expanded_res;
+// 	char	*start;
+// 	char	*tmp;
+
+// 	i = 0;
+// 	expanded_res =  ft_strdup("");
+// 	while (token[i])
+// 	{
+// 		if (token[i] == '$' && ft_isdigit(token[i] + 1))
+// 		{
+// 			i++;
+// 			tmp = extract_var(token, &i);
+// 			printf("%s\n", tmp);
+// 			expanded_res = ft_strjoin(expanded_res, tmp);
+// 		}
+// 		// if (token[i] == '$')
+// 		// {
+// 		// 	var_name = extract_var(token, &i);
+// 		// 	env_value = search_ev_value(var_name, ev);
+// 		// 	if(!env_value)
+// 		// 		env_value = ft_strdup("");
+// 		// }
+// 		i++;
+// 	}
+// 	return(expanded_res);
+// }
 
 
 
@@ -50,25 +81,28 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 
 	while (token[i])
 	{
-		// if(token[i] == '\"' && !double_quoted)
-		// {
-		// 	double_quoted = 1;
-		// 	// i++;
-		// }
-		// else if(token[i] == '\"' && double_quoted)
-		// {
-		// 	double_quoted = 0;
-		// 	// i++;
-		// }
-		if(token[i] == '\'' && !single_quoted)
+		if(token[i] == '\'' && !double_quoted)
 		{
-			single_quoted = 1;
-			// i++;
+			single_quoted = !single_quoted;
+			i++;
+			continue;
 		}
-		else if(token[i] == '\'' && single_quoted)
+		if(token[i] == '"' && !single_quoted)
 		{
-			single_quoted = 0;
-			// i++;
+			double_quoted = !double_quoted;
+			i++;
+			continue;
+
+		}
+		start = i;
+		while (token[i] && token[i] != '$')
+		{
+			i++;
+		}
+		if (i > start)
+		{
+			str = ft_strjoin(str, ft_substr(token, start, i - start));
+			// printf("...%s\n", str);
 		}
 		if (token[i] == '$' && !single_quoted)
 		{
@@ -76,13 +110,8 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 			if(ft_isdigit(token[i]))
 			{
 				i++;
-				while (!is_whitespace(token[i]))
-				{
-					str = ft_strjoin(str, ft_substr(token, i, 1));
-					i++;
-				}
 			}
-			if(ft_isalpha(token[i]) || token[i] == '_')
+			else if(ft_isalpha(token[i]))
 			{
 				var_name = extract_var(token, &i);
 				env_value= search_ev_value(var_name, ev);
@@ -91,12 +120,13 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 				str = ft_strjoin(str, env_value);
 				free(var_name);
 			}
-			else if ( token[i] == '?' && !token[++i])
-					str = ft_itoa(((*p)->exit_status));	
+			else if (token[i] && token[i] == '?')
+			{
+				// printf("kkkiko\n");
+				str = ft_strjoin(str, ft_itoa(((*p)->exit_status)));
+				i++;
+			}
 		}
-		// i++;
-			str = ft_strjoin(str, ft_substr(token, i, 1));
-			i++;
 	}
 	return(str);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/13 03:38:35 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 21:47:03 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,8 @@ int				last_herdoc_number(t_command copy, int option);
 int				status_exec_program(int status);
 //-------------------------syntax e4oo4 functions-------------------------------------
 int	is_valid_start(t_tokens *tokens, int d);
-int	is_valid_end(t_tokens *tokens, int d);
+int	is_valid_end(t_tokens *tokens);
 int	duplicate_operator(t_tokens *tokens, int type);
 int	syntaxe_validation(t_tokens *token);
+int	valid_next(t_tokens *tokens);
 #endif

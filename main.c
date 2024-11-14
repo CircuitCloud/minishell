@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/13 03:35:00 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/14 22:29:37 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,21 @@ int main(int ac, char **av, char **env)
 	p.for_redir_check = 0;
 	while (str)
 	{
+		
 		data.cmnd = str;
+		
 		data.tokens_list = NULL;
 		add_history(str);
+		// printf("iiiiii\n");
 		lexer(&data);
+		t_command d;
+		d = data;
+		// while (d.tokens_list)
+		// {
+		// 	printf("%s\n", d.tokens_list->value);
+		// 	// printf("%s\n", data.tokens_list->next->value);
+		// 	d.tokens_list=d.tokens_list->next;
+		// }
 		token_node = data.tokens_list;
 		// printf("3ela berra \n");
 		if(!syntaxe_validation(token_node))
@@ -52,11 +63,12 @@ int main(int ac, char **av, char **env)
 			tree->ev = ev;
 			p.exit_status = 0;
 			unlink_herdoc = *tree;
-			execution(tree, &p);
+			// execution(tree, &p);
 			last_herdoc_number(unlink_herdoc, 1);
-			// print_ast(tree, 0);
+			print_ast(tree, 0);
 		}
-		
+		else
+			printf("syntx e4oo4 \n");
 		free(str);  
 		signals(1);
 		// printf("ltee7t \n");
@@ -65,5 +77,6 @@ int main(int ac, char **av, char **env)
 		free(str);
 		str = trim;
 	}
+	
 	return (p.exit_status); // update
 }
