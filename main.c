@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/14 22:29:37 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:12:10 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,42 +41,32 @@ int main(int ac, char **av, char **env)
 		
 		data.tokens_list = NULL;
 		add_history(str);
-		// printf("iiiiii\n");
-		lexer(&data);
-		t_command d;
-		d = data;
-		// while (d.tokens_list)
-		// {
-		// 	printf("%s\n", d.tokens_list->value);
-		// 	// printf("%s\n", data.tokens_list->next->value);
-		// 	d.tokens_list=d.tokens_list->next;
-		// }
-		token_node = data.tokens_list;
-		// printf("3ela berra \n");
-		if(!syntaxe_validation(token_node))
+		if(!lexer(&data))
 		{
-			// printf("dakheel 3lyha \n");
-			expand_env(data.tokens_list, ev, &p);
-			remove_quotes((data.tokens_list));
-			tree = build_ast((data.tokens_list), ev, &p);
-			current_tree = tree;
-			tree->ev = ev;
-			p.exit_status = 0;
-			unlink_herdoc = *tree;
-			// execution(tree, &p);
-			last_herdoc_number(unlink_herdoc, 1);
-			print_ast(tree, 0);
+			token_node = data.tokens_list;
+			if(!syntaxe_validation(token_node))
+			{
+				expand_env(data.tokens_list, ev, &p);
+				remove_quotes((data.tokens_list));
+				tree = build_ast((data.tokens_list), ev, &p);
+				current_tree = tree;
+				tree->ev = ev;
+				p.exit_status = 0;
+				unlink_herdoc = *tree;
+				execution(tree, &p);
+				last_herdoc_number(unlink_herdoc, 1);
+				// print_ast(tree, 0);
+			}
 		}
-		else
-			printf("syntx e4oo4 \n");
+		// else
+		// 	printf("syntx e4oo4 \n");
 		free(str);  
 		signals(1);
-		// printf("ltee7t \n");
-		str = readline("minii>");
+		str = readline("mini>");
 		trim = ft_strtrim(str, " \t");
 		free(str);
 		str = trim;
 	}
 	
-	return (p.exit_status); // update
+	return (p.exit_status);
 }

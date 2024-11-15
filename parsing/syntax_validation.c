@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:05:39 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 22:40:52 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:13:06 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 int	syntaxe_validation(t_tokens *token)
 {
-	// printf("tffoooo\n");
+	char	c;
+
 	if(!token)
 		return (1);
 	if(is_valid_start(token, PIPE))
 	{
-		printf("1vaaliiid start asiii\n");
+		printf("syntax error near unexpected token | \n");
 		return (1);
 	}
 	if(is_valid_end(token))
 	{
-		printf("1vaalid end \n");
+		printf("syntax error near unexpected token `newline' \n");
 		return(1);
 	}
 	if(duplicate_operator(token, PIPE))
 	{
-		printf("duup pipe\n");
+		printf("syntax error near unexpected token `|' \n");
 		return (1);
 	}
-	if(valid_next(token))
+	if(valid_next(token, &c))
 	{
-		printf("1val next\n");
+		printf("syntax error near unexpected token %c\n", c);
 		return (1);
 	}	
 	return (0);

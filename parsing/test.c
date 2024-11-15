@@ -173,3 +173,8 @@ int main()
 {
 	
 }
+
+
+"Hello $USER, your home directory is $HOME. Let's test some tricky cases!" 'This should not expand: $USER, $HOME, and $?' "This should expand: $USER and $?" "Even with spaces $USER   $HOME?" "Testing nested quotes:"
+ '$USER should not expand' and \"$HOME should expand\"" 'Another tricky case $SINGLE_QUOTE_VAR' with a single quote ending '$HOME' "Variable mixed with text: This is $USER's environment."
+  "Multiple variables in one go: User=$USER, Home=$HOME, Status=$?" 'Inside single quotes: $USER' "This text ends with a dollar sign: $" "Empty variables like $NOT_DEFINED should also be handled." "Trying numbers: $1234 and a proper var $NUMBER." "$SPECIAL_VAR followed by text and $?" "$USER, $HOME, $?, $SHELL, and undefined $NOT_DEFINED are here."

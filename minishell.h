@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 21:47:03 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:22:46 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	remove_quotes(t_tokens *tokens);
 //hdooc
 t_hdoc_inputs	*hdoc_parser(t_tokens *tokens);
 t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p);
-void lexer(t_command    *data);
+int	lexer(t_command    *data);
 char	*search_ev_value(char *exp_name, t_ev *env);
 
 //--------------------added by execution------------------------------//
@@ -172,5 +172,5 @@ int	is_valid_start(t_tokens *tokens, int d);
 int	is_valid_end(t_tokens *tokens);
 int	duplicate_operator(t_tokens *tokens, int type);
 int	syntaxe_validation(t_tokens *token);
-int	valid_next(t_tokens *tokens);
+int	valid_next(t_tokens *tokens, char *c);
 #endif

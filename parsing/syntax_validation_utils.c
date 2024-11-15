@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 17:19:33 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 22:38:45 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:22:28 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,17 @@ int	duplicate_operator(t_tokens *tokens, int type)
 	return (0);
 }
 
-int	valid_next(t_tokens *tokens)
+int	valid_next(t_tokens *tokens, char *c)
 {
 	while (tokens)
 	{
 		if (tokens->type == I_RED || tokens->type == O_RED || tokens->type == HERDOC || tokens->type == APPEND)
 		{
 			if(tokens->next->type != WORD)
+			{
+				(*c) = tokens->next->value[0];
 				return (1);
+			}
 		}
 		tokens=tokens->next;
 	}

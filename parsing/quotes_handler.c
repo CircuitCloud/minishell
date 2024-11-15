@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:27:54 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/10/26 03:59:40 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:13:36 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,48 +60,3 @@ void	remove_quotes(t_tokens *tokens)
 		tokens = tokens->next;
 	}
 }
-
-// char	*quotes_eliminator(char *token)
-// {
-// 	int	i;
-// 	int	start;
-// 	int	end;
-// 	char	*str;
-
-// 	i = 0;
-// 	while (token[i])
-// 	{
-// 		if (token[i] == '\"')
-// 		{
-// 			// printf("%d\n", i);
-// 			start = i;
-// 			i = quotes_handler(token, i, token[i]);
-// 		}
-// 		end = i;
-// 		i++;
-// 	}
-// 	str = ft_substr(token, start + 1, end - start);
-// 	return (str);
-// }
-
-// void	quotes(t_tokens *tokens)
-// {
-// 	while (tokens)
-// 	{
-// 		// if(tokens->type == WORD)
-// 		// {
-// 			printf("lwl\n");
-// 			quotes_eliminator(tokens->value);
-// 			printf("ewa\n");
-// 		// }
-// 		tokens= tokens->next;
-// 	}
-	
-// }
-
-// int main()
-// {
-// 	char *str;
-// 	str = readline("hellyah>>");
-// 	printf("%s\n", remove_quotes_from_tokens(str));
-// }

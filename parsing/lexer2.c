@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 22:29:11 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:14:46 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int is_token(char c, char c_1)
 
 int define_type(char c, char c_1)
 {
-	// if(!c || !c_1)
-	// 	return (0);
 	if (c == '|')
 		return(PIPE);
 	else if (c == '<')
@@ -116,7 +114,7 @@ int word_handler(char *input, int start)
 
 	if(!input || start < 0 || start >= ft_strlen(input))
 		// exit(1);
-		return(-1);
+		return(0);
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
 	{
 		if (input[i] == '\'' || input[i] == '\"')
@@ -124,10 +122,7 @@ int word_handler(char *input, int start)
 			i = quotes_handler(input, i, input[i]);
 			if (i == -1) 
 			{
-				printf("Error: No closing quote found\n");
-				// char *str;
-				// str = readline("qotes>");
-				// exit(1);
+				printf("Error: no closing quote found\n");
 				return(-1);
 			}
 		}
@@ -138,7 +133,7 @@ int word_handler(char *input, int start)
 	return (i);
 }
 
-void lexer(t_command	*data)
+int lexer(t_command	*data)
 {
 	int 		i;
 	int			start;
@@ -148,7 +143,7 @@ void lexer(t_command	*data)
 	i = 0;
 	if(!data || !data->cmnd)
 		// exit(1);
-		return;
+		return(1);
 	while (data->cmnd[i])
 	{
 		while (is_whitespace(data->cmnd[i]))
@@ -157,8 +152,8 @@ void lexer(t_command	*data)
 		{
 			start = i;
 			i = word_handler(data->cmnd, i);
-			// if(i = -1)
-				// exit(1);
+			if(i == -1)
+				return(-1);
 			token = ft_substr(data->cmnd, start, i - start);
 			// if(!token)
 			//----free
@@ -178,6 +173,7 @@ void lexer(t_command	*data)
 			i+= append_special_tokens(data, data->cmnd[i], data->cmnd[i + 1]);
 		}
 	}
+	return(0);
 }
 
 void print_ast(t_command *node, int level) 
@@ -223,78 +219,3 @@ void print_ast(t_command *node, int level)
         print_ast(node->right, level + 1);
     }
 }
-
-
-// void print_ast(t_command *node, int level)
-// {
-//     if (!node) return;
-
-//     for (int i = 0; i < level; i++) printf("  "); // Print indentation
-
-//     if (node->type == PIPE)
-//         printf("PIPE\n");
-//     else
-//         printf("COMMAND: %s\n", node->cmnd);
-
-//     if (node->left)
-//         print_ast(node->left, level + 1);
-//     if (node->right)
-//         print_ast(node->right, level + 1);
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-// 	t_command 	data;
-// 	t_command	*tree;
-// 	t_command	*current_tree;
-// 	t_ev		*ev;
-// 	ev = environ(env);
-// 	t_tokens *token_node;
-// 	char *str;
-// 	int i = 0;
-// 	// while (ev)
-// 	// {
-// 	// 	printf("***%s\n", ev->line);
-// 	// 	ev = ev->next;
-// 	// }
-// 	str = readline("minii>");
-// 	while (str)
-// 	{
-// 		data.cmnd = str;
-// 		data.tokens_list = NULL;
-// 		lexer(&data);
-// 		token_node = data.tokens_list;
-// 		expand_env(data.tokens_list, ev);
-// 		remove_quotes((data.tokens_list));
-// 		tree = build_ast(data.tokens_list);
-// 		// printf("%s\n",tree->cmnd);
-// 		int i = 0;
-// 		current_tree = tree;
-// 		// while (current_tree->args[i])
-// 		// {
-// 		// 	printf("%s\n", current_tree->args[i]);
-// 		// 	i++;
-// 		// }
-// 		// printf("hna\n");
-
-// 		print_ast(tree, 0);
-// 		// while (tree)
-// 		// {
-// 		// 	if(tree->left)
-// 		// 		printf("left : %s\n", tree->left->cmnd);
-// 		// 	if(tree->right)
-// 		// 		printf("right : %s\n", tree->right->cmnd);
-// 		// 	tree = tree->left;
-// 		// }
-// 		// while (token_node) 
-// 		// {
-// 		// 	printf("Token : (%s)\n", token_node->value);
-// 		// 	// printf("type : (%d)\n", token_node->type);
-// 		// 	// printf("Token : (%d)\n", token_node->type);
-// 		// 	token_node = token_node->next;
-// 		// }
-// 		free(str);  
-// 		str = readline("minii>");
-// 	}
-// 	return 0;
-// }
