@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/16 04:48:54 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 07:39:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void			pwd_(t_ev *ev);
 void			env_(t_ev *ev, t_status **p);
 void			exit_(char **arg, t_status **p);
 void			echo_(char **arg, t_status **p);
+void			perror_(char *err, t_status **p);
 void			unset_helper(t_ev **ev, char *name);
 void			execution(t_command *root,t_status *p);
 void			cd_(t_ev **ev, char *arg, t_status **p);

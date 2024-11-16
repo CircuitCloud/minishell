@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 04:30:34 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 07:38:17 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,15 @@ void	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 			env = env->next;
 		}
 	}
-	if (chdir(arg) != -1)
-		setter(cwd, ev, getcwd(NULL, 0));
-	else
+	if (chdir(arg) == -1)
 	{
-		write (2, "minishell: cd: ", 15);
-		perror(arg);
-		(*p)->exit_status = 1;
+		perror_(arg, p);
 		return ;
 	}
+	setter(cwd, ev, getcwd(NULL, 0));
 	(*p)->exit_status = 0;
-	return ;
 }
+
 
 void	cd_(t_ev **ev, char *arg, t_status **p)
 {

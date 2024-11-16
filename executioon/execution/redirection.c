@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:26:29 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/13 01:59:45 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 08:05:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ int last_herdoc_number(t_command copy, int option)
 	}
 	return (i);
 }
+int init_herdoc_variables(t_command root, t_status **p)
+{
+	(*p)->last_herdoc = 0;
+	(*p)->for_redir_check = 2;
+	(*p)->last_herdoc = last_herdoc_number(root, 0);
+	return (0);
+}
 
 void	redirection(t_command *root, t_status **p)
 {
@@ -37,10 +44,7 @@ void	redirection(t_command *root, t_status **p)
 	int command;
 	
 	i = 0;
-	command = 0;
-	(*p)->last_herdoc = 0;
-	(*p)->for_redir_check = 2;
-	(*p)->last_herdoc = last_herdoc_number(*root, 0);
+	command = init_herdoc_variables(*root, p);
 	while (root && root->redir)
 	{
 		if (!root->cmnd)
@@ -56,8 +60,7 @@ void	redirection(t_command *root, t_status **p)
 			return ;
 		else if (root->redir->type == HERDOC)
 		{
-			i++;
-			if (i == (*p)->last_herdoc)
+			if (++i == (*p)->last_herdoc)
 				last_heredocc(root->redir, root->redir->file, command);
 		}
 		root->redir = root->redir->next_redir;

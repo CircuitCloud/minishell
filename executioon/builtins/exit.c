@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:26:49 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/08 01:30:50 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 07:51:42 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,15 @@ void	exit_many_args(t_status **p, int err, char *arg)
 	(*p)->exit_status = 1;
 }
 
+void lot_of_args(char **arg , t_status **p)
+{
+	int err;
+
+	err = 0;
+	(*p)->exit_status = exit_helper(arg[0], &err);
+	exit_many_args(p, err, arg[0]);
+}
+
 void	exit_(char **arg, t_status **p)
 {
 	int	err;
@@ -86,10 +95,7 @@ void	exit_(char **arg, t_status **p)
 	while (arg && arg[size])
 		size++;
 	if (size > 1)
-	{
-		(*p)->exit_status = exit_helper(arg[0], &err);
-		exit_many_args(p, err, arg[0]);
-	}
+		lot_of_args(arg , p);
 	else
 	{
 		if (size == 0 || ft_strcmp(arg[0], "--") == 0)

@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 06:52:26 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 08:00:59 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,3 @@ void last_heredocc(t_redirection *heredoc, char *name, int command)
 	dup2(heredoc->fd, 0);
 	close (heredoc->fd);
 }
-// unlink heredoc's file when i finish working
-// should fork + signal + for a lot of heredos
-// free kulxi
