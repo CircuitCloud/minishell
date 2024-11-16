@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/13 00:00:11 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 04:36:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	right_child(t_command *root, int *fd, pid_t *right_pid, t_status **p)
 	(*right_pid) = fork();
 	if ((*right_pid) == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror("fork");
 		(*p)->exit_status = 1;
 		exit((*p)->exit_status);
@@ -61,6 +62,7 @@ void	execute_pipe(t_command *root, t_status **p)
 	right_pid = 0;
 	if (pipe(fd) == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror("pipe");
 		(*p)->exit_status = 1;
 		exit((*p)->exit_status);

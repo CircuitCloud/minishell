@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/13 03:18:06 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 07:10:53 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,83 +37,48 @@ int	only_cmd(char **cmd, char **splited)
 
 int	search_bin(char **cmd, char *p, t_status **p_)
 {
-    int		i;
     char	**splited;
+    char *subster;
 
-    i = 0;
     splited = ft_split(p, ':');
-    while (splited && splited[i])
-    {
-        if (ft_strcmp(*cmd, splited[i]) == 0)
-            return (print_error(*cmd, 0, p_, 1), 2);
-        else
-        {
-            if (ft_strcmp(ft_substr(*cmd, 0, ft_strlen(*cmd) 
-                        - ft_strlen(ft_strrchr(*cmd, '/'))), splited[i]) == 0 
-                && access(*cmd, F_OK | X_OK) == 0)
-                return (0);
-        }
-        i++;
-    }
-    if (ft_strchr(*cmd, '/'))
-        return (print_error(*cmd, 1, p_, 1), 1);
     if (only_cmd(cmd, splited) == 0)
-        return (0);
+            return (0);
+    if (ft_strchr(*cmd, '/'))
+        return (1);
     return (print_error(*cmd, 2, p_, 127), 2);
 }
 
-int	search(char **cmd, t_ev *ev, t_status **p)
+char **store_env(t_ev *ev)
 {
-    int		i;
-    char	**path;
-    int check;
-    char *if_dir;
-    
+    int n;
+    t_ev *enm;
+    char **env;
 
-    i = 0;
-    if_dir = ft_strchr(*cmd, '/');
-     if (if_dir)
+    n = 0;
+    enm = ev;
+    while(ev)
     {
-        if (ft_strcmp(if_dir, ft_strrchr(*cmd, '/')) != 0)
-        {
-            if_dir = ft_substr(*cmd, 0, ft_strlen(*cmd) - ft_strlen(ft_strrchr(*cmd, '/')));
-            if (ft_strcmp(ft_strrchr(*cmd, '/'), "/") == 0)
-                 return (print_error(*cmd, 0, p, 1), 2);
-            if (access(if_dir, F_OK | X_OK) == 0)
-                        return (0);
-        }
-        else
-        {
-             if (access(if_dir, F_OK | X_OK) == 0)
-                        return (print_error(*cmd, 0, p, 1), 2);
-            else if (access(ft_strrchr(if_dir, '/') + 1,  F_OK | X_OK) == 0)
-                    return (0);
-        }     
-    }
-    else
-    {
-        if (access(*cmd, F_OK | X_OK) == 0)
-                    return (0);
-    }
-    while (ev && ev->line)
-    {
-        if (ft_strncmp("PATH=", ev->line, ft_strlen("PATH=")) == 0)
-        {
-            path = ft_split(ev->line, '=');
-            check = search_bin(cmd, path[1], p);
-            if (check == 0)
-                return (0);
-            else if (check == 2)
-                return (2);
-        }
+        n++;
         ev = ev->next;
     }
-    return (1);
+    env = malloc(sizeof(char *) * (n + 1));
+    if (!env)
+        return (NULL);
+    ev = enm;
+    n = 0;
+    while(ev && ev->line)
+    {
+        env[n] = ft_strdup(ev->line);
+        n++;
+        ev = ev->next;
+    }
+    env[n] = NULL;
+    return (env);
 }
 
 void execute_cmd(t_status *p, t_command *root, char	*cmd)
 {
-    execve(cmd, root->args, &(root->ev->line));
+    execve(cmd, root->args, store_env(root->ev));
     perror(cmd);
     p->exit_status = 1;
     exit (p->exit_status);
@@ -177,7 +142,6 @@ void	execute_program(t_command *root, t_status **p)
         close((*p)->newfd_in);
         return ;
     }
-    signals(0);
     if (if_builtin(root, p) == 0)
     {
         if ((*p)->for_redir_check == 2)
@@ -201,21 +165,24 @@ void	execute_program(t_command *root, t_status **p)
         }
         return ;
     }
-   check = search(&root->args[0], root->ev, p);
+   check = search(&root->cmnd, root->ev, p);
+    signals(1);
+    signal(SIGINT, SIG_IGN);
     if (check == 0)
     {
         pid = fork();
+        signals(0);
         if (pid < 0)
         {
+            write(2, "minishell : ", 12);
             perror("fork");
             (*p)->exit_status = 1;
             exit((*p)->exit_status);
         }
         if (pid == 0)
         {
-                cmd = root->args[0];
-                if (ft_strrchr(root->args[0], '/'))
-                    root->args[0] = ft_strrchr(root->args[0], '/') + 1;
+                // signal(SIGINT, SIG_DFL);
+                cmd = root->cmnd;
                 execute_cmd(*p, root, cmd);
         }
         if ((*p)->for_redir_check == 2)
@@ -230,5 +197,4 @@ void	execute_program(t_command *root, t_status **p)
     }
     else if (check == 1)
         print_error(root->args[0], 1, p, 127);
-    return	;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/15 23:22:46 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/16 04:48:54 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <signal.h>
-// #include "parsing/list.c"
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+#include <sys/stat.h>
 
 # define PIPE 1
 # define I_RED 2
@@ -122,8 +122,9 @@ void	remove_quotes(t_tokens *tokens);
 //hdooc
 t_hdoc_inputs	*hdoc_parser(t_tokens *tokens);
 t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p);
-int	lexer(t_command    *data);
+int lexer(t_command    *data);
 char	*search_ev_value(char *exp_name, t_ev *env);
+int	valid_next(t_tokens *tokens, char *c);
 
 //--------------------added by execution------------------------------//
 int				valide_var(char *arg);
@@ -162,7 +163,6 @@ t_ev			*ft_lstlast_env(t_ev *lst);
 long long		atoi_exit(char *str, int *err);
 t_ev			*ft_lst_new_env(char *line, char *name, char *value);
 void			heredocc(t_redirection *heredoc, t_status **p);
-
 void			print_ast(t_command *node, int level);
 void			all_heredocs(t_redirection *heredoc, t_status **p);
 int				last_herdoc_number(t_command copy, int option);
@@ -172,5 +172,5 @@ int	is_valid_start(t_tokens *tokens, int d);
 int	is_valid_end(t_tokens *tokens);
 int	duplicate_operator(t_tokens *tokens, int type);
 int	syntaxe_validation(t_tokens *token);
-int	valid_next(t_tokens *tokens, char *c);
+char	*ft_strtrim_execution(char const *s1, char const *set);
 #endif

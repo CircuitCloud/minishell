@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 22:35:08 by cahaik            #+#    #+#             */
-/*   Updated: 2024/01/08 21:20:22 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 03:55:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,20 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (is_f(s1[lens - 1], set) && s1[lens - 1])
 		lens--;
 	return (ft_substr(s1, i, lens - i));
+}
+
+char	*ft_strtrim_execution(char const *s1, char const *set)
+{
+	size_t	i;
+	size_t	lens;
+
+	i = 0;
+	if (!s1 || !set)
+		return (NULL);
+	lens = ft_strlen(s1);
+	if (lens == 0 || (lens == 0 && ft_strlen(set) == 0))
+		return (ft_strdup(""));
+	while (is_f(s1[lens - 1], set) && s1[lens - 1])
+		lens--;
+	return (ft_substr(s1, 0, lens));
 }

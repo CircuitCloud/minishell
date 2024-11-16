@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 09:43:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/12 06:55:23 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 04:45:52 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ void	out_redirect(t_redirection *root_redir, t_status **p)
 {
 	if ((*p)->newfd_out < 0)
 	{
+		write(2, "minishell : ", 12);
 		perror("dup failed");
 		(*p)->exit_status = 1;
 		return ;
 	}
 	if (dup2(root_redir->fd, 1) == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror("dup2 failed");
 		(*p)->exit_status = 1;
 	}
@@ -32,12 +34,14 @@ void	input_redirect(t_redirection *root_redir, t_status **p)
 {
 	if ((*p)->newfd_in < 0)
 	{
+		write(2, "minishell : ", 12);
 		perror("dup failed");
 		(*p)->exit_status = 1;
 		return ;
 	}
 	if (dup2(root_redir->fd, 0) == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror("dup2 failed");
 		(*p)->exit_status = 1;
 	}
@@ -50,6 +54,7 @@ int out_redir(t_redirection *root_redir, t_status **p, int command)
 		| O_WRONLY | O_TRUNC, 0644);
 	if (root_redir->fd == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror(root_redir->file);
 		(*p)->exit_status = 1;
 		return (1);
@@ -66,6 +71,7 @@ int in_redir(t_redirection *root_redir, t_status **p, int command)
 	root_redir->fd = open(root_redir->file, O_RDONLY, 0644);
 	if (root_redir->fd == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror(root_redir->file);
 		(*p)->exit_status = 1;
 		return (1);
@@ -83,6 +89,7 @@ int append_redir(t_redirection *root_redir, t_status **p, int command)
 		| O_WRONLY | O_APPEND, 0644);
 	if (root_redir->fd == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror(root_redir->file);
 		(*p)->exit_status = 1;
 		return (1);

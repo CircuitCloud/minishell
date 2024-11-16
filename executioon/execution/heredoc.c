@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/12 06:35:04 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/16 06:52:26 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void heredocc(t_redirection *heredoc, t_status **p)
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
 	if (heredoc->fd < 0)
 	{
+		write (2, "minishell : ", 12);
 		perror("open");
 		(*p)->exit_status = 1;
 		exit ((*p)->exit_status);
@@ -38,6 +39,7 @@ void all_heredocs(t_redirection *heredoc, t_status **p)
 	status = 0;
 	if (pid < 0)
 	{
+		write(2, "minishell : ", 12);
 		perror("fork");
 		(*p)->exit_status = 1;
 		exit((*p)->exit_status);
