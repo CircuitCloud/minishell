@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 06:19:49 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 23:00:20 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,9 @@ int lexer(t_command	*data)
 			if(i == -1)
 				return(-1);
 			token = ft_substr(data->cmnd, start, i - start);
-			// if(!token)
-			//----free
-				// exit(1);
+			if(!token)
+			//free
+				exit(1);
 			if(token && ft_strlen(token))
 			{
 				new_token = ft_lstneww(token, WORD);

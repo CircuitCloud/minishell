@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 04:04:33 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 19:55:28 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	add_redir_cmnd(t_command *command, t_redirection *redir)
 t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 {
 	t_tokens		*current;
+	t_tokens	*empty_current;///lcase d empty moraha cmnd
 	t_tokens		*word;
 	t_command		*single_command;
 	t_redirection	*redir_command;
@@ -113,27 +114,39 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 					args_len++;
 				word= word->next;
 			}
-			
 			args_len = args_len - file_delim_founded;
 			// printf("leen : (%d)\n", args_len);
-			if(current && current->type == WORD)
+			if(current && current->type == WORD && ft_strcmp(current->value, "") != 0)
 				single_command = create_simple_command(current->value, args_len, ev);
+			// else if(current && current->type == WORD && ft_strcmp(current->value, "") == 0)
+			// {
+			// 	empty_current = current;
+			// 	while (empty_current && empty_current->type == WORD && ft_strcmp(empty_current->value, "") == 0)
+			// 	{
+			// 		empty_current = empty_current->next;
+			// 	}
+			// 	// printf("haylala( %s) \n", current->value);
+			// 	single_command = create_simple_command(empty_current->value, args_len, ev);
+			// }
 			else
 				single_command = create_simple_command(NULL, args_len, ev);
-			while(current && current->type == WORD)
+			while (current && current->type == WORD) 
 			{
-				if(single_command && single_command->args)
+				if (current->value && ft_strcmp(current->value, "") != 0) 
 				{
+					if (!single_command->cmnd) 
+						single_command->cmnd = ft_strdup(current->value);
 					single_command->args[i] = ft_strdup(current->value);
-					if(!single_command->args[i])
-						printf("fail to allocate args[i]\n");
-						
-					;//TODO HEREDOC CMD
-						//freeee
+					if (!single_command->args[i])
+					{
+						printf("faaailed to allocate memory for args[%d]\n", i);
+						// frre yawa free
+					}
 					i++;
 				}
 				current = current->next;
 			}
+			
 			while (current && current->type != PIPE)
 			{
 				//redirection
@@ -153,6 +166,8 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				{
 					if(single_command && single_command->args)
 					{
+						if(!single_command->cmnd)
+							single_command->cmnd = ft_strdup(current->value);
 						single_command->args[i] = ft_strdup(current->value);
 						i++;
 					}
@@ -169,7 +184,6 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				last_cmnd->right = single_command;
 			last_cmnd = single_command;
 		}
-
 		if(current && current->type == PIPE)
 		{
 			pipe_cmnd = init_pipe_cmnd(ev);

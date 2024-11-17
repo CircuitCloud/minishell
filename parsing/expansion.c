@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/16 05:06:32 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 18:23:19 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 				if (token[i] == '$')
 				{
 					i++;
+					if(token[i] == '"' || is_whitespace(token[i]))
+					{
+						str = ft_strjoin(str, "$");
+						// i++;
+					}
 					if (ft_isdigit(token[i]))
 					{
 						i++;
@@ -108,6 +113,10 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 		if (token[i] == '$' && !single_quoted)
 		{
 			i++;
+			if(!token[i])
+			{
+				str = ft_strjoin(str, "$");
+			}
 			if (ft_isdigit(token[i]))
 			{
 				i++;
@@ -128,7 +137,6 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 			}
 			////ctttttt
 		}
-
 		start = i;
 		while (token[i] && token[i] != '$' && token[i] != '\'' && token[i] != '"')
 			i++;

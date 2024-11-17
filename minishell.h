@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 08:17:13 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 22:59:13 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define HERDOC 4
 # define APPEND 5
 # define WORD 6
-# define QUOTED 7
+
 
 typedef struct s_status
 {
@@ -101,31 +101,28 @@ typedef	struct	s_pipe
 	t_command	*cmnd2;
 }	t_pipe;
 
-t_tokens	*ft_lstneww(char *cmnd, int type);
-t_tokens	*ft_lstlastt(t_tokens *lst);
-void		ft_lstadd_backk(t_tokens **lst, t_tokens *new);
-int is_token(char c, char c_1);
-// int	open_quotes_check(char *input);
-int quotes_handler(char *input, int start, char quote_char);
-char	*quotes_eliminator(char *token);
-// void	quotes(t_tokens *tokens);
-//expansion_________________________________________________________________________
-char    *get_env_token(char *token, t_ev *ev, t_status **p);
-void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p);
-int is_whitespace(char c);
-
-//quuotes
-// void	remove_quotes_from_tokens(t_tokens *tokens);
-void	remove_quotes(t_tokens *tokens);
-
-//hdooc
-t_hdoc_inputs	*hdoc_parser(t_tokens *tokens);
-t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p);
-int lexer(t_command    *data);
-char	*search_ev_value(char *exp_name, t_ev *env);
-int	valid_next(t_tokens *tokens, char *c);
-
-//--------------------added by execution------------------------------//
+//----------------------------------parsing funcs------------------------------//
+t_tokens		*ft_lstneww(char *cmnd, int type);
+t_tokens		*ft_lstlastt(t_tokens *lst);
+void			ft_lstadd_backk(t_tokens **lst, t_tokens *new);
+int				is_token(char c, char c_1);
+int				quotes_handler(char *input, int start, char quote_char);
+char			*quotes_eliminator(char *token);
+int				is_whitespace(char c);
+int 			lexer(t_command	*data);
+char			*get_env_token(char *token, t_ev *ev, t_status **p);
+void			expand_env(t_tokens *tokens, t_ev *ev, t_status *p);
+char			*search_ev_value(char *exp_name, t_ev *env);
+void			remove_quotes(t_tokens *tokens);
+t_command		*build_ast(t_tokens *tokens, t_ev *ev, t_status *p);
+int				valid_next(t_tokens *tokens, char *c);
+int				is_valid_start(t_tokens *tokens, int d);
+int				is_valid_end(t_tokens *tokens);
+int				duplicate_operator(t_tokens *tokens, int type);
+int				syntaxe_validation(t_tokens *token);
+//----------------------------------added by execution-------------------------------//
+char			*ft_strtrim_execution(char const *s1, char const *set);
+void			free_redirect(t_redirection *redir);
 int				valide_var(char *arg);
 int				ft_strcmp(char *dest, char *src);
 int				create_struct(char *env, t_ev **ev);
@@ -171,11 +168,5 @@ int				last_herdoc_number(t_command copy, int option);
 int				status_exec_program(int status);
 void			free_null(void *to_free);
 void			free_env(t_ev *ev);
-//-------------------------syntax e4oo4 functions-------------------------------------
-int				is_valid_start(t_tokens *tokens, int d);
-int				is_valid_end(t_tokens *tokens);
-int				duplicate_operator(t_tokens *tokens, int type);
-int				syntaxe_validation(t_tokens *token);
-char			*ft_strtrim_execution(char const *s1, char const *set);
-void			free_redirect(t_redirection *redir);
+
 #endif

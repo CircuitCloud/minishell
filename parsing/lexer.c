@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 22:37:14 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 22:11:01 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/17 22:40:17 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,24 @@ int is_token(char c, char c_1)
 
 int define_type(char c, char c_1)
 {
-	if(!c || !c_1)
-		return (0);
 	if (c == '|')
 		return(PIPE);
 	else if (c == '<')
 	{
-		if(c_1 == '<')
+		if(c_1 && c_1 == '<')
 			return (HERDOC);
 		return(I_RED);
 	}
 	else if (c == '>')
 	{
-		if(c_1 == '>')
+		if(c_1 && c_1 == '>')
 			return (APPEND);
 		return (O_RED);
 	}
 	return (0);
 }
 
-void	append_special_tokens_2(t_tokens *tokens_list, char *token, int type)
+void	append_special_tokens_2(t_tokens *tokens, char *token, int type)
 {
 	t_tokens	*new_node;
 
@@ -52,17 +50,17 @@ void	append_special_tokens_2(t_tokens *tokens_list, char *token, int type)
 		free(token);
 		exit (1);
 	}
-	ft_lstadd_backk(&(tokens_list), new_node);
+	ft_lstadd_backk(&(tokens), new_node);
 }
 
-int append_special_tokens(t_tokens *tokens_list, char c, char c_1)
+int append_special_tokens(t_tokens *tokens, char c, char c_1)
 {
 	int			type;
 	int			res;
 	char		*token;
-		t_tokens	*new_node;
 
 	res = 1;
+	token = NULL; // zidta ana chaima 3la wed l flags
 	type = define_type(c, c_1);
 	if (type == PIPE)
 		token = ft_strdup("|");
@@ -82,7 +80,7 @@ int append_special_tokens(t_tokens *tokens_list, char c, char c_1)
 	}
 	if(!token)
 		exit (1);
-	append_special_tokens_2(tokens_list, token, type);
+	append_special_tokens_2(tokens, token, type);
 	return (res);
 }
 
@@ -115,7 +113,7 @@ int word_handler(char *input, int start)
 
 	if(!input || start < 0 || start >= ft_strlen(input))
 		// exit(1);
-		return(-1);
+		return(0);
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
 	{
 		if (input[i] == '\'' || input[i] == '\"')
@@ -123,10 +121,8 @@ int word_handler(char *input, int start)
 			i = quotes_handler(input, i, input[i]);
 			if (i == -1) 
 			{
-				printf("Error: No closing quote found\n");
-				// exit(1);
-		return(-1);
-
+				printf("Error: no closing quote found\n");
+				return(-1);
 			}
 		}
 		if(input[i] == ' ' || is_token(input[i], input[i + 1]))
@@ -136,7 +132,7 @@ int word_handler(char *input, int start)
 	return (i);
 }
 
-void lexer(t_tokens *tokens_list)
+int lexer(t_tokens	*tokens, char *str)
 {
 	int 		i;
 	int			start;
@@ -144,42 +140,39 @@ void lexer(t_tokens *tokens_list)
 	t_tokens	*new_token;
 
 	i = 0;
-	if(!tokens_list || !tokens_list->value)
-		exit(1);
-	while (tokens_list->value[i])
+	if(!tokens || !str)
+		// exit(1);
+		return(1);
+	while (str[i])
 	{
-		while (is_whitespace(tokens_list->value[i]))
+		while (is_whitespace(str[i]))
 			i++;
-		if(!is_token(tokens_list->value[i], tokens_list->value[i + 1]))
+		if(!is_token(str[i], str[i + 1]))
 		{
 			start = i;
-			i = word_handler(tokens_list->value, i);
-			// if(i = -1)
-			// 	exit(1);
-			token = ft_substr(tokens_list->value, start, i - start);
-			if(!token)
-			{
-				// free_tokens_list(tokens_list);
-				exit(1);
-			}
+			i = word_handler(str, i);
+			if(i == -1)
+				return(-1);
+			token = ft_substr(str, start, i - start);
+			// if(!token)
+			//----free
+				// exit(1);
 			if(token && ft_strlen(token))
 			{
 				new_token = ft_lstneww(token, WORD);
-				if(!new_token)
-				{
-					// free_tokens_list(tokens_list);
-					exit(1);
-				}
-				ft_lstadd_backk(&(tokens_list), new_token);
+				// if(!new_token)
+				// 	exit(1);
+				ft_lstadd_backk(&(tokens), new_token);
 			}
 			free(token);
 			// free(new_token);
 		}
-		if(is_token(tokens_list->value[i], tokens_list->value[i + 1]))
+		if(is_token(str[i], str[i + 1]))
 		{
-			i+= append_special_tokens(tokens_list, tokens_list->value[i], tokens_list->value[i + 1]);
+			i+= append_special_tokens(tokens, str[i], str[i + 1]);
 		}
 	}
+	return(0);
 }
 
 void print_ast(t_command *node, int level) 
@@ -188,7 +181,8 @@ void print_ast(t_command *node, int level)
         return;
 	
     printf("------- Command: ---------\n\n\n");
-	printf(" [%s] \n", node->cmnd);
+	// if(node->cmnd)
+	printf("  %s\n", node->cmnd);
     if (node->args) 
 	{
 		int i = 0;
@@ -208,13 +202,11 @@ void print_ast(t_command *node, int level)
 		{
 			printf("	file :    %s\n", node->redir->file);
 			printf("	delimiii :   %s\n", node->redir->delimiter);
-			printf("	%d\n", node->redir->type);
+			// printf("	%d\n", node->redir->type);
 			node->redir= node->redir->next_redir;
 		}
-		
         // printf("%s\n", node->redir->file);
     }
-
     if (node->left)
 	{
         printf("----------Llllleft:\n");
@@ -226,73 +218,3 @@ void print_ast(t_command *node, int level)
         print_ast(node->right, level + 1);
     }
 }
-
-
-// void print_ast(t_command *node, int level)
-// {
-//     if (!node) return;
-
-//     for (int i = 0; i < level; i++) printf("  "); // Print indentation
-
-//     if (node->type == PIPE)
-//         printf("PIPE\n");
-//     else
-//         printf("COMMAND: %s\n", node->cmnd);
-
-//     if (node->left)
-//         print_ast(node->left, level + 1);
-//     if (node->right)
-//         print_ast(node->right, level + 1);
-// }
-
-// int main(int ac, char **av, char **ev)
-// {
-// 	t_tokens 	tokens;
-// 	t_command	*tree;
-// 	t_command	*current_tree;
-	
-// 	t_tokens *token_node;
-// 	char *str;
-
-// 	str = readline("minii>");
-// 	while (str)
-// 	{
-// 		tokens.value = str;
-// 		// data.tokens_list = NULL;
-// 		lexer(&tokens);
-// 		token_node = &tokens;
-// 		environ(ev);
-// 		expand_env(&tokens, ev);
-// 		remove_quotes(&tokens);
-// 		tree = build_ast(&tokens);
-// 		// printf("%s\n",tree->cmnd);
-// 		int i = 0;
-// 		current_tree = tree;
-// 		// while (current_tree->args[i])
-// 		// {
-// 		// 	printf("%s\n", current_tree->args[i]);
-// 		// 	i++;
-// 		// }
-// 		// printf("hna\n");
-
-// 		print_ast(tree, 0);
-// 		// while (tree)
-// 		// {
-// 		// 	if(tree->left)
-// 		// 		printf("left : %s\n", tree->left->cmnd);
-// 		// 	if(tree->right)
-// 		// 		printf("right : %s\n", tree->right->cmnd);
-// 		// 	tree = tree->left;
-// 		// }
-// 		// while (token_node) 
-// 		// {
-// 		// 	printf("Token : (%s)\n", token_node->value);
-// 		// 	// printf("type : (%d)\n", token_node->type);
-// 		// 	// printf("Token : (%d)\n", token_node->type);
-// 		// 	token_node = token_node->next;
-// 		// }
-// 		free(str);  
-// 		str = readline("minii>");
-// 	}
-// 	return 0;
-// }
