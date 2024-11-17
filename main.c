@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 07:03:52 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 09:39:13 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int main(int ac, char **av, char **env)
 	char *trim;
 	t_ev *ev;
 
-	atexit(check);
+	// atexit(check);
 	(void)ac;
 	(void)av;
 	ev = environ(env);
