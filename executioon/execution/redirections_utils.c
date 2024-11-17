@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 09:43:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 04:45:52 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 02:04:52 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int out_redir(t_redirection *root_redir, t_status **p, int command)
 		write(2, "minishell : ", 12);
 		perror(root_redir->file);
 		(*p)->exit_status = 1;
+		(*p)->check_redir = 1;
 		return (1);
 	}
 	else if (command == -1)
@@ -73,6 +74,7 @@ int in_redir(t_redirection *root_redir, t_status **p, int command)
 	{
 		write(2, "minishell : ", 12);
 		perror(root_redir->file);
+		(*p)->check_redir = 1;
 		(*p)->exit_status = 1;
 		return (1);
 	}
@@ -91,6 +93,7 @@ int append_redir(t_redirection *root_redir, t_status **p, int command)
 	{
 		write(2, "minishell : ", 12);
 		perror(root_redir->file);
+		(*p)->check_redir = 1;
 		(*p)->exit_status = 1;
 		return (1);
 	}

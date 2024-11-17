@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 07:10:53 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 08:52:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	only_cmd(char **cmd, char **splited)
 int	search_bin(char **cmd, char *p, t_status **p_)
 {
     char	**splited;
-    char *subster;
 
     splited = ft_split(p, ':');
     if (only_cmd(cmd, splited) == 0)
@@ -171,7 +170,6 @@ void	execute_program(t_command *root, t_status **p)
     if (check == 0)
     {
         pid = fork();
-        signals(0);
         if (pid < 0)
         {
             write(2, "minishell : ", 12);
@@ -181,7 +179,8 @@ void	execute_program(t_command *root, t_status **p)
         }
         if (pid == 0)
         {
-                // signal(SIGINT, SIG_DFL);
+                signal(SIGINT, SIG_DFL);
+                signal(SIGQUIT, SIG_DFL);
                 cmd = root->cmnd;
                 execute_cmd(*p, root, cmd);
         }

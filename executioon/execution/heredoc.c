@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 08:00:59 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 03:47:10 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void all_heredocs(t_redirection *heredoc, t_status **p)
 	pid_t pid;
 	int status;
 	
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	status = 0;
 	if (pid < 0)

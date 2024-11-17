@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 07:04:55 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 05:15:53 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 02:24:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ int	search(char **cmd, t_ev *ev, t_status **p)
 					return (print_error(*cmd, 0, p, 126), 2);
 			}
 	}
-	if (access(*cmd, F_OK | X_OK) == 0)
+	if (access(*cmd, F_OK) == 0)
+	{
+		if(access(*cmd, X_OK) == 0)
 			return (0);
+		if (*cmd && ft_strncmp(*cmd, "./" , 2) == 0)
+			return(print_error(*cmd, 3, p , 126), 2);
+	}
 	else
 	{
 		slashtrim = ft_strtrim_execution(*cmd, "/");

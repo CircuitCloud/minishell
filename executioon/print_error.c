@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:43:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 08:14:17 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 03:43:16 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void print_error(char *err, int type, t_status **p_, int exit_s)
 	char *p;
 
 	p = NULL;
-	if (type != 3 || type != 4)
+	if (type != 4)
 		write(2, "minishell: ", 11);
 	if (type == 0)
 		p = ft_strjoin(err, " : is a directory\n");
@@ -25,6 +25,8 @@ void print_error(char *err, int type, t_status **p_, int exit_s)
 		p = ft_strjoin(err, " : No such file or directory\n");
 	else if (type == 2)
 		p = ft_strjoin(err, " : command not found\n");
+	else if (type == 3)
+		p = ft_strjoin(err, " : Permission denied\n");
 	else if (type == 4)
 	{
 		write (2, "exit\nminishell: exit: ", 23);

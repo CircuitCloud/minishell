@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:22:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/11 05:25:24 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:05:44 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	unset_(t_ev **ev, char **name, t_status **p)
 			write(2, "minishell: export: ", 19);
 			write(2, name[i], ft_strlen(name[i]));
 			write(2 ,": not a valid identifier\n", 26);
-			(*p)->exit_status = 1;
+			(*p)->exit_status = 0;
 		}
 		i++;
 	}

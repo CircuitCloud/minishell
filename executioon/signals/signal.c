@@ -6,23 +6,12 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:43:47 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 06:20:49 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 00:11:26 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	sig_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		gqq_signal = 1;
-		rl_on_new_line();
-		printf("\n");
-		rl_replace_line("", 1);
-		rl_redisplay();
-	}
-}
 void	sig_handler_child(int sig)
 {
 	if (sig == SIGQUIT)

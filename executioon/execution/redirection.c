@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:26:29 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 08:05:57 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 02:05:17 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ void	redirection(t_command *root, t_status **p)
 		if (root->redir->type == O_RED && out_redir(root->redir, p, command) == 1)
 			return ;
 		else if (root->redir->type == I_RED && in_redir(root->redir, p, command) == 1)
-		{
-			(*p)->check_redir = 1;
 			return ;
-		}
 		else if (root->redir->type == APPEND && append_redir(root->redir, p, command) == 1)
 			return ;
 		else if (root->redir->type == HERDOC)

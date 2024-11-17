@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/14 16:49:24 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/17 04:04:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 			if(current && current->type == WORD)
 				single_command = create_simple_command(current->value, args_len, ev);
 			else
-			{
 				single_command = create_simple_command(NULL, args_len, ev);
-			}
 			while(current && current->type == WORD)
 			{
 				if(single_command && single_command->args)
@@ -129,6 +127,8 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 					single_command->args[i] = ft_strdup(current->value);
 					if(!single_command->args[i])
 						printf("fail to allocate args[i]\n");
+						
+					;//TODO HEREDOC CMD
 						//freeee
 					i++;
 				}

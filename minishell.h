@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/16 07:39:05 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 08:17:13 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 # define PIPE 1
 # define I_RED 2
@@ -100,8 +101,6 @@ typedef	struct	s_pipe
 	t_command	*cmnd2;
 }	t_pipe;
 
-extern int gqq_signal;
-
 t_tokens	*ft_lstneww(char *cmnd, int type);
 t_tokens	*ft_lstlastt(t_tokens *lst);
 void		ft_lstadd_backk(t_tokens **lst, t_tokens *new);
@@ -140,6 +139,8 @@ int				append_redir(t_redirection *root_redir, t_status **p, int command);
 int				ft_strncmp(const char *dest, const char *src, size_t n);
 void			signals(int c);
 void			pwd_(t_ev *ev);
+void			sig_handler_child(int sig);
+void			sig_handler(int sig);
 void			env_(t_ev *ev, t_status **p);
 void			exit_(char **arg, t_status **p);
 void			echo_(char **arg, t_status **p);
@@ -168,10 +169,13 @@ void			print_ast(t_command *node, int level);
 void			all_heredocs(t_redirection *heredoc, t_status **p);
 int				last_herdoc_number(t_command copy, int option);
 int				status_exec_program(int status);
+void			free_null(void *to_free);
+void			free_env(t_ev *ev);
 //-------------------------syntax e4oo4 functions-------------------------------------
-int	is_valid_start(t_tokens *tokens, int d);
-int	is_valid_end(t_tokens *tokens);
-int	duplicate_operator(t_tokens *tokens, int type);
-int	syntaxe_validation(t_tokens *token);
-char	*ft_strtrim_execution(char const *s1, char const *set);
+int				is_valid_start(t_tokens *tokens, int d);
+int				is_valid_end(t_tokens *tokens);
+int				duplicate_operator(t_tokens *tokens, int type);
+int				syntaxe_validation(t_tokens *token);
+char			*ft_strtrim_execution(char const *s1, char const *set);
+void			free_redirect(t_redirection *redir);
 #endif

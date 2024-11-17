@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/16 00:14:46 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/17 06:19:49 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int append_special_tokens(t_command *data, char c, char c_1)
 	int			type;
 	int			res;
 	char		*token;
-		t_tokens	*new_node;
 
 	res = 1;
+	token = NULL; // zidta ana chaima 3la wed l flags
 	type = define_type(c, c_1);
 	if (type == PIPE)
 		token = ft_strdup("|");

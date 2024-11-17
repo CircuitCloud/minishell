@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:35:30 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 08:15:12 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:20:59 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	export_(char **args, t_ev **ev, t_status **p)
 	int	i;
 
 	i = 0;
-	if (!args[i])
+	if (!args)
 	{
 		export_no_arg(*ev);
 		return ;
@@ -92,7 +92,7 @@ void	export_(char **args, t_ev **ev, t_status **p)
 	{
 		if (valide_var(args[i]) == 1)
 		{
-			write(2, "minishell: export:", 18);
+			write(2, "minishell: export: ", 19);
 			write(2, args[i], ft_strlen(args[i]));
 			write(2, " : not a valid identifier\n", 27);
 			(*p)->exit_status = 1;

@@ -1,8 +1,8 @@
 CC = gcc
-#CFLAGS = -g -fsanitize=address #-Wall -Wextra -Werror 
+# CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address 
 LIBFT = libft/libft.a
 
-EXECUTABLE = main
+EXECUTABLE = minishell
 
 SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		parsing/quotes_handler.c parsing/expansion.c \
@@ -15,6 +15,7 @@ SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		executioon/execution/redirection.c executioon/signals/signal.c executioon/ft_strcmp.c\
 		executioon/execution/heredoc.c executioon/execution/redirections_utils.c \
 		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
+		free.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -22,9 +23,9 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C libft
-	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -L/goinfre/cahaik/homebrew/opt/readline/lib 
+	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -L/goinfre/cahaik/homebrew/opt/readline/lib  #-g -fsanitize=address
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I/goinfre/cahaik/homebrew/opt/readline/include
+	$(CC) $(CFLAGS) -c $< -o $@ -I/goinfre/cahaik/homebrew/opt/readline/include #-g -fsanitize=address
 
 clean :
 	make -C libft clean

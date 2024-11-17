@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 04:36:56 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/17 07:05:13 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,43 +79,4 @@ void	execute_pipe(t_command *root, t_status **p)
 		(*p)->exit_status = WTERMSIG(status) + 128;
 	else
 		(*p)->exit_status = WEXITSTATUS(status);
-}
-
-void free_tree(t_command *root)
-{
-	int i;
-	t_ev *head;
-	t_redirection *h_redir;
-	t_redirection *redir;
-
-	i = 0;
-	if (!root)
-		return;
-	while (root->args[i])
-	{
-		free(root->args[i]);
-		i++;
-	}
-	free(root->args);
-	head = root->ev;
-	while (root->ev)
-	{
-		free(root->ev->line);
-		free(root->ev->name);
-		free(root->ev->value);
-		root->ev = root->ev->next;
-	}
-	free(head);
-	while (root->redir)
-	{
-		// delimiter kayn if ()
-		free(root->redir->delimiter);
-		free(root->redir->file);
-		redir = root->redir;
-		root->redir = root->redir->next_redir;
-		free(redir);
-	}
-	free(root->cmnd);
-	free_tree(root->left);
-	free_tree(root->right);
 }
