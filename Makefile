@@ -15,9 +15,10 @@ SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		executioon/execution/pipes.c \
 		executioon/execution/redirection.c executioon/signals/signal.c executioon/ft_strcmp.c\
 		executioon/execution/heredoc.c executioon/execution/redirections_utils.c \
-		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c parsing/leaks_handler.c \
-		parsing/hdoc_parsing.c \
-		free.c\
+		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
+		free.c executioon/builtins/exit_util.c executioon/execution/exec_util1.c \
+		executioon/execution/exec_util2.c  parsing/leaks_handler.c \
+		parsing/hdoc_parsing.c\
 
 OBJ = $(SRC:.c=.o)
 
@@ -25,9 +26,9 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C libft
-	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) -L$(HOME)/readline/lib
+	$(CC) -o $(EXECUTABLE) -lreadline  $(OBJ) $(LIBFT) #-L$(HOME)/readline/lib
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(HOME)/readline/include
+	$(CC) $(CFLAGS) -c $< -o $@ #-I$(HOME)/readline/include
 
 # $(EXECUTABLE) : $(OBJ)
 # 	make -C libft

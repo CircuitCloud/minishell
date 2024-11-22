@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 07:05:13 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 02:45:12 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	left_child(t_command *root, int *fd, pid_t *left_pid, t_status **p)
 	(*left_pid) = fork();
 	if ((*left_pid) == -1)
 	{
+		write(2, "minishell : ", 12);
 		perror("fork");
 		(*p)->exit_status = 1;
 		exit((*p)->exit_status);
@@ -57,9 +58,10 @@ void	execute_pipe(t_command *root, t_status **p)
 	pid_t	left_pid;
 	pid_t	right_pid;
 	int		status;
-	
+	int test;
+
 	left_pid = 0;
-	right_pid = 0;
+	right_pid = 0; 
 	if (pipe(fd) == -1)
 	{
 		write(2, "minishell : ", 12);
@@ -75,8 +77,5 @@ void	execute_pipe(t_command *root, t_status **p)
 	close(fd[1]);
 	waitpid(left_pid, &status, 0);
 	waitpid(right_pid, &status, 0);
-	if (WIFSIGNALED(status))
-		(*p)->exit_status = WTERMSIG(status) + 128;
-	else
-		(*p)->exit_status = WEXITSTATUS(status);
+	(*p)->exit_status = status_exec_program(status, 0);
 }

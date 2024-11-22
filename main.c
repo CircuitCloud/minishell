@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 02:22:48 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 05:08:48 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	sig_handler(int sig)
 		gqq_signal = 1;
 		rl_on_new_line();
 		printf("\n");
-		rl_replace_line("", 1);
-		rl_redisplay();
+		// rl_replace_line("", 1);
+		// rl_redisplay();
 	}
 }
 
@@ -54,6 +54,9 @@ int main(int ac, char **av, char **env)
 	p.check_redir = 0;
 	p.for_redir_check = 0;
 	p.exit_status = 0;
+	p.newfd_in = 0;
+	p.newfd_out = 0;
+	p.env = NULL;
 	while (str)
 	{
 		signals(1);
@@ -79,9 +82,11 @@ int main(int ac, char **av, char **env)
 				current_tree = tree;
 				tree->ev = ev;
 				unlink_herdoc = *tree;
-				// execution(tree, &p);
-				last_herdoc_number(unlink_herdoc, 1);
-				print_ast(tree, 0);
+				execution(tree, &p);
+				ev =tree->ev;
+				ft_free(tree, &p, 0);
+				tree = NULL;
+				// print_ast(tree, 0);
 			}	
 		}
 		free(str);  

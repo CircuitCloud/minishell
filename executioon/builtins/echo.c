@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:55:36 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/13 03:18:26 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/21 05:59:51 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,41 @@ int	check_for_n(char *arg)
 	return (0);
 }
 
+int	echo_help(char **arg, int *option)
+{
+	int		i;
+	int		check;
+	char	*sub;
+
+	i = 0;
+	sub = NULL;
+	check = 0;
+	while (arg && arg[i])
+	{
+		sub = ft_substr(arg[i], 0, 2);
+		if (ft_strcmp(sub, "-n") != 0)
+			return (free(sub), i);
+		free(sub);
+		sub = ft_substr(arg[i], 2, ft_strlen(arg[i]) - 2);
+		check = check_for_n(sub);
+		if (check == 1)
+			return (free(sub), i);
+		else if ((*option) == 0)
+			(*option) = 1;
+		i++;
+		free(sub);
+	}
+	return (i);
+}
+
 void	echo_(char **arg, t_status **p)
 {
 	int	i;
 	int	option;
-	int	check;
 
 	i = 0;
 	option = 0;
-	check = 0;
-	while (arg && arg[i] && ft_strcmp(ft_substr(arg[i], 0, 2), "-n") == 0)
-	{
-		check = check_for_n(ft_substr(arg[i], 2, ft_strlen(arg[i]) - 2));
-		if (check == 1)
-			break ;
-		else if (option == 0)
-			option = 1;
-		i++;
-	}
+	i = echo_help(arg, &option);
 	while (arg && arg[i])
 	{
 		ft_putstr_fd(arg[i], 1);

@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 07:38:17 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 00:50:21 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	setter(char *cwd, t_ev **ev, char *arg)
 {
+	t_ev 	*env;
 	char	*equal;
 
+	env = *ev;
 	equal = NULL;
 	while ((*ev))
 	{
@@ -35,14 +37,17 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 		}
 		(*ev) = (*ev)->next;
 	}
+	(*ev) = env;
 }
 
-void	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
+int	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 {
 	char	*cwd;
+	char	*cwd2;
 	t_ev	**evv;
 
-	evv = ev; 
+	evv = ev;
+	cwd2 = NULL;
 	cwd = getcwd(NULL, 0);
 	if (ft_strcmp(arg, "HOME") == 0)
 	{
@@ -57,14 +62,12 @@ void	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 		}
 	}
 	if (chdir(arg) == -1)
-	{
-		perror_(arg, p);
-		return ;
-	}
-	setter(cwd, ev, getcwd(NULL, 0));
+		return (free(cwd), perror_(arg, p), (*p)->exit_status);
+	cwd2 = getcwd(NULL, 0);
+	setter(cwd, ev, cwd2);
 	(*p)->exit_status = 0;
+	return (free(cwd2), free(cwd), (*p)->exit_status);
 }
-
 
 void	cd_(t_ev **ev, char *arg, t_status **p)
 {
@@ -75,5 +78,5 @@ void	cd_(t_ev **ev, char *arg, t_status **p)
 		getter(env, "HOME", ev, p);
 	else if (arg[0] != '\0')
 		getter(env, arg, ev, p);
-	ev = &env;	
+	ev = &env;
 }

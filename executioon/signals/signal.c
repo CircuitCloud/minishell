@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 16:43:47 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 00:11:26 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/21 06:07:22 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	sig_handler_child(int sig)
 {
-	if (sig == SIGQUIT)
-		write(1, "Quit: 3\n", 8);
-	else
+	if (sig == SIGINT)
 		exit(1);
 }
 
@@ -29,12 +27,14 @@ void	signals(int c)
 	}
 	else if (c == 0)
 	{
-		signal(SIGQUIT, sig_handler_child);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 	}
 	else if (c == 2)
 	{
 		signal(SIGINT, sig_handler_child);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	
+	else if (c == 3)
+		signal(SIGINT, SIG_IGN);
 }

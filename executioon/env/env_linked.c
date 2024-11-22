@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 10:50:40 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/07 04:48:53 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/21 05:20:11 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,11 @@ t_ev	*environ(char **env)
 	{
 		tmp = create_struct(env[i], &ev);
 		if (tmp == 1)
-			return (NULL);
+		{
+			write(2, "minishell : failed to allocate\n", 31);
+			free_env(ev);
+			exit (1);
+		}
 		i++;
 	}
 	return (ev);

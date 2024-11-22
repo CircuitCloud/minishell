@@ -3,65 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 01:12:06 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/21 06:13:18 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void free_env(t_ev *ev)
-// {
-// 	t_ev *tmp;
-
-// 		tmp = NULL;
-// 		if (!ev)
-// 			return ;
-// 		while (ev)
-// 		{
-// 			if (ev->line)
-// 				free(ev->line);
-// 			if (ev->name)
-// 				free(ev->name);
-// 			if (ev->value)
-// 				free(ev->value);
-// 			tmp = ev;
-// 			ev = ev->next;
-// 			free(tmp);
-// 		}
-// }
-
-void free_env(t_ev *ev)
+void	free_splited(char **str)
 {
-    t_ev *tmp;
+	int	i;
 
-    while (ev)
-    {
-        tmp = ev->next;
-        if (ev->line)
-        {
-            free(ev->line);
-            ev->line = NULL;
-        }
-        if (ev->name)
-        {
-            free(ev->name);
-            ev->name = NULL;
-        }
-        if (ev->value)
-        {
-            free(ev->value);
-            ev->value = NULL;
-        }
-        free(ev);
-        ev = tmp;
-    }
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
-void free_redirect(t_redirection *redir)
+
+void	free_env(t_ev *ev)
 {
-	t_redirection *tmp;
+	t_ev	*tmp;
+
+	tmp = NULL;
+	if (!ev)
+		return ;
+	while (ev)
+	{
+		if (ev->line)
+			free(ev->line);
+		if (ev->name)
+			free(ev->name);
+		if (ev->value)
+			free(ev->value);
+		tmp = ev;
+		ev = ev->next;
+		free(tmp);
+	}
+}
+
+void	free_redirect(t_redirection *redir)
+{
+	t_redirection	*tmp;
 
 	tmp = NULL;
 	while (redir)
@@ -76,13 +63,13 @@ void free_redirect(t_redirection *redir)
 	}
 }
 
-void free_tree(t_command *root)
+void	free_tree(t_command *root)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!root)
-		return;
+		return ;
 	free_tree(root->left);
 	free_tree(root->right);
 	while (root->args && root->args[i])
@@ -92,12 +79,17 @@ void free_tree(t_command *root)
 	}
 	if (root->args)
 		free(root->args);
-	if(root->ev)
-		free_env(root->ev);
-	if(root->redir)
-		free_redirect(root->redir);
-	//free token ia kan raybqa f struct
+	free_redirect(root->redir);
 	if (root->cmnd)
 		free(root->cmnd);
 	free(root);
+}
+
+void	ft_free(t_command *root, t_status *p, int i)
+{
+	free_tree(root);
+	if (i == 1)
+		free_env(root->ev);
+	if (p->last_herdoc != 0)
+		last_herdoc_number(*root, 1);
 }

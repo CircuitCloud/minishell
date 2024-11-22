@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:22:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 01:05:44 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/21 06:05:36 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,19 @@ void	ft_lstdelone_unset(t_ev *lst)
 {
 	if (!lst)
 		return ;
-	free(lst->line);
-	free(lst->name);
-	free(lst->value);
-	free(lst);
+	if (lst->line)
+		free(lst->line);
+	if (lst->name)
+		free(lst->name);
+	if (lst->value)
+		free(lst->value);
+	if (lst)
+		free(lst);
 }
-int is_alphabet(char *arg)
+
+int	is_alphabet(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < ft_strlen(arg))
@@ -66,7 +71,6 @@ void	unset_(t_ev **ev, char **name, t_status **p)
 	int	i;
 
 	i = 0;
-	
 	while (name && name[i]) 
 	{
 		if (is_alphabet(name[i]) != 1)
@@ -75,7 +79,7 @@ void	unset_(t_ev **ev, char **name, t_status **p)
 		{
 			write(2, "minishell: export: ", 19);
 			write(2, name[i], ft_strlen(name[i]));
-			write(2 ,": not a valid identifier\n", 26);
+			write(2, ": not a valid identifier\n", 26);
 			(*p)->exit_status = 0;
 		}
 		i++;

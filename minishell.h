@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 01:08:44 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 05:03:56 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_status
 	int newfd_out;
 	int last_herdoc;
 	int for_redir_check;
+	char **env;
 }	t_status;
 
 typedef	struct	s_argument
@@ -134,9 +135,9 @@ int				search(char **cmd, t_ev *ev, t_status **p);
 int				redirect_check(t_command *root, t_status **p);
 int				search_bin(char **cmd, char *p, t_status **p_);
 int				_spaces(char *str, int *sign, int *i, int func);
-int				in_redir(t_redirection *root_redir, t_status **p, int command);
-int				out_redir(t_redirection *root_redir, t_status **p, int command);
-int				append_redir(t_redirection *root_redir, t_status **p, int command);
+int				in_redir(t_command *root, t_redirection *root_redir, t_status **p, int cmd);
+int				out_redir(t_command *root, t_redirection *root_rdir, t_status **p, int cmd);
+int				append_redir(t_command *root, t_redirection *redir, t_status **p, int cmd);
 int				ft_strncmp(const char *dest, const char *src, size_t n);
 void			free_redirect(t_redirection *redir);
 void			signals(int c);
@@ -144,7 +145,7 @@ void			pwd_(t_ev *ev);
 void			sig_handler_child(int sig);
 void			sig_handler(int sig);
 void			env_(t_ev *ev, t_status **p);
-void			exit_(char **arg, t_status **p);
+void			exit_(t_command *root, char **arg, t_status **p);
 void			echo_(char **arg, t_status **p);
 void			perror_(char *err, t_status **p);
 void			unset_helper(t_ev **ev, char *name);
@@ -156,11 +157,11 @@ void			execute_pipe(t_command *root, t_status **p);
 void			unset_(t_ev **ev, char **name, t_status **p);
 void			value_helper(char **value, char *arg, char c);
 void			export_(char **args, t_ev **ev, t_status **p);
-void			execute_program(t_command *root, t_status **p);
-void			exit_many_args(t_status **p, int err, char *arg);
-void			last_heredocc(t_redirection *heredoc, char *name, int commad);
-void			out_redirect(t_redirection *root_redir, t_status* *p);
-void			input_redirect(t_redirection *root_redir, t_status **p);
+int				execute_program(t_command *root, t_status **p);
+void			exit_many_args(t_command *root, t_status **p, int err, char *arg);
+void			last_heredocc(t_command *rt, t_redirection *hdc, t_status **p, int cmd);
+void			out_redirect(t_command *root, t_redirection *root_redir, t_status **p);
+void			input_redirect(t_command *root, t_redirection *root_redir, t_status **p);
 void			print_error(char *err, int type, t_status **p_, int exit_s);
 t_ev			*environ(char **env);
 t_ev			*ft_lstlast_env(t_ev *lst);
@@ -170,8 +171,17 @@ void 			heredocc(t_redirection *heredoc, t_ev *ev, t_status **p);
 void			print_ast(t_command *node, int level);
 void 			all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p);
 int				last_herdoc_number(t_command copy, int option);
-int				status_exec_program(int status);
-void			free_null(void *to_free);
+int				status_exec_program(int status, int c);
+void			dup_failed(t_command *root, t_status **p, int c);
+// void			free_null(void *to_free);
 void			free_env(t_ev *ev);
+void			ft_free(t_command *root, t_status *p, int i);
+void			lot_of_args(t_command *root, char **arg, t_status **p);
+int				exit_helper(char *arg, int *err);
+void			free_splited(char **str);
+char			**store_env(t_command *root, t_ev *ev, t_status *p);
+void			fork_failed(t_command *root, t_status **p);
+void			original_fd(t_command *root, t_status **p);
+int				if_builtin(t_command *root, t_status **p);
 
 #endif

@@ -6,15 +6,15 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:43:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 03:43:16 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/21 06:08:24 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void print_error(char *err, int type, t_status **p_, int exit_s)
+void	print_error(char *err, int type, t_status **p_, int exit_s)
 {
-	char *p;
+	char	*p;
 
 	p = NULL;
 	if (type != 4)
@@ -40,7 +40,7 @@ void print_error(char *err, int type, t_status **p_, int exit_s)
 	free(p);
 }
 
-void perror_(char *err, t_status **p)
+void	perror_(char *err, t_status **p)
 {
 	write (2, "minishell: cd: ", 15);
 	perror(err);
