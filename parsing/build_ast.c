@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 01:28:43 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:07:17 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 			}
 			args_len = args_len - file_delim_founded;
 			// printf("leen : (%d)\n", args_len);
-			if(current && current->type == WORD && ft_strcmp(current->value, "") != 0)
+			if(current && current->type == WORD )
 				single_command = create_simple_command(current->value, args_len, ev);
 			// else if(current && current->type == WORD && ft_strcmp(current->value, "") == 0)
 			// {
