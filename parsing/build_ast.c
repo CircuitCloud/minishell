@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 02:07:17 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 02:21:17 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 			{
 				if (current->value && ft_strcmp(current->value, "") != 0) 
 				{
-					if (!single_command->cmnd) 
+					if (!single_command->cmnd || ft_strcmp(single_command->cmnd, "") == 0) 
 						single_command->cmnd = ft_strdup(current->value);
 					single_command->args[i] = ft_strdup(current->value);
 					if (!single_command->args[i])
