@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 00:50:21 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 06:04:24 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	setter(char *cwd, t_ev **ev, char *arg)
 {
-	t_ev 	*env;
+	t_ev	*env;
 	char	*equal;
 
 	env = *ev;

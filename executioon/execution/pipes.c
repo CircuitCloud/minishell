@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 18:49:48 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 02:45:12 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 06:01:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	left_child(t_command *root, int *fd, pid_t *left_pid, t_status **p)
 	else if ((*left_pid) == 0)
 	{
 		close(fd[0]);
-		dup2(fd[1], 1);
+		if (dup2(fd[1], 1) == -1)
+			dup_failed(root, p, 2);
 		close(fd[1]);
 		execute_program(root->left, p);
 		exit((*p)->exit_status);
@@ -45,7 +46,8 @@ void	right_child(t_command *root, int *fd, pid_t *right_pid, t_status **p)
 	else if ((*right_pid) == 0)
 	{
 		close(fd[1]);
-		dup2(fd[0], 0);
+		if (dup2(fd[0], 0) == -1)
+			dup_failed(root, p, 2);
 		close(fd[0]);
 		execute_program(root->right, p);
 		exit((*p)->exit_status);
@@ -58,7 +60,6 @@ void	execute_pipe(t_command *root, t_status **p)
 	pid_t	left_pid;
 	pid_t	right_pid;
 	int		status;
-	int test;
 
 	left_pid = 0;
 	right_pid = 0; 

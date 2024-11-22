@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:35:30 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 02:01:32 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 06:02:52 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	fill_lv_export(t_ev **move, char *value, char *arg, int c)
 	return ;
 }
 
-void	export_helper(char *arg, t_ev **ev, char c)
+int	export_helper(char *arg, t_ev **ev, char c)
 {
 	char	*name;
 	char	*value;
@@ -52,10 +52,7 @@ void	export_helper(char *arg, t_ev **ev, char c)
 	while (move)
 	{
 		if (ft_strcmp(move->name, name) == 0)
-		{
-			fill_lv_export(&move, value, arg, c);
-			return ;
-		}
+			return (fill_lv_export(&move, value, arg, c), 0);
 		move = move->next;
 	}
 	if (value)
@@ -67,6 +64,7 @@ void	export_helper(char *arg, t_ev **ev, char c)
 	}
 	else
 		ft_lstadd_back_env(ev, ft_lst_new_env(ft_strdup(name), name, NULL));
+	return (0);
 }
 
 void	export_no_arg(t_ev *ev)

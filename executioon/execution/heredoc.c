@@ -6,16 +6,16 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 04:48:04 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 06:09:31 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
+void	heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
-	static int i;
-	
+	static int	i;
+
 	heredoc->file = ft_strjoin("/tmp/heredocs", ft_itoa(++i));
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
 	if (heredoc->fd < 0)
@@ -38,9 +38,9 @@ void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 	while (1)
 	{
 		input = readline(">");
-		if (!heredoc->file)
-			break ; //EOF OR ERROR
-		if(heredoc->hdoc_need_expand == 1)
+		if (!input)
+			break ;
+		if (heredoc->hdoc_need_expand == 1)
 		{
 			tmp = hdoc_expand_handler(input, ev, p);
 			free(input); 
@@ -49,7 +49,7 @@ void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 		if (ft_strcmp(input, heredoc->delimiter) == 0)
 		{
 			free(input);
-			break;
+			break ;
 		}
 		write(heredoc->fd, input, ft_strlen(input));
 		write(heredoc->fd, "\n", 1);
@@ -57,18 +57,18 @@ void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 	}
 }
 
-void all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
+void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
-	char 	*input;
-	pid_t 	pid;
-	int 	status;
+	int		status;
+	char	*input;
 	char	*tmp;
-	
+	pid_t	pid;
+
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	status = 0;
 	if (pid < 0)
-		/*fork_failed()*/;
+		fork_failed(NULL, p);/*pass root instead of NULL*/
 	else if (pid == 0)
 	{
 		signals(2);
