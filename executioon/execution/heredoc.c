@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 03:47:10 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/22 01:32:23 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void heredocc(t_redirection *heredoc, t_status **p)
+void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
 	static int i;
-	
 	
 	heredoc->file = ft_strjoin("/tmp/heredocs", ft_itoa(++i));
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
@@ -26,14 +25,15 @@ void heredocc(t_redirection *heredoc, t_status **p)
 		(*p)->exit_status = 1;
 		exit ((*p)->exit_status);
 	}
-	all_heredocs(heredoc, p);
+	all_heredocs(heredoc, ev, p);
 }
 
-void all_heredocs(t_redirection *heredoc, t_status **p)
+void all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
-	char *input;
-	pid_t pid;
-	int status;
+	char 	*input;
+	pid_t 	pid;
+	int 	status;
+	char	*tmp;
 	
 	signal(SIGINT, SIG_IGN);
 	pid = fork();
@@ -53,6 +53,12 @@ void all_heredocs(t_redirection *heredoc, t_status **p)
 			input = readline(">");
 			if (!heredoc->file)
 				break ; //EOF OR ERROR
+			if(heredoc->hdoc_need_expand == 1)
+			{
+				tmp = hdoc_expand_handler(input, ev, p);
+				free(input); 
+				input = tmp;
+			}
 			if (ft_strcmp(input, heredoc->delimiter) == 0)
 			{
 				free(input);

@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/17 22:47:27 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 00:51:00 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,25 +65,25 @@ int main(int ac, char **av, char **env)
 		data.cmnd = str;
 		data.tokens_list = NULL;
 		add_history(str);
-		lexer(&data);
-		token_node = data.tokens_list;
-		// printf("3ela berra \n");
-		if(!syntaxe_validation(token_node))
+		if(!lexer(&data))
 		{
-			// printf("dakheel 3lyha \n");
-			expand_env(data.tokens_list, ev, &p);
-			remove_quotes((data.tokens_list));
-			tree = build_ast((data.tokens_list), ev, &p);
-			// if (!tree->cmnd && tree->args && tree->args[0])
-			// 	tree->cmnd = ft_strdup(tree->args[0]);
-			current_tree = tree;
-			tree->ev = ev;
-			unlink_herdoc = *tree;
-			execution(tree, &p);
-			last_herdoc_number(unlink_herdoc, 1);
-			// print_ast(tree, 0);
+			token_node = data.tokens_list;
+			if(!syntaxe_validation(token_node))
+			{
+				// printf("dakheel 3lyha \n");
+				expand_env(data.tokens_list, ev, &p);
+				remove_quotes((data.tokens_list));
+				tree = build_ast((data.tokens_list), ev, &p);
+				// if (!tree->cmnd && tree->args && tree->args[0])
+				// 	tree->cmnd = ft_strdup(tree->args[0]);
+				current_tree = tree;
+				tree->ev = ev;
+				unlink_herdoc = *tree;
+				execution(tree, &p);
+				last_herdoc_number(unlink_herdoc, 1);
+				// print_ast(tree, 0);
+			}	
 		}
-		
 		free(str);  
 		// printf("ltee7t \n");
 		signals(1);
@@ -92,5 +92,6 @@ int main(int ac, char **av, char **env)
 		free(str);
 		str = trim;
 	}
+	// system("leaks minishell");
 	return (p.exit_status); // update
 }

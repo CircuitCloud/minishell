@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 23:00:20 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/21 22:28:15 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 int is_token(char c, char c_1) 
 {
-	if ((c == '<' && c_1 == '<') || (c == '>' && c == '>'))
+	if (c && c_1 && ((c == '<' && c_1 == '<') || (c == '>' && c == '>')))
 		return (1);
-	else if(c == '|' || c == '<' || c == '>')
+	else if(c && (c == '|' || c == '<' || c == '>'))
 		return (1);
 	return (0);
 }
@@ -41,7 +41,7 @@ int define_type(char c, char c_1)
 	return (0);
 }
 
-void	append_special_tokens_2(t_command *data, char *token, int type)
+int	append_special_tokens_2(t_command *data, char *token, int type)
 {
 	t_tokens	*new_node;
 
@@ -49,9 +49,10 @@ void	append_special_tokens_2(t_command *data, char *token, int type)
 	if(!new_node)
 	{
 		free(token);
-		exit (1);
+		return (1);
 	}
 	ft_lstadd_backk(&(data->tokens_list), new_node);
+	return (0);
 }
 
 int append_special_tokens(t_command *data, char c, char c_1)
@@ -63,6 +64,8 @@ int append_special_tokens(t_command *data, char c, char c_1)
 	res = 1;
 	token = NULL; // zidta ana chaima 3la wed l flags
 	type = define_type(c, c_1);
+	if(!data)
+		return (-1);
 	if (type == PIPE)
 		token = ft_strdup("|");
 	else if (type == I_RED)
@@ -80,8 +83,9 @@ int append_special_tokens(t_command *data, char c, char c_1)
 		res = 2;
 	}
 	if(!token)
-		exit (1);
-	append_special_tokens_2(data, token, type);
+		return (-1);
+	if(append_special_tokens_2(data, token, type) == 1)
+		return (-1);
 	return (res);
 }
 
@@ -113,8 +117,7 @@ int word_handler(char *input, int start)
 	i = start;
 
 	if(!input || start < 0 || start >= ft_strlen(input))
-		// exit(1);
-		return(0);
+		return(-1);
 	while (input[i] && !is_whitespace(input[i]) && !is_token(input[i], input[i + 1])) 
 	{
 		if (input[i] == '\'' || input[i] == '\"')
@@ -153,24 +156,35 @@ int lexer(t_command	*data)
 			start = i;
 			i = word_handler(data->cmnd, i);
 			if(i == -1)
-				return(-1);
+				return(1);
 			token = ft_substr(data->cmnd, start, i - start);
 			if(!token)
-			//free
-				exit(1);
+			{
+				free_tokens_list(data->tokens_list);
+				return (1);
+			}
 			if(token && ft_strlen(token))
 			{
 				new_token = ft_lstneww(token, WORD);
-				// if(!new_token)
-				// 	exit(1);
+				if (!new_token)
+                {
+                    free(token);
+                    free_tokens_list(data->tokens_list);
+                    return (1);
+                }
 				ft_lstadd_backk(&(data->tokens_list), new_token);
 			}
 			free(token);
-			// free(new_token);
 		}
-		if(is_token(data->cmnd[i], data->cmnd[i + 1]))
+		if(data->cmnd && data->cmnd[i] && data->cmnd[i + 1] && is_token(data->cmnd[i], data->cmnd[i + 1]))
 		{
-			i+= append_special_tokens(data, data->cmnd[i], data->cmnd[i + 1]);
+			int append_result = append_special_tokens(data, data->cmnd[i], data->cmnd[i + 1]);
+			if (append_result < 0)
+            {
+                free_tokens_list(data->tokens_list);
+                return (1);
+            }
+			i += append_result;
 		}
 	}
 	return(0);

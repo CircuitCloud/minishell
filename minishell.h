@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 22:59:13 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 01:08:44 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef	struct	s_tokens
 {
 	char	*value;
 	int		type;
+	int		hdoc_expand;
 	struct	s_tokens	*next;
 }	t_tokens;
 
@@ -64,6 +65,7 @@ typedef	struct s_redirection
 	int				type;
 	char			*file;
 	char			*delimiter;
+	int				hdoc_need_expand;
 	int				fd;
 	struct s_redirection	*next_redir;
 }	t_redirection;
@@ -120,9 +122,11 @@ int				is_valid_start(t_tokens *tokens, int d);
 int				is_valid_end(t_tokens *tokens);
 int				duplicate_operator(t_tokens *tokens, int type);
 int				syntaxe_validation(t_tokens *token);
+void			free_tokens_list(t_tokens *tokens);
+char			*hdoc_expand_handler(char *token, t_ev *ev, t_status **p);
+char			*extract_var(char *str, int *pos);
 //----------------------------------added by execution-------------------------------//
 char			*ft_strtrim_execution(char const *s1, char const *set);
-void			free_redirect(t_redirection *redir);
 int				valide_var(char *arg);
 int				ft_strcmp(char *dest, char *src);
 int				create_struct(char *env, t_ev **ev);
@@ -134,6 +138,7 @@ int				in_redir(t_redirection *root_redir, t_status **p, int command);
 int				out_redir(t_redirection *root_redir, t_status **p, int command);
 int				append_redir(t_redirection *root_redir, t_status **p, int command);
 int				ft_strncmp(const char *dest, const char *src, size_t n);
+void			free_redirect(t_redirection *redir);
 void			signals(int c);
 void			pwd_(t_ev *ev);
 void			sig_handler_child(int sig);
@@ -161,9 +166,9 @@ t_ev			*environ(char **env);
 t_ev			*ft_lstlast_env(t_ev *lst);
 long long		atoi_exit(char *str, int *err);
 t_ev			*ft_lst_new_env(char *line, char *name, char *value);
-void			heredocc(t_redirection *heredoc, t_status **p);
+void 			heredocc(t_redirection *heredoc, t_ev *ev, t_status **p);
 void			print_ast(t_command *node, int level);
-void			all_heredocs(t_redirection *heredoc, t_status **p);
+void 			all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p);
 int				last_herdoc_number(t_command copy, int option);
 int				status_exec_program(int status);
 void			free_null(void *to_free);

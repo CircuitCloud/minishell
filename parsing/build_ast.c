@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 19:55:28 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 01:28:43 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,26 @@ t_command	*create_simple_command(char *cmnd, int args_index, t_ev *ev)
     return (single_command);
 }
 
-t_redirection	*init_redir_struct(int type, char *file, char *delimiter, t_status **p)
+t_redirection	*init_redir_struct(int type, char *file, t_ev *ev, char *delimiter, t_status **p, int hdoc_expand)
 {
 	t_redirection	*redir;
 
 	redir = ft_calloc(1, sizeof(t_redirection));
 	if(!redir)
 		return (NULL);
+	redir->hdoc_need_expand = hdoc_expand;
 	redir->type = type;
 	if (type == HERDOC) 
 	{
 		redir->delimiter = ft_strdup(delimiter);
-		heredocc(redir, p);
+		heredocc(redir, ev, p);
     }
 	else 
 	{
 		redir->file = ft_strdup(file);
 		redir->delimiter = NULL;
     }
+	
 	return (redir);
 }
 
@@ -155,9 +157,9 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 					file_or_delim = current->next ? current->next->value : NULL;
 					//nzidu p awla lfunction treturni
 					if (current && current->type == HERDOC)
-						redir_command = init_redir_struct(current->type, NULL, file_or_delim , &p);
+						redir_command = init_redir_struct(current->type, NULL, ev, file_or_delim , &p, current->hdoc_expand);
 					else
-						redir_command = init_redir_struct(current->type, file_or_delim , NULL, &p);
+						redir_command = init_redir_struct(current->type, file_or_delim , ev, NULL, &p, current->hdoc_expand);
 					add_redir_cmnd(single_command, redir_command);
 					current = current->next->next;
 					// current = current->next;
@@ -176,8 +178,8 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				else
 					break;
 			}
-			if(single_command && single_command->args)
-				single_command->args[i] = NULL;
+			// if(single_command && single_command->args)
+			// 	single_command->args[i] = NULL;
 			if (!root)
 				root = single_command;
 			else

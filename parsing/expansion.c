@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/17 18:23:19 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/22 01:21:45 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,14 @@ void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p)
 {
 	while (tokens)
 	{
+		if(tokens->type == HERDOC)
+		{
+			if(tokens->next && (tokens->next->value[0] == '\'' || tokens->next->value[0] == '"'))
+				tokens->hdoc_expand = 0;
+			else
+				tokens->hdoc_expand = 1;
+				// printf("%d\n", redir->hdoc_need_expand);
+		}
 		if(tokens->type == WORD)
 		{
 			tokens->value = get_env_token(tokens->value, ev, &p);
