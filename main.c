@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 01:51:18 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 02:22:52 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,9 @@ int main(int ac, char **av, char **env)
 				remove_quotes((data.tokens_list));
 				tree = build_ast((data.tokens_list), ev, &p);
 				tree->ev = ev;
-				unlink_herdoc = *tree;
-				// execution(tree, &p);
-				last_herdoc_number(unlink_herdoc, 1);
-				// print_ast(tree, 0);
+				execution(tree, &p);
+				ev =tree->ev;
+				ft_free(tree, &p, 0);
 			}
 		}
 		if(data.tokens_list)
@@ -93,6 +92,11 @@ int main(int ac, char **av, char **env)
 		trim = ft_strtrim(str, " \t");
 		free(str);
 		str = trim;
+		p.check_redir = 0;
+		p.for_redir_check = 0;
+		p.newfd_in = 0;
+		p.newfd_out = 0;
+		p.env = NULL;
 	}
 	clear_history();
 	// system("leaks minishell");
