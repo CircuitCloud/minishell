@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 02:22:52 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 02:25:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ int main(int ac, char **av, char **env)
 				remove_quotes((data.tokens_list));
 				tree = build_ast((data.tokens_list), ev, &p);
 				tree->ev = ev;
-				execution(tree, &p);
+				// execution(tree, &p);
 				ev =tree->ev;
 				ft_free(tree, &p, 0);
+				tree = NULL;
 			}
 		}
 		if(data.tokens_list)
