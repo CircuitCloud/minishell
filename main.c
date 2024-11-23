@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 05:08:48 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 01:40:12 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,31 @@ int main(int ac, char **av, char **env)
 		add_history(str);
 		if(!lexer(&data))
 		{
-			token_node = data.tokens_list;
-			if(!syntaxe_validation(token_node))
+			if(!syntaxe_validation(data.tokens_list))
 			{
-				// printf("dakheel 3lyha \n");
 				expand_env(data.tokens_list, ev, &p);
 				remove_quotes((data.tokens_list));
 				tree = build_ast((data.tokens_list), ev, &p);
-				// if (!tree->cmnd && tree->args && tree->args[0])
-				// 	tree->cmnd = ft_strdup(tree->args[0]);
-				current_tree = tree;
 				tree->ev = ev;
 				unlink_herdoc = *tree;
 				execution(tree, &p);
-				ev =tree->ev;
-				ft_free(tree, &p, 0);
-				tree = NULL;
+				last_herdoc_number(unlink_herdoc, 1);
 				// print_ast(tree, 0);
-			}	
+			}
 		}
-		free(str);  
-		// printf("ltee7t \n");
+		if(data.tokens_list)
+			free_tokens_list(data.tokens_list);
+		if(tree)
+			free_tree(tree);
+		free(str);
 		signals(1);
+		tree = NULL;
 		str = readline("minii>");
 		trim = ft_strtrim(str, " \t");
 		free(str);
 		str = trim;
 	}
+	clear_history();
 	// system("leaks minishell");
 	return (p.exit_status); // update
 }

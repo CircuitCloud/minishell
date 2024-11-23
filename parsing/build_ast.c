@@ -6,9 +6,10 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 02:21:17 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:32:18 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -22,7 +23,10 @@ t_command	*create_simple_command(char *cmnd, int args_index, t_ev *ev)
 	if(cmnd)
 		single_command->cmnd = ft_strdup(cmnd);
 	if(args_index > 0)
-		single_command->args = ft_calloc(1, (sizeof(char *) * args_index) + 2);
+	{
+		single_command->args = ft_calloc(1, (sizeof(char *) * (args_index + 1)));
+		single_command->args[args_index] = NULL;
+	}
 	if(ev)
 		single_command->ev = ev;	
     return (single_command);
@@ -47,7 +51,6 @@ t_redirection	*init_redir_struct(int type, char *file, t_ev *ev, char *delimiter
 		redir->file = ft_strdup(file);
 		redir->delimiter = NULL;
     }
-	
 	return (redir);
 }
 
@@ -85,7 +88,7 @@ void	add_redir_cmnd(t_command *command, t_redirection *redir)
 t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 {
 	t_tokens		*current;
-	t_tokens	*empty_current;///lcase d empty moraha cmnd
+	// t_tokens		*empty_current;///lcase d empty moraha cmnd
 	t_tokens		*word;
 	t_command		*single_command;
 	t_redirection	*redir_command;
@@ -118,26 +121,20 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 			}
 			args_len = args_len - file_delim_founded;
 			// printf("leen : (%d)\n", args_len);
-			if(current && current->type == WORD )
+			if(current && current->type == WORD)
 				single_command = create_simple_command(current->value, args_len, ev);
-			// else if(current && current->type == WORD && ft_strcmp(current->value, "") == 0)
-			// {
-			// 	empty_current = current;
-			// 	while (empty_current && empty_current->type == WORD && ft_strcmp(empty_current->value, "") == 0)
-			// 	{
-			// 		empty_current = empty_current->next;
-			// 	}
-			// 	// printf("haylala( %s) \n", current->value);
-			// 	single_command = create_simple_command(empty_current->value, args_len, ev);
-			// }
 			else
 				single_command = create_simple_command(NULL, args_len, ev);
-			while (current && current->type == WORD) 
+			while (current && current->type == WORD)
 			{
-				if (current->value && ft_strcmp(current->value, "") != 0) 
+				if (current->value && ft_strcmp(current->value, "") != 0)
 				{
-					if (!single_command->cmnd || ft_strcmp(single_command->cmnd, "") == 0) 
+					if (!single_command->cmnd || ft_strcmp(single_command->cmnd, "") == 0)
+					{
+						if(ft_strcmp(single_command->cmnd, "") == 0)
+							free(single_command->cmnd);
 						single_command->cmnd = ft_strdup(current->value);
+					}
 					single_command->args[i] = ft_strdup(current->value);
 					if (!single_command->args[i])
 					{
@@ -148,7 +145,6 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				}
 				current = current->next;
 			}
-			
 			while (current && current->type != PIPE)
 			{
 				//redirection
@@ -168,7 +164,7 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				{
 					if(single_command && single_command->args)
 					{
-						if(!single_command->cmnd)
+						if (!single_command->cmnd)
 							single_command->cmnd = ft_strdup(current->value);
 						single_command->args[i] = ft_strdup(current->value);
 						i++;
@@ -178,8 +174,6 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				else
 					break;
 			}
-			// if(single_command && single_command->args)
-			// 	single_command->args[i] = NULL;
 			if (!root)
 				root = single_command;
 			else

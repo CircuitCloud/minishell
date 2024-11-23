@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:13:18 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 01:22:57 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,34 @@ void	free_redirect(t_redirection *redir)
 	}
 }
 
-void	free_tree(t_command *root)
+void	free_tokens_list(t_tokens *tokens)
 {
-	int	i;
+	t_tokens	*next;
+
+	while (tokens)
+	{
+		next = tokens->next;
+		if(tokens->value)
+		{
+			free(tokens->value);
+			tokens->value = NULL;
+		}
+		free(tokens);
+		tokens = next;
+	}
+}
+
+void free_tree(t_command *root)
+{
+	int i;
 
 	i = 0;
 	if (!root)
-		return ;
-	free_tree(root->left);
-	free_tree(root->right);
+		return;
+	if(root->left)
+		free_tree(root->left);
+	if(root->right)
+		free_tree(root->right);
 	while (root->args && root->args[i])
 	{
 		free(root->args[i]);
@@ -79,10 +98,14 @@ void	free_tree(t_command *root)
 	}
 	if (root->args)
 		free(root->args);
-	free_redirect(root->redir);
+	if(root->tokens_list)
+		free_tokens_list(root->tokens_list);
+	if(root->redir)
+		free_redirect(root->redir);
 	if (root->cmnd)
 		free(root->cmnd);
 	free(root);
+	root = NULL;
 }
 
 void	ft_free(t_command *root, t_status *p, int i)

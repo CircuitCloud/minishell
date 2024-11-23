@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 05:03:56 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 01:31:08 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ int				syntaxe_validation(t_tokens *token);
 void			free_tokens_list(t_tokens *tokens);
 char			*hdoc_expand_handler(char *token, t_ev *ev, t_status **p);
 char			*extract_var(char *str, int *pos);
+char			*safe_ft_strjoin(char *s1, char *s2, int flag);
+void 			free_tree(t_command *root);
 //----------------------------------added by execution-------------------------------//
 char			*ft_strtrim_execution(char const *s1, char const *set);
 int				valide_var(char *arg);

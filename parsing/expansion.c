@@ -6,9 +6,11 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 01:21:45 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:34:38 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 
 #include "../minishell.h"
@@ -24,6 +26,36 @@ char	*extract_var(char *str, int *pos)
 		(*pos)++;
 	}
 	return(ft_substr(str, start, *pos - start));
+}
+char	*safe_ft_strjoin(char *s1, char *s2, int flag)
+{
+    char *result = ft_strjoin(s1, s2);
+
+    if (!result)
+    {
+		if(s1)
+		{
+        	free(s1);
+			s1 = NULL;
+		}
+		if(flag && s2)
+		{
+			free(s2);
+			s2 = NULL;
+		}
+        return (NULL);
+    }
+	if(s1)
+	{
+    	free(s1);
+		s1 = NULL;
+	}
+	if(flag && s2)
+	{
+		free(s2);
+		s2 = NULL;
+	}
+    return (result);
 }
 
 
@@ -44,18 +76,18 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 		if (token[i] == '\'' && !double_quoted)
 		{
 			single_quoted = !single_quoted;
-			str = ft_strjoin(str, "'"); 
+			str = safe_ft_strjoin(str, "'", 0); 
 			i++;
 			while (token[i] && single_quoted)
 			{
 				if (token[i] == '\'')
 				{
 					single_quoted = !single_quoted;
-					str = ft_strjoin(str, "'"); 
+					str = safe_ft_strjoin(str, "'", 0); 
 					i++;
 					break;
 				}
-				str = ft_strjoin(str, ft_substr(token, i, 1));
+				str = safe_ft_strjoin(str, ft_substr(token, i, 1), 1);
 				i++;
 			}
 			////ctttttt 
@@ -63,14 +95,14 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 		if (token[i] == '"' && !single_quoted)
 		{
 			double_quoted = !double_quoted;
-			str = ft_strjoin(str, "\"");
+			str = safe_ft_strjoin(str, "\"", 0);
 			i++;
 			while (token[i] && double_quoted)
 			{
 				if (token[i] == '"')
 				{
 					double_quoted = !double_quoted;
-					str = ft_strjoin(str, "\"");
+					str = safe_ft_strjoin(str, "\"", 0);
 					i++;
 					break;
 				}
@@ -79,8 +111,8 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 					i++;
 					if(token[i] == '"' || is_whitespace(token[i]))
 					{
-						str = ft_strjoin(str, "$");
-						// i++;
+						str = safe_ft_strjoin(str, "$", 0);
+						i++;
 					}
 					if (ft_isdigit(token[i]))
 					{
@@ -92,18 +124,19 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 						env_value = search_ev_value(var_name, ev);
 						if (!env_value)
 							env_value = "";
-						str = ft_strjoin(str, env_value);
+						str = safe_ft_strjoin(str, ft_strdup(env_value), 1);
 						free(var_name);
 					}
 					else if (token[i] == '?')
 					{
-						str = ft_strjoin(str, ft_itoa((*p)->exit_status));
+						str = safe_ft_strjoin(str, ft_itoa((*p)->exit_status), 1);
 						i++;
 					}
 				}
 				else
 				{
-					str = ft_strjoin(str, ft_substr(token, i, 1));
+					
+					str = safe_ft_strjoin(str, ft_substr(token, i, 1), 1);
 					i++;
 				}
 			}
@@ -115,7 +148,7 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 			i++;
 			if(!token[i])
 			{
-				str = ft_strjoin(str, "$");
+				str = safe_ft_strjoin(str, "$", 0);
 			}
 			if (ft_isdigit(token[i]))
 			{
@@ -124,15 +157,18 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 			else if (ft_isalpha(token[i]) || token[i] == '_')
 			{
 				var_name = extract_var(token, &i);
+				// dprintf(2, ">>>>{%s}\n" ,var_name + 16);
 				env_value = search_ev_value(var_name, ev);
 				if (!env_value)
 					env_value = "";
-				str = ft_strjoin(str, env_value);
+				str = safe_ft_strjoin(str,  ft_strdup(env_value), 1);
 				free(var_name);
+				var_name = NULL;
+				// free(env_value);
 			}
 			else if (token[i] == '?')
 			{
-				str = ft_strjoin(str, ft_itoa((*p)->exit_status));
+				str = safe_ft_strjoin(str, ft_itoa((*p)->exit_status), 1);
 				i++;
 			}
 			////ctttttt
@@ -141,9 +177,16 @@ char	*get_env_token(char *token, t_ev *ev, t_status **p)
 		while (token[i] && token[i] != '$' && token[i] != '\'' && token[i] != '"')
 			i++;
 		if (i > start)
-			str = ft_strjoin(str, ft_substr(token, start, i - start));
+		{
+			str = safe_ft_strjoin(str, ft_substr(token, start, i - start), 1);
+		}
+			
 	}
-
+	if(token)
+	{
+		free(token);
+		token = NULL;
+	}
 	return (str);
 }
 
@@ -167,4 +210,5 @@ void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p)
 		tokens = tokens->next;
 	}
 }
+
 

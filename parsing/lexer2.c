@@ -6,9 +6,10 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/21 22:28:15 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:36:34 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "../minishell.h"
@@ -86,6 +87,7 @@ int append_special_tokens(t_command *data, char c, char c_1)
 		return (-1);
 	if(append_special_tokens_2(data, token, type) == 1)
 		return (-1);
+	free(token);
 	return (res);
 }
 
@@ -176,7 +178,7 @@ int lexer(t_command	*data)
 			}
 			free(token);
 		}
-		if(data->cmnd && data->cmnd[i] && data->cmnd[i + 1] && is_token(data->cmnd[i], data->cmnd[i + 1]))
+		if(data->cmnd && data->cmnd[i] && is_token(data->cmnd[i], data->cmnd[i + 1]))
 		{
 			int append_result = append_special_tokens(data, data->cmnd[i], data->cmnd[i + 1]);
 			if (append_result < 0)
@@ -196,13 +198,13 @@ void print_ast(t_command *node, int level)
         return;
 	
     printf("------- Command: ---------\n\n\n");
-	// if(node->cmnd)
+	if(node->cmnd)
 	printf("  %s\n", node->cmnd);
-    if (node->args) 
+    if (node && node->args) 
 	{
 		int i = 0;
         printf("arguments : ");
-        while (node->args[i]) 
+        while (node ->args && node->args[i]) 
 		{
             printf("(%s)", node->args[i]);
 			i++;

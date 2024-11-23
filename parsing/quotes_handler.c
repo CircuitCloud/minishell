@@ -6,9 +6,12 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:27:54 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/22 00:45:44 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:37:06 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../minishell.h"
+
 
 #include "../minishell.h"
 
@@ -17,7 +20,6 @@ char	*quotes_eliminator(char *token)
 {
 	int		i;
 	char	*str;
-	char	*tmp;
 	int		single_quoted;
 	int		double_quoted;
 
@@ -39,18 +41,19 @@ char	*quotes_eliminator(char *token)
 		// if(token[i])
 		else
 		{
-			tmp = str;
-			str = ft_strjoin(str, ft_substr(token, i, 1));
-			free(tmp);
+			str = safe_ft_strjoin(str, ft_substr(token, i, 1), 1);
 			i++;
 		}
 	}
+	free(token);
+	token = NULL;
 	return (str);
 }
 
 
 void	remove_quotes(t_tokens *tokens)
 {
+	// t_tokens	*
 	while (tokens)
 	{
 		if(tokens->type == WORD)
@@ -60,3 +63,4 @@ void	remove_quotes(t_tokens *tokens)
 		tokens = tokens->next;
 	}
 }
+
