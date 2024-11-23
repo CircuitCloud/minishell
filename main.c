@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 01:40:12 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:51:18 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int main(int ac, char **av, char **env)
 				tree = build_ast((data.tokens_list), ev, &p);
 				tree->ev = ev;
 				unlink_herdoc = *tree;
-				execution(tree, &p);
+				// execution(tree, &p);
 				last_herdoc_number(unlink_herdoc, 1);
 				// print_ast(tree, 0);
 			}

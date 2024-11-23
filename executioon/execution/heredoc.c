@@ -3,20 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 06:09:31 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 01:56:25 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
+void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
-	static int	i;
+	static int i;
+	char	*tmp;
 
-	heredoc->file = ft_strjoin("/tmp/heredocs", ft_itoa(++i));
+	tmp =  ft_itoa(++i);
+	heredoc->file = ft_strjoin("/tmp/heredocs",tmp);
+	free(tmp);
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
 	if (heredoc->fd < 0)
 	{

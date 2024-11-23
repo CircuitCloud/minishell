@@ -6,7 +6,7 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 01:22:57 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 01:49:15 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	free_redirect(t_redirection *redir)
 		redir = redir->next_redir;
 		free(tmp);
 	}
+	redir = NULL;
 }
 
 void	free_tokens_list(t_tokens *tokens)
