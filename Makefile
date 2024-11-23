@@ -1,4 +1,4 @@
-CC = gcc 
+CC = cc -g -fsanitize=address 
 # -g -fsanitize=address 
 # CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address 
 LIBFT = libft/libft.a

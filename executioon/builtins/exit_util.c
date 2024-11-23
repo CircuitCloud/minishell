@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:26:49 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:03:06 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 04:02:57 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	exit_many_args(t_command *root, t_status **p, int err, char *arg)
 	if (err == -1)
 	{
 		print_error(arg, 4, p, -1);
-		ft_free(root, *p, 1);
+		// ft_free(root, *p, 1);
 		exit((*p)->exit_status);
 	}
 	write(2, "exit\nminishell: exit: too many arguments\n", 42);

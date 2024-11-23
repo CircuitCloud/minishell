@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 02:59:46 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 04:20:21 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ int main(int ac, char **av, char **env)
 				ev =tree->ev;
 				ft_free(tree, &p, 0);
 				tree = NULL;
+				if(data.tokens_list)
+					free_tokens_list(data.tokens_list);
+				if(tree)
+					free_tree(tree);
 			}
 		}
-		if(data.tokens_list)
-			free_tokens_list(data.tokens_list);
-		if(tree)
-			free_tree(tree);
 		free(str);
 		signals(1);
 		tree = NULL;
