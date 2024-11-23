@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 03:02:41 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 06:45:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	execute_program_help(t_command *root, t_status **p)
 	(*p)->env = store_env(root, root->ev, *p);
 	pid = fork();
 	if (pid < 0)
-		fork_failed(root, p);
+		fork_failed(p);
 	else if (pid == 0)
 		execute_cmd(*p, root, root->cmnd);
 	free_splited((*p)->env);

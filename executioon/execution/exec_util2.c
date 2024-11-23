@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 07:54:31 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 00:18:56 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 06:45:22 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	status_exec_program(int status, int c)
 		return (WEXITSTATUS(status));
 }
 
-void	fork_failed(t_command *root, t_status **p)
+void	fork_failed(t_status **p)
 {
 	write(2, "minishell : ", 12);
 	perror("fork");
@@ -34,8 +34,20 @@ void	fork_failed(t_command *root, t_status **p)
 	exit((*p)->exit_status);
 }
 
+void unlink_(t_command root)
+{
+	while (root.redir)
+	{
+		if (root.redir->file && root.redir->type == HERDOC)
+			unlink(root.redir->file);
+		root.redir = root.redir->next_redir;
+	}
+}
+
 void	original_fd(t_command *root, t_status **p)
 {
+	if ((*p)->last_herdoc != 0)
+		unlink_(*root);
 	if ((*p)->for_redir_check == 2)
 	{
 		if (dup2((*p)->newfd_out, 1) == -1 || dup2((*p)->newfd_in, 0) == -1)

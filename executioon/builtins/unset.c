@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:22:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:05:36 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 05:34:12 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	is_alphabet(char *arg)
 	i = 0;
 	while (i < ft_strlen(arg))
 	{
-		if (ft_isalpha(arg[i]) != 1 
+		if (i == 0 && (ft_isalpha(arg[i]) != 1 && arg[i] != '_'))
+			return (1);
+		if (ft_isalpha(arg[i]) != 1 && ft_isdigit(arg[i]) != 1 
 			&& arg[i] != '_')
 			return (1);
 		i++;
@@ -77,7 +79,7 @@ void	unset_(t_ev **ev, char **name, t_status **p)
 			unset_helper(ev, name[i]);
 		else
 		{
-			write(2, "minishell: export: ", 19);
+			write(2, "minishell: unset: ", 18);
 			write(2, name[i], ft_strlen(name[i]));
 			write(2, ": not a valid identifier\n", 26);
 			(*p)->exit_status = 0;

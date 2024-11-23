@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 06:01:14 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 04:01:30 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 06:40:16 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	exit_(t_command *root, char **arg, t_status **p)
 		if (size == 0 || ft_strcmp(arg[0], "--") == 0)
 		{
 			printf("exit\n");
-			// ft_free(root, *p, 1);
 			exit((*p)->exit_status);
 		}
 		(*p)->exit_status = exit_helper(arg[0], &err);
@@ -36,7 +35,6 @@ void	exit_(t_command *root, char **arg, t_status **p)
 			print_error(arg[0], 4, p, -1);
 		else
 			printf("exit\n");
-		// ft_free(root, *p, 1);
 		exit((*p)->exit_status); 
 	}
 }

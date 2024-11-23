@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:26:29 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:34:25 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 06:28:32 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,20 @@ int	last_herdoc_number(t_command copy, int option)
 	while (copy.redir)
 	{
 		if (copy.redir && copy.redir->type == HERDOC)
-		{
 			i++;
-			if (option == 1)
-				unlink(copy.redir->file);
-		}
 		copy.redir = copy.redir->next_redir;
 	}
 	return (i);
 }
 
-int	init_herdoc_variables(t_command root, t_status **p)
+int	init_herdoc_variables(t_command root, t_status **p, int *i)
 {
 	(*p)->last_herdoc = 0;
 	(*p)->for_redir_check = 2;
+	(*i) = 0;
 	(*p)->last_herdoc = last_herdoc_number(root, 0);
+	if (!root.cmnd)
+			return (-1);
 	return (0);
 }
 
@@ -60,27 +59,26 @@ void	redirection(t_command *root, t_status **p)
 {
 	int	i;
 	int	command;
+	t_redirection *tmp;
 
-	i = 0;
-	command = init_herdoc_variables(*root, p);
-	while (root && root->redir)
+	command = init_herdoc_variables(*root, p, &i);
+	tmp = root->redir;
+	while (root && tmp)
 	{
-		if (!root->cmnd)
-			command = -1;
-		if (root->redir->type == O_RED 
-			&& out_redir(root, root->redir, p, command) == 1)
+		if (tmp->type == O_RED 
+			&& out_redir(root, tmp, p, command) == 1)
 			return ;
-		else if (root->redir->type == I_RED 
-			&& in_redir(root, root->redir, p, command) == 1)
+		else if (tmp->type == I_RED 
+			&& in_redir(root, tmp, p, command) == 1)
 			return ;
-		else if (root->redir->type == APPEND 
-			&& append_redir(root, root->redir, p, command) == 1)
+		else if (tmp->type == APPEND 
+			&& append_redir(root, tmp, p, command) == 1)
 			return ;
-		else if (root->redir->type == HERDOC)
+		else if (tmp->type == HERDOC)
 		{
 			if (++i == (*p)->last_herdoc)
-				last_heredocc(root, root->redir, p, command);
+				last_heredocc(root, tmp, p, command);
 		}
-		root->redir = root->redir->next_redir;
+		tmp = tmp->next_redir;
 	}
 }

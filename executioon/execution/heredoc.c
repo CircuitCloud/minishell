@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 05:07:57 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 07:04:41 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 	char	*tmp;
 
 	tmp =  ft_itoa(++i);
-	
 	heredoc->file = ft_strjoin("/tmp/heredocs",tmp);
 	free(tmp);
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
@@ -32,7 +31,7 @@ void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 	all_heredocs(heredoc, ev, p);
 }
 
-void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
+int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
 	char	*tmp;
 	char	*input;
@@ -43,7 +42,7 @@ void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 	{
 		input = readline(">");
 		if (!input)
-			break ;
+			return (write(1, "\n", 1), 0);
 		if (heredoc->hdoc_need_expand == 1)
 		{
 			tmp = hdoc_expand_handler(input, ev, p);
@@ -51,14 +50,12 @@ void	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 			input = tmp;
 		}
 		if (ft_strcmp(input, heredoc->delimiter) == 0)
-		{
-			free(input);
-			break ;
-		}
+			return (free(input), 0);
 		write(heredoc->fd, input, ft_strlen(input));
 		write(heredoc->fd, "\n", 1);
 		free(input);
 	}
+	return (0);
 }
 
 void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
@@ -69,10 +66,10 @@ void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
 	pid_t	pid;
 
 	signal(SIGINT, SIG_IGN);
-	pid = fork();
 	status = 0;
+	pid = fork();
 	if (pid < 0)
-		fork_failed(NULL, p);/*pass root instead of NULL*/
+		fork_failed(p);
 	else if (pid == 0)
 	{
 		signals(2);

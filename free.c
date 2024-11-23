@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 01:49:15 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 06:28:44 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	free_tokens_list(t_tokens *tokens)
 	}
 }
 
+
 void free_tree(t_command *root)
 {
 	int i;
@@ -114,6 +115,4 @@ void	ft_free(t_command *root, t_status *p, int i)
 	free_tree(root);
 	if (i == 1)
 		free_env(root->ev);
-	if (p->last_herdoc != 0)
-		last_herdoc_number(*root, 1);
 }

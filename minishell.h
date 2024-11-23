@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 01:31:08 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 06:45:47 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void			lot_of_args(t_command *root, char **arg, t_status **p);
 int				exit_helper(char *arg, int *err);
 void			free_splited(char **str);
 char			**store_env(t_command *root, t_ev *ev, t_status *p);
-void			fork_failed(t_command *root, t_status **p);
+void			fork_failed(t_status **p);
 void			original_fd(t_command *root, t_status **p);
 int				if_builtin(t_command *root, t_status **p);
 
