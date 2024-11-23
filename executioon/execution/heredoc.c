@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 01:56:25 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/23 05:07:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 	char	*tmp;
 
 	tmp =  ft_itoa(++i);
+	
 	heredoc->file = ft_strjoin("/tmp/heredocs",tmp);
 	free(tmp);
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
