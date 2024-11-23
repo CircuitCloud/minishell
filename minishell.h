@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 06:45:47 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 08:25:32 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int				append_redir(t_command *root, t_redirection *redir, t_status **p, int cmd
 int				ft_strncmp(const char *dest, const char *src, size_t n);
 void			free_redirect(t_redirection *redir);
 void			signals(int c);
-void			pwd_(t_ev *ev);
+void			pwd_(t_ev *ev, t_status **p);
 void			sig_handler_child(int sig);
 void			sig_handler(int sig);
 void			env_(t_ev *ev, t_status **p);

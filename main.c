@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 05:13:28 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 08:33:10 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int main(int ac, char **av, char **env)
 	(void)av;
 	ev = environ(env);
 	signals(1);
-	str = readline("minii>");
+	str = readline("minii> ");
 	trim = ft_strtrim(str, " \t");
 	free(str);
 	str = trim;
@@ -80,16 +80,28 @@ int main(int ac, char **av, char **env)
 				ev =tree->ev;
 				ft_free(tree, &p, 0);
 				tree = NULL;
+				if(data.tokens_list)
+					free_tokens_list(data.tokens_list);
+				if(tree)
+					free_tree(tree);
+			}
+			else
+			{
+				if(data.tokens_list)
+					free_tokens_list(data.tokens_list);
+				p.exit_status = 2;
 			}
 		}
-		if(data.tokens_list)
-			free_tokens_list(data.tokens_list);
-		if(tree)
-			free_tree(tree);
+		else
+		{
+			if(data.tokens_list)
+					free_tokens_list(data.tokens_list);
+			p.exit_status = 2;
+		}
 		free(str);
 		signals(1);
 		tree = NULL;
-		str = readline("minii>");
+		str = readline("minii> ");
 		trim = ft_strtrim(str, " \t");
 		free(str);
 		str = trim;
@@ -99,7 +111,7 @@ int main(int ac, char **av, char **env)
 		p.newfd_out = 0;
 		p.env = NULL;
 	}
+	free_env(ev);
 	clear_history();
-	// system("leaks minishell");
 	return (p.exit_status); // update
 }

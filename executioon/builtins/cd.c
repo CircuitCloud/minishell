@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 05:37:47 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 08:35:39 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 	{
 		if (ft_strcmp((*ev)->name, "OLDPWD") == 0)
 		{
+			if ((*ev)->value)
+				free((*ev)->value);
+			if ((*ev)->line)
+				free((*ev)->line);
 			(*ev)->value = ft_strdup(cwd);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
@@ -30,6 +34,10 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 		}
 		if (ft_strcmp((*ev)->name, "PWD") == 0)
 		{
+			if ((*ev)->value)
+				free((*ev)->value);
+			if ((*ev)->line)
+				free((*ev)->line);
 			(*ev)->value = ft_strdup(arg);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
@@ -61,6 +69,9 @@ int	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 			env = env->next;
 		}
 	}
+	if (ft_strcmp(arg, "HOME") == 0)
+		return(free(cwd),
+		write(2, "minishell: cd: HOME not set\n", 28), (*p)->exit_status);
 	if (chdir(arg) == -1)
 		return (free(cwd), perror_(arg, p), (*p)->exit_status);
 	cwd2 = getcwd(NULL, 0);

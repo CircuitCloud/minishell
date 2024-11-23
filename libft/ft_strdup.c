@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 19:53:32 by cahaik            #+#    #+#             */
-/*   Updated: 2023/12/27 16:22:45 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 08:35:23 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*ft_strdup(const char *s1)
 
 	i = 0;
 	size = 0;
+	if (!s1)
+		return (NULL);
 	while (s1[i] != '\0')
 	{
 		size++;

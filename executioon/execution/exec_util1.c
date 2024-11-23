@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 07:52:06 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 03:46:24 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 08:26:14 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	if_builtin(t_command *root, t_status **p)
 	else if (ft_strcmp(root->cmnd, "export") == 0)
 		export_(root->args + 1, &(root->ev), p);
 	else if (ft_strcmp(root->cmnd, "pwd") == 0)
-		pwd_(root->ev);
+		pwd_(root->ev, p);
 	else if (ft_strcmp(root->cmnd, "unset") == 0)
 		unset_(&(root->ev), (root->args + 1), p);
 	else if (ft_strcmp(root->cmnd, "exit") == 0)
