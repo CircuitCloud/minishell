@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/22 00:42:42 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/23 03:02:41 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	only_cmd(char **cmd, char **splited)
 		joined = ft_strjoin(join, *cmd);
 		if (access(joined, F_OK | X_OK) == 0)
 		{
+			free(*cmd);
 			*cmd = ft_strdup(joined);
 			return (free(join), free(joined), 0);
 		}
