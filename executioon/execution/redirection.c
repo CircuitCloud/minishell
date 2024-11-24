@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:26:29 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 06:28:32 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 03:59:28 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	init_herdoc_variables(t_command root, t_status **p, int *i)
 	(*i) = 0;
 	(*p)->last_herdoc = last_herdoc_number(root, 0);
 	if (!root.cmnd)
-			return (-1);
+		return (-1);
 	return (0);
 }
 
@@ -57,9 +57,9 @@ int	append_redir(t_command *root, t_redirection *redir, t_status **p, int cmd)
 
 void	redirection(t_command *root, t_status **p)
 {
-	int	i;
-	int	command;
-	t_redirection *tmp;
+	int				i;
+	int				command;
+	t_redirection	*tmp;
 
 	command = init_herdoc_variables(*root, p, &i);
 	tmp = root->redir;

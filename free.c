@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 06:28:44 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 04:02:51 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_splited(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
 
 void	free_env(t_ev *ev)
 {
@@ -71,7 +58,7 @@ void	free_tokens_list(t_tokens *tokens)
 	while (tokens)
 	{
 		next = tokens->next;
-		if(tokens->value)
+		if (tokens->value)
 		{
 			free(tokens->value);
 			tokens->value = NULL;
@@ -81,17 +68,16 @@ void	free_tokens_list(t_tokens *tokens)
 	}
 }
 
-
-void free_tree(t_command *root)
+void	free_tree(t_command *root)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!root)
-		return;
-	if(root->left)
+		return ;
+	if (root->left)
 		free_tree(root->left);
-	if(root->right)
+	if (root->right)
 		free_tree(root->right);
 	while (root->args && root->args[i])
 	{
@@ -100,9 +86,9 @@ void free_tree(t_command *root)
 	}
 	if (root->args)
 		free(root->args);
-	if(root->tokens_list)
+	if (root->tokens_list)
 		free_tokens_list(root->tokens_list);
-	if(root->redir)
+	if (root->redir)
 		free_redirect(root->redir);
 	if (root->cmnd)
 		free(root->cmnd);

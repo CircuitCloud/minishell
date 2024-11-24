@@ -18,7 +18,7 @@ SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
 		free.c executioon/builtins/exit_util.c executioon/execution/exec_util1.c \
 		executioon/execution/exec_util2.c  parsing/leaks_handler.c \
-		parsing/hdoc_parsing.c\
+		parsing/hdoc_parsing.c free2.c\
 
 OBJ = $(SRC:.c=.o)
 

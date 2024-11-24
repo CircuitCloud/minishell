@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 08:35:39 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 04:04:16 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	setter_getter_helper(t_ev *ev, char **arg, int c)
+{
+	if (c == 0)
+	{
+		if (ev->value)
+			free(ev->value);
+		if (ev->line)
+			free(ev->line);
+	}
+	else
+	{
+		if (ft_strcmp(ev->name, "HOME") == 0)
+		{
+			(*arg) = ev->value;
+			return (1);
+		}
+	}
+	return (0);
+}
 
 void	setter(char *cwd, t_ev **ev, char *arg)
 {
@@ -23,27 +43,20 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 	{
 		if (ft_strcmp((*ev)->name, "OLDPWD") == 0)
 		{
-			if ((*ev)->value)
-				free((*ev)->value);
-			if ((*ev)->line)
-				free((*ev)->line);
+			setter_getter_helper((*ev), NULL, 0);
 			(*ev)->value = ft_strdup(cwd);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
-			free(equal);
 		}
 		if (ft_strcmp((*ev)->name, "PWD") == 0)
 		{
-			if ((*ev)->value)
-				free((*ev)->value);
-			if ((*ev)->line)
-				free((*ev)->line);
+			setter_getter_helper((*ev), NULL, 0);
 			(*ev)->value = ft_strdup(arg);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
-			free(equal);
 		}
 		(*ev) = (*ev)->next;
+		free(equal);
 	}
 	(*ev) = env;
 }
@@ -61,17 +74,14 @@ int	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 	{
 		while (env)
 		{
-			if (ft_strcmp(env->name, "HOME") == 0)
-			{
-				arg = env->value;
+			if (setter_getter_helper(env, &arg, 1) == 1)
 				break ;
-			}
 			env = env->next;
 		}
 	}
 	if (ft_strcmp(arg, "HOME") == 0)
-		return(free(cwd),
-		write(2, "minishell: cd: HOME not set\n", 28), (*p)->exit_status);
+		return (free(cwd), write (2, "minishell: cd: HOME not set\n", 28),
+			(*p)->exit_status);
 	if (chdir(arg) == -1)
 		return (free(cwd), perror_(arg, p), (*p)->exit_status);
 	cwd2 = getcwd(NULL, 0);

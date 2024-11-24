@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:35:30 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 04:52:22 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 03:57:44 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	value_helper(char **value, char *arg, char c)
 
 void	fill_lv_export(t_ev **move, char *value, char *arg, int c)
 {
-	char *tmp[2];
+	char	*tmp[2];
 
 	if (!value)
 		return ;
@@ -59,7 +59,7 @@ int	export_helper(char *arg, t_ev **ev, char c)
 	while (move)
 	{
 		if (ft_strcmp(move->name, name) == 0)
-			return (fill_lv_export(&move, value, arg, c),free(name) , 0);
+			return (fill_lv_export(&move, value, arg, c), free(name), 0);
 		move = move->next;
 	}
 	if (value)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 07:54:31 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 06:45:22 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 03:58:13 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	fork_failed(t_status **p)
 	exit((*p)->exit_status);
 }
 
-void unlink_(t_command root)
+void	unlink_(t_command root)
 {
 	while (root.redir)
 	{
