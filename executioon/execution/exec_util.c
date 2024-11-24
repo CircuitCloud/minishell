@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 07:04:55 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:22:10 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 05:09:19 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	search(char **cmd, t_ev *ev, t_status **p)
 
 	path_exist = 0;
 	if (*cmd == NULL)
-		return (2);
+		return ((*p)->exit_status = 0, 2);
 	ev = check_path(ev, &path_exist);
 	if (is_directory(*cmd, path_exist, p) == 2)
 		return (2);
