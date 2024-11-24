@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 08:33:10 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 09:34:48 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,34 +70,35 @@ int main(int ac, char **av, char **env)
 		add_history(str);
 		if(!lexer(&data))
 		{
-			if(!syntaxe_validation(data.tokens_list))
+			if(!syntaxe_validation(data.tokens_list, &p))
 			{
 				expand_env(data.tokens_list, ev, &p);
 				remove_quotes((data.tokens_list));
 				tree = build_ast((data.tokens_list), ev, &p);
 				tree->ev = ev;
 				execution(tree, &p);
+				// print_ast(tree, 0);
 				ev =tree->ev;
+				if(data.tokens_list)
+					free_tokens_list(data.tokens_list);
 				ft_free(tree, &p, 0);
 				tree = NULL;
-				if(data.tokens_list)
-					free_tokens_list(data.tokens_list);
-				if(tree)
-					free_tree(tree);
+				// if(tree)
+				// 	free_tree(tree);
 			}
-			else
-			{
-				if(data.tokens_list)
-					free_tokens_list(data.tokens_list);
-				p.exit_status = 2;
-			}
+			// else
+			// {
+			// 	if(data.tokens_list)
+			// 		free_tokens_list(data.tokens_list);
+			// 	p.exit_status = 2;
+			// }
 		}
-		else
-		{
-			if(data.tokens_list)
-					free_tokens_list(data.tokens_list);
-			p.exit_status = 2;
-		}
+		// else
+		// {
+		// 	if(data.tokens_list)
+		// 			free_tokens_list(data.tokens_list);
+		// 	p.exit_status = 2;
+		// }
 		free(str);
 		signals(1);
 		tree = NULL;

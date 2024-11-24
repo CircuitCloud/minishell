@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 08:25:32 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/24 09:21:56 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ typedef	struct	s_tokens
 	char	*value;
 	int		type;
 	int		hdoc_expand;
+	int		empty_expand;
+	char	*raw_delimiter;
 	struct	s_tokens	*next;
 }	t_tokens;
 
@@ -67,6 +69,7 @@ typedef	struct s_redirection
 	char			*file;
 	char			*delimiter;
 	int				hdoc_need_expand;
+	char			*delimiter_be4expand;
 	int				fd;
 	struct s_redirection	*next_redir;
 }	t_redirection;
@@ -122,7 +125,7 @@ int				valid_next(t_tokens *tokens, char *c);
 int				is_valid_start(t_tokens *tokens, int d);
 int				is_valid_end(t_tokens *tokens);
 int				duplicate_operator(t_tokens *tokens, int type);
-int				syntaxe_validation(t_tokens *token);
+int				syntaxe_validation(t_tokens *token, t_status *ex_status);
 void			free_tokens_list(t_tokens *tokens);
 char			*hdoc_expand_handler(char *token, t_ev *ev, t_status **p);
 char			*extract_var(char *str, int *pos);

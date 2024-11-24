@@ -6,10 +6,9 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 01:36:34 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/24 09:26:33 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 
 #include "../minishell.h"
@@ -158,7 +157,11 @@ int lexer(t_command	*data)
 			start = i;
 			i = word_handler(data->cmnd, i);
 			if(i == -1)
+			{
+				if(data->tokens_list)
+					free_tokens_list(data->tokens_list);
 				return(1);
+			}
 			token = ft_substr(data->cmnd, start, i - start);
 			if(!token)
 			{
@@ -194,12 +197,14 @@ int lexer(t_command	*data)
 
 void print_ast(t_command *node, int level) 
 {
+
     if (!node)
         return;
 	
     printf("------- Command: ---------\n\n\n");
-	if(node->cmnd)
+	// if(node->cmnd)
 	printf("  %s\n", node->cmnd);
+	//  printf("(%s)", node->args[0]);
     if (node && node->args) 
 	{
 		int i = 0;
@@ -217,8 +222,9 @@ void print_ast(t_command *node, int level)
         printf("rdirections : \n");
 		while (node->redir)
 		{
-			printf("	file :    %s\n", node->redir->file);
-			printf("	delimiii :   %s\n", node->redir->delimiter);
+			printf("	file :    [%s]\n", node->redir->file);
+			printf("	delimiii :   /%s\n", node->redir->delimiter);
+			printf("	delimiiibe4 :   /%s\n", node->redir->delimiter_be4expand);
 			// printf("	%d\n", node->redir->type);
 			node->redir= node->redir->next_redir;
 		}

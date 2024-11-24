@@ -6,9 +6,10 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 05:42:52 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 01:32:18 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/24 09:22:34 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "../minishell.h"
@@ -32,7 +33,7 @@ t_command	*create_simple_command(char *cmnd, int args_index, t_ev *ev)
     return (single_command);
 }
 
-t_redirection	*init_redir_struct(int type, char *file, t_ev *ev, char *delimiter, t_status **p, int hdoc_expand)
+t_redirection	*init_redir_struct(int type, char *file, t_ev *ev, char *delimiter, t_status **p, int hdoc_expand, char *raw_delimiter)
 {
 	t_redirection	*redir;
 
@@ -44,6 +45,7 @@ t_redirection	*init_redir_struct(int type, char *file, t_ev *ev, char *delimiter
 	if (type == HERDOC) 
 	{
 		redir->delimiter = ft_strdup(delimiter);
+		redir->delimiter_be4expand = ft_strdup(raw_delimiter);
 		heredocc(redir, ev, p);
     }
 	else 
@@ -104,6 +106,8 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 	i = 0;
 	root = NULL;
 	current = tokens;
+	
+
 	while (current)
 	{
 		//word cmnd
@@ -121,13 +125,13 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 			}
 			args_len = args_len - file_delim_founded;
 			// printf("leen : (%d)\n", args_len);
-			if(current && current->type == WORD)
+			if(current && current->type == WORD && !current->empty_expand)
 				single_command = create_simple_command(current->value, args_len, ev);
 			else
 				single_command = create_simple_command(NULL, args_len, ev);
 			while (current && current->type == WORD)
 			{
-				if (current->value && ft_strcmp(current->value, "") != 0)
+				if (current->value && current->empty_expand == 0)
 				{
 					if (!single_command->cmnd || ft_strcmp(single_command->cmnd, "") == 0)
 					{
@@ -145,17 +149,27 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				}
 				current = current->next;
 			}
+			
 			while (current && current->type != PIPE)
 			{
 				//redirection
 				if (current && (current->type == I_RED || current->type == O_RED || current->type == APPEND || current->type == HERDOC))
 				{
+					// if(current->next->empty_expand == 1)
+					// {
+					// 	printf("minishell: ambiguous redirect\n");
+					// 	if(single_command->cmnd)
+							
+					// 	p->exit_status = 1;
+					// 	// file_or_delim = "";
+					// 	break;
+					// }
 					file_or_delim = current->next ? current->next->value : NULL;
 					//nzidu p awla lfunction treturni
 					if (current && current->type == HERDOC)
-						redir_command = init_redir_struct(current->type, NULL, ev, file_or_delim , &p, current->hdoc_expand);
+						redir_command = init_redir_struct(current->type, NULL, ev, file_or_delim , &p, current->hdoc_expand, current->raw_delimiter);
 					else
-						redir_command = init_redir_struct(current->type, file_or_delim , ev, NULL, &p, current->hdoc_expand);
+						redir_command = init_redir_struct(current->type, file_or_delim , ev, NULL, &p, current->hdoc_expand, NULL);
 					add_redir_cmnd(single_command, redir_command);
 					current = current->next->next;
 					// current = current->next;
@@ -180,6 +194,7 @@ t_command	*build_ast(t_tokens *tokens, t_ev *ev, t_status *p)
 				last_cmnd->right = single_command;
 			last_cmnd = single_command;
 		}
+		
 		if(current && current->type == PIPE)
 		{
 			pipe_cmnd = init_pipe_cmnd(ev);

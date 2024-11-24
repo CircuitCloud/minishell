@@ -6,9 +6,10 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 17:19:33 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/15 23:22:28 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/24 09:28:36 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -66,4 +67,5 @@ int	valid_next(t_tokens *tokens, char *c)
 	}
 	return (0);
 }
+
 

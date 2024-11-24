@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 04:02:51 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/24 09:37:35 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	free_redirect(t_redirection *redir)
 			free(redir->file);
 		if (redir->delimiter)
 			free(redir->delimiter);
+		if (redir->delimiter_be4expand)
+			free(redir->delimiter_be4expand);
 		tmp = redir;
 		redir = redir->next_redir;
 		free(tmp);
@@ -62,6 +64,11 @@ void	free_tokens_list(t_tokens *tokens)
 		{
 			free(tokens->value);
 			tokens->value = NULL;
+		}
+		if (tokens->raw_delimiter)
+		{
+			free(tokens->raw_delimiter);
+			tokens->raw_delimiter = NULL;
 		}
 		free(tokens);
 		tokens = next;
@@ -98,7 +105,8 @@ void	free_tree(t_command *root)
 
 void	ft_free(t_command *root, t_status *p, int i)
 {
-	free_tree(root);
+	if(root)
+		free_tree(root);
 	if (i == 1)
 		free_env(root->ev);
 }
