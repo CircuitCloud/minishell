@@ -6,7 +6,7 @@
 /*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 04:04:16 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/24 04:37:39 by moouali          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 	char	*equal;
 
 	env = *ev;
-	equal = NULL;
 	while ((*ev))
 	{
 		if (ft_strcmp((*ev)->name, "OLDPWD") == 0)
@@ -47,6 +46,7 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 			(*ev)->value = ft_strdup(cwd);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
+			free(equal);
 		}
 		if (ft_strcmp((*ev)->name, "PWD") == 0)
 		{
@@ -54,9 +54,9 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 			(*ev)->value = ft_strdup(arg);
 			equal = ft_strjoin((*ev)->name, "=");
 			(*ev)->line = ft_strjoin(equal, (*ev)->value);
+			free(equal);
 		}
 		(*ev) = (*ev)->next;
-		free(equal);
 	}
 	(*ev) = env;
 }
