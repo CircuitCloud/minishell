@@ -1,5 +1,6 @@
-CC = cc 
+CC = cc  
 # -g -fsanitize=address 
+
 # -g -fsanitize=address 
 # CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address 
 LIBFT = libft/libft.a
@@ -7,8 +8,8 @@ LIBFT = libft/libft.a
 EXECUTABLE = minishell
 
 SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
-		parsing/quotes_handler.c parsing/expansion.c \
-		parsing/list.c parsing/ast_op.c parsing/build_ast.c \
+		parsing/quotes_handler.c parsing/expansion.c parsing/expansion_op.c \
+		parsing/list.c parsing/ast_op.c parsing/ast_op2.c parsing/build_ast.c \
 		executioon/builtins/cd.c executioon/builtins/echo.c executioon/builtins/env.c \
 		executioon/builtins/exit.c executioon/builtins/export.c executioon/builtins/export_util.c \
 		executioon/builtins/pwd.c executioon/builtins/unset.c executioon/env/env_linked.c \
@@ -16,9 +17,9 @@ SRC =   parsing/syntax_validation_utils.c parsing/syntax_validation.c \
 		executioon/execution/pipes.c \
 		executioon/execution/redirection.c executioon/signals/signal.c executioon/ft_strcmp.c\
 		executioon/execution/heredoc.c executioon/execution/redirections_utils.c \
-		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/env_list.c\
+		executioon/print_error.c main.c parsing/lexer_utils.c parsing/lexer2.c parsing/expansion_utils.c\
 		free.c executioon/builtins/exit_util.c executioon/execution/exec_util1.c \
-		executioon/execution/exec_util2.c  parsing/leaks_handler.c \
+		executioon/execution/exec_util2.c \
 		parsing/hdoc_parsing.c free2.c\
 
 OBJ = $(SRC:.c=.o)

@@ -6,20 +6,19 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 09:11:31 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/26 11:26:40 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../minishell.h"
 
-void heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
+void	heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 {
-	static int i;
-	char	*tmp;
+	static int	i;
+	char		*tmp;
 
-	tmp =  ft_itoa(++i);
-	heredoc->file = ft_strjoin("/tmp/heredocs",tmp);
+	tmp = ft_itoa(++i);
+	heredoc->file = ft_strjoin("/tmp/heredocs", tmp);
 	free(tmp);
 	heredoc->fd = open(heredoc->file, O_CREAT | O_WRONLY, 0644);
 	if (heredoc->fd < 0)
@@ -42,14 +41,13 @@ int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 	while (1)
 	{
 		input = readline(">");
-		
 		if (!input)
 			return (write(1, "\n", 1), 0);
 		if (ft_strcmp(input, heredoc->delimiter_be4expand) == 0)
 			return (free(input), 0);
 		if (heredoc->hdoc_need_expand == 1)
 		{
-			tmp = hdoc_expand_handler(input, ev, p);
+			tmp = hdoc_expand(input, ev, p);
 			free(input); 
 			input = tmp;
 		}

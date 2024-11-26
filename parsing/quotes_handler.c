@@ -6,15 +6,11 @@
 /*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:27:54 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/23 01:37:06 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/26 12:00:56 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
-#include "../minishell.h"
-
 
 char	*quotes_eliminator(char *token)
 {
@@ -27,40 +23,29 @@ char	*quotes_eliminator(char *token)
 	double_quoted = 0;
 	str = ft_strdup("");
 	i = 0;
-
 	while (token[i])
 	{
-		if ((token[i] == '"' && !single_quoted) || (token[i] == '\'' && !double_quoted))
+		if ((token[i] == '"' && !single_quoted) 
+			|| (token[i] == '\'' && !double_quoted))
 		{
-			if(token[i] == '\'')
+			if (token[i] == '\'')
 				single_quoted = !single_quoted;
 			else if (token[i] == '"')
 				double_quoted = !double_quoted;
 			i++;
 		}
-		// if(token[i])
 		else
-		{
-			str = safe_ft_strjoin(str, ft_substr(token, i, 1), 1);
-			i++;
-		}
+			str = safe_ft_strjoin(str, ft_substr(token, i++, 1), 1);
 	}
-	free(token);
-	token = NULL;
-	return (str);
+	return (free(token), token = NULL, str);
 }
-
 
 void	remove_quotes(t_tokens *tokens)
 {
-	// t_tokens	*
 	while (tokens)
 	{
-		if(tokens->type == WORD)
-		{
+		if (tokens->type == WORD)
 			tokens->value = quotes_eliminator(tokens->value);
-		}
 		tokens = tokens->next;
 	}
 }
-
