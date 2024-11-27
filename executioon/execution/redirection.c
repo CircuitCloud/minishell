@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:26:29 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/27 04:34:44 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 06:43:50 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	append_redir(t_command *root, t_redirection *redir, t_status *p, int cmd)
 		return (1);
 	}
 	else if (cmd == -1)
-		return (0);
+		return (close(redir->fd), 0);
 	else
 		out_redirect(root, redir, p);
 	return (0);

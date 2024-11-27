@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/27 04:35:11 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 06:50:17 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status *p)
 	waitpid(pid, &status, 0);
 	p->exit_status = status_exec_program(status, 1);
 	if (p->exit_status == 1)
+	{
+		close(heredoc->fd);
 		p->check_redir = 1;
+	}
 }
 
 void	last_heredocc(t_command *rt, t_redirection *hdc, t_status *p, int cmd)

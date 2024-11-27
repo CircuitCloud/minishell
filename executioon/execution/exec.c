@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/27 04:33:05 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 06:39:03 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ void	execute_program_help(t_command *root, t_status *p)
 	if (pid < 0)
 		fork_failed(p);
 	else if (pid == 0)
+	{
+		signals(0);
 		execute_cmd(p, root, root->cmnd);
+	}
 	free_splited(p->env);
 	original_fd(root, p);
 	waitpid(pid, &status, 0);

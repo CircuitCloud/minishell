@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:25:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/27 04:36:57 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 07:43:03 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_p(t_status *p, int flag)
 	}
 }
 
-void	main_helper(t_command *data, t_status *p, t_ev *ev)
+void	main_helper(t_command *data, t_status *p, t_ev **ev)
 {
 	t_command	*tree;
 
@@ -54,17 +54,22 @@ void	main_helper(t_command *data, t_status *p, t_ev *ev)
 	{
 		if (!syntaxe_validation(data->tokens_list, p))
 		{
-			expand_env(data->tokens_list, ev, p);
+			expand_env(data->tokens_list, *ev, p);
 			remove_quotes((data->tokens_list));
-			tree = build_ast((data->tokens_list), ev, p);
-			tree->ev = ev;
+			tree = build_ast((data->tokens_list), *ev, p);
+			tree->ev = (*ev);
 			execute_program(tree, p);
-			ev = tree->ev;
+			(*ev) = tree->ev;
 			if (data->tokens_list)
 				free_tokens_list(data->tokens_list);
 			if (tree)
 				ft_free(tree, p, 0);
 			tree = NULL;
+		}
+		else
+		{
+			if (data->tokens_list)
+				free_tokens_list(data->tokens_list);
 		}
 	}
 }
@@ -100,7 +105,7 @@ int	main(int ac, char **av, char **env)
 		data.cmnd = evp.str;
 		data.tokens_list = NULL;
 		add_history(evp.str);
-		main_helper(&data, &p, evp.ev);
+		main_helper(&data, &p, &evp.ev);
 		free(evp.str);
 		evp.str = readline_handler(&p);
 	}

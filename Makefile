@@ -1,6 +1,6 @@
 CC = cc  
 
-CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror  #-g -fsanitize=address 
 
 LIBFT = libft/libft.a
 
@@ -25,9 +25,11 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C libft
-	$(CC) -o $(EXECUTABLE) -I/goinfre/cahaik/homebrew/opt/readline/include $(OBJ) $(LIBFT) -lreadline -L/goinfre/cahaik/homebrew/opt/readline/lib
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ) $(LIBFT) -lreadline 
+#-L/goinfre/cahaik/homebrew/opt/readline/lib
 %.o : %.c
-	$(CC) $(CFLAGS) -I/goinfre/cahaik/homebrew/opt/readline/include -c $< -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
+#-I/goinfre/cahaik/homebrew/opt/readline/include
 
 clean :
 	make -C libft clean
