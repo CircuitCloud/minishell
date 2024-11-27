@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:35:30 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 03:57:44 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/27 00:07:57 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	export_no_arg(t_ev *ev)
 	}
 }
 
-void	export_(char **args, t_ev **ev, t_status **p)
+void	export_(char **args, t_ev **ev, t_status *p)
 {
 	int	i;
 
@@ -103,7 +103,7 @@ void	export_(char **args, t_ev **ev, t_status **p)
 			write(2, "minishell: export: ", 19);
 			write(2, args[i], ft_strlen(args[i]));
 			write(2, " : not a valid identifier\n", 27);
-			(*p)->exit_status = 1;
+			p->exit_status = 1;
 		}
 		else if (valide_var(args[i]) == 0)
 			export_helper(args[i], ev, '+');

@@ -6,23 +6,23 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 07:52:06 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 08:26:14 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:40:08 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	redirect_check(t_command *root, t_status **p)
+int	redirect_check(t_command *root, t_status *p)
 {
-	(*p)->newfd_out = dup(1);
-	(*p)->newfd_in = dup(0);
+	p->newfd_out = dup(1);
+	p->newfd_in = dup(0);
 	redirection(root, p);
-	if ((*p)->check_redir == 1)
+	if (p->check_redir == 1)
 		return (1);
 	return (0);
 }
 
-int	if_builtin(t_command *root, t_status **p)
+int	if_builtin(t_command *root, t_status *p)
 {
 	if (ft_strcmp(root->cmnd, "echo") == 0)
 		echo_(root->args + 1, p);

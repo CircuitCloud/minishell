@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 06:37:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 09:37:35 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:38:44 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ void	free_tree(t_command *root)
 
 void	ft_free(t_command *root, t_status *p, int i)
 {
-	if(root)
+	(void)p;
+	if (root)
 		free_tree(root);
 	if (i == 1)
 		free_env(root->ev);

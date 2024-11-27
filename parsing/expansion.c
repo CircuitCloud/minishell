@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 11:23:22 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:31:55 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*get_env_token(char *token, t_ev *ev, t_status **p)
+char	*get_env_token(char *token, t_ev *ev, t_status *p)
 {
-	char			*str;
 	t_expand_data	data;
 
 	data.token = token;
@@ -59,7 +58,7 @@ void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p)
 		}
 		if (tokens->type == WORD)
 		{
-			tokens->value = get_env_token(tokens->value, ev, &p);
+			tokens->value = get_env_token(tokens->value, ev, p);
 			if (tokens && ft_strcmp(tokens->value, "") == 0)
 				tokens->empty_expand = 1;
 			else

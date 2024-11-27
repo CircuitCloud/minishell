@@ -6,13 +6,13 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:38:39 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/16 07:40:34 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:37:03 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	env_(t_ev *ev, t_status **p)
+void	env_(t_ev *ev, t_status *p)
 {
 	while (ev)
 	{
@@ -20,5 +20,5 @@ void	env_(t_ev *ev, t_status **p)
 			printf("%s\n", ev->line);
 		ev = ev->next;
 	}
-	(*p)->exit_status = 0;
+	p->exit_status = 0;
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   hdoc_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 01:15:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 11:34:16 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 00:48:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	hdoc_expand2(t_expand_data *expand_data, t_ev *ev, t_status **p)
+void	hdoc_expand2(t_expand_data *expand_data, t_ev *ev, t_status *p)
 {
 	char	*var_name;
 	char	*env_value;
@@ -36,12 +36,12 @@ void	hdoc_expand2(t_expand_data *expand_data, t_ev *ev, t_status **p)
 	else if (expand_data->token[expand_data->i] == '?')
 	{
 		expand_data->str = safe_ft_strjoin(expand_data->str, 
-				ft_itoa((*p)->exit_status), 1);
+				ft_itoa(p->exit_status), 1);
 		expand_data->i++;
 	}
 }
 
-char	*hdoc_expand(char *token, t_ev *ev, t_status **p)
+char	*hdoc_expand(char *token, t_ev *ev, t_status *p)
 {
 	t_expand_data	expand_data;
 

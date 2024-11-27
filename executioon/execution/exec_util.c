@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 07:04:55 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 05:09:19 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/27 04:33:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_ev	*check_path(t_ev *ev, int *path_exist)
 	return (ev);
 }
 
-int	is_directory(char *cmd, int path_exist, t_status **p)
+int	is_directory(char *cmd, int path_exist, t_status *p)
 {
 	struct stat	statbuf;
 
@@ -43,7 +43,7 @@ int	is_directory(char *cmd, int path_exist, t_status **p)
 	return (1);
 }
 
-int	accessible(char *cmd, t_status **p)
+int	accessible(char *cmd, t_status *p)
 {
 	char		*slashtrim;
 
@@ -65,7 +65,7 @@ int	accessible(char *cmd, t_status **p)
 	return (1);
 }
 
-void	path_exist_(char **cmd, char *line, t_status **p, int *check)
+void	path_exist_(char **cmd, char *line, t_status *p, int *check)
 {
 	int			i;
 	char		**path;
@@ -82,15 +82,14 @@ void	path_exist_(char **cmd, char *line, t_status **p, int *check)
 	free_splited(path);
 }
 
-int	search(char **cmd, t_ev *ev, t_status **p)
+int	search(char **cmd, t_ev *ev, t_status *p)
 {
 	int		check;
 	int		path_exist;
-	char	**path;
 
 	path_exist = 0;
 	if (*cmd == NULL)
-		return ((*p)->exit_status = 0, 2);
+		return (p->exit_status = 0, 2);
 	ev = check_path(ev, &path_exist);
 	if (is_directory(*cmd, path_exist, p) == 2)
 		return (2);

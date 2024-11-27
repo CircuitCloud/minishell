@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_op.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 10:46:15 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 11:55:07 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 00:47:14 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	expand_single_quotes(t_expand_data *expand_data)
 	}
 }
 
-void	exp_d_quotes(t_expand_data *exp, t_ev *ev, t_status **p)
+void	exp_d_quotes(t_expand_data *exp, t_ev *ev, t_status *p)
 {
 	char	*var_name;
 	char	*env_value;
@@ -56,12 +56,12 @@ void	exp_d_quotes(t_expand_data *exp, t_ev *ev, t_status **p)
 	}
 	else if (exp->token[exp->i] == '?')
 	{
-		exp->str = safe_ft_strjoin(exp->str, ft_itoa((*p)->exit_status), 1);
+		exp->str = safe_ft_strjoin(exp->str, ft_itoa(p->exit_status), 1);
 		(exp->i)++;
 	}
 }
 
-void	expand_double_quotes(t_expand_data *expand_data, t_ev *ev, t_status **p)
+void	expand_double_quotes(t_expand_data *expand_data, t_ev *ev, t_status *p)
 {
 	expand_data->double_quoted = !expand_data->double_quoted;
 	expand_data->str = safe_ft_strjoin(expand_data->str, "\"", 0);
@@ -86,7 +86,7 @@ void	expand_double_quotes(t_expand_data *expand_data, t_ev *ev, t_status **p)
 	}
 }
 
-void	expd_no_quoted_word(t_expand_data *exp, t_ev *ev, t_status **p)
+void	expd_no_quoted_word(t_expand_data *exp, t_ev *ev, t_status *p)
 {
 	char	*var_name;
 	char	*env_value;
@@ -109,7 +109,7 @@ void	expd_no_quoted_word(t_expand_data *exp, t_ev *ev, t_status **p)
 	}
 	else if (exp->token[exp->i] == '?')
 	{
-		exp->str = safe_ft_strjoin(exp->str, ft_itoa((*p)->exit_status), 1);
+		exp->str = safe_ft_strjoin(exp->str, ft_itoa(p->exit_status), 1);
 		(exp->i)++;
 	}
 }

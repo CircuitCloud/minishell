@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 12:55:36 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 05:59:51 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:07:19 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	echo_help(char **arg, int *option)
 	return (i);
 }
 
-void	echo_(char **arg, t_status **p)
+void	echo_(char **arg, t_status *p)
 {
 	int	i;
 	int	option;
@@ -71,5 +71,5 @@ void	echo_(char **arg, t_status **p)
 	}
 	if (option == 0)
 		ft_putchar_fd('\n', 1);
-	(*p)->exit_status = 0;
+	p->exit_status = 0;
 }

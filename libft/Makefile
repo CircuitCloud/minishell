@@ -2,8 +2,7 @@ NAME := libft.a
 
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror  
-# -g -fsanitize=address 
+CFLAGS := -Wall -Wextra -Werror   -g -fsanitize=address 
 
 SRCS := ft_isalpha.c    ft_memcmp.c     ft_putstr_fd.c  ft_strlen.c     ft_tolower.c \
     ft_isascii.c    ft_memcpy.c     ft_strchr.c     ft_strmapi.c    ft_toupper.c \

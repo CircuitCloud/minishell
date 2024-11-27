@@ -6,13 +6,13 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 11:48:26 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 08:25:08 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:39:33 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	pwd_(t_ev *ev, t_status **p)
+void	pwd_(t_ev *ev, t_status *p)
 {
 	char	*str;
 
@@ -23,5 +23,5 @@ void	pwd_(t_ev *ev, t_status **p)
 		printf("%s\n", str);
 		free(str);
 	}
-	(*p)->exit_status = 0;
+	p->exit_status = 0;
 }

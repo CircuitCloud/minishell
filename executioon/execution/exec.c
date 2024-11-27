@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:25:07 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 05:08:46 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/27 04:33:05 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	only_cmd(char **cmd, char **splited)
 	return (1);
 }
 
-int	search_bin(char **cmd, char *p, t_status **p_)
+int	search_bin(char **cmd, char *p, t_status *p_)
 {
 	char	**splited;
 
@@ -57,28 +57,27 @@ void	execute_cmd(t_status *p, t_command *root, char	*cmd)
 	exit (p->exit_status);
 }
 
-void	execute_program_help(t_command *root, t_status **p)
+void	execute_program_help(t_command *root, t_status *p)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = 0;
 	status = 0;
-	(*p)->env = store_env(root, root->ev, *p);
+	p->env = store_env(root, root->ev, p);
 	pid = fork();
 	if (pid < 0)
 		fork_failed(p);
 	else if (pid == 0)
-		execute_cmd(*p, root, root->cmnd);
-	free_splited((*p)->env);
+		execute_cmd(p, root, root->cmnd);
+	free_splited(p->env);
 	original_fd(root, p);
 	waitpid(pid, &status, 0);
-	(*p)->exit_status = status_exec_program(status, 0);
+	p->exit_status = status_exec_program(status, 0);
 }
 
-int	execute_program(t_command *root, t_status **p)
+int	execute_program(t_command *root, t_status *p)
 {
-	int		status;
 	int		check;
 
 	check = 0;

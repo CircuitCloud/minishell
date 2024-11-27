@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 06:18:33 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 10:34:24 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 00:46:21 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_command	*create_simple_command(char *cmnd, int args_index, t_ev *ev)
 	return (single_command);
 }
 
-t_redirection	*new_redir(t_redir_data *data_redir, t_ev *ev, t_status **p)
+t_redirection	*new_redir(t_redir_data *data_redir, t_ev *ev, t_status *p)
 {
 	t_redirection	*redir;
 

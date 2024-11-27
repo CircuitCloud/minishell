@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_op2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 09:00:40 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 10:30:24 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 00:50:53 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	redir_2(t_tokens **current, t_command *cmd, t_ev *ev, t_status *p)
 		data_redir.file = file_or_delim;
 		data_redir.delimiter = NULL;
 	}
-	redir_command = new_redir(&data_redir, ev, &p);
+	redir_command = new_redir(&data_redir, ev, p);
 	add_redir_cmnd(cmd, redir_command);
 	(*current) = (*current)->next->next;
 }

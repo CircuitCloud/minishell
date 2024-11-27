@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moouali <moouali@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:34:25 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/24 04:37:39 by moouali          ###   ########.fr       */
+/*   Updated: 2024/11/27 00:07:01 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	setter(char *cwd, t_ev **ev, char *arg)
 	(*ev) = env;
 }
 
-int	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
+int	getter(t_ev *env, char *arg, t_ev **ev, t_status *p)
 {
 	char	*cwd;
 	char	*cwd2;
@@ -81,16 +81,16 @@ int	getter(t_ev *env, char *arg, t_ev **ev, t_status **p)
 	}
 	if (ft_strcmp(arg, "HOME") == 0)
 		return (free(cwd), write (2, "minishell: cd: HOME not set\n", 28),
-			(*p)->exit_status);
+			p->exit_status);
 	if (chdir(arg) == -1)
-		return (free(cwd), perror_(arg, p), (*p)->exit_status);
+		return (free(cwd), perror_(arg, p), p->exit_status);
 	cwd2 = getcwd(NULL, 0);
 	setter(cwd, ev, cwd2);
-	(*p)->exit_status = 0;
-	return (free(cwd2), free(cwd), (*p)->exit_status);
+	p->exit_status = 0;
+	return (free(cwd2), free(cwd), p->exit_status);
 }
 
-void	cd_(t_ev **ev, char *arg, t_status **p)
+void	cd_(t_ev **ev, char *arg, t_status *p)
 {
 	t_ev	*env;
 

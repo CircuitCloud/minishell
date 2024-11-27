@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 04:15:12 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 11:53:33 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:38:17 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*dup_special_token(int type, int *res)
 {
 	char		*token;
 
+	token = NULL;
 	if (type == PIPE)
 		token = ft_strdup("|");
 	else if (type == I_RED)
@@ -99,8 +100,6 @@ int	append_word(t_command *data, int *i)
 int	lexer(t_command	*data)
 {
 	int			i;
-	int			start;
-	t_tokens	*new_token;
 	int			append_result;
 
 	i = 0;

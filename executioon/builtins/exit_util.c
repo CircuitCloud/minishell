@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:26:49 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/23 06:40:04 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 04:39:11 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,23 @@ int	exit_helper(char *arg, int *err)
 	return (number);
 }
 
-void	exit_many_args(t_command *root, t_status **p, int err, char *arg)
+void	exit_many_args(t_command *root, t_status *p, int err, char *arg)
 {
+	(void)root;
 	if (err == -1)
 	{
 		print_error(arg, 4, p, -1);
-		exit((*p)->exit_status);
+		exit(p->exit_status);
 	}
 	write(2, "exit\nminishell: exit: too many arguments\n", 42);
-	(*p)->exit_status = 1;
+	(p)->exit_status = 1;
 }
 
-void	lot_of_args(t_command *root, char **arg, t_status **p)
+void	lot_of_args(t_command *root, char **arg, t_status *p)
 {
 	int	err;
 
 	err = 0;
-	(*p)->exit_status = exit_helper(arg[0], &err);
+	p->exit_status = exit_helper(arg[0], &err);
 	exit_many_args(root, p, err, arg[0]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_op.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 03:54:50 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 09:07:37 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:32:30 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	cmd_(t_tokens **current, t_command **root, int arg_l, t_grp_ev_p *ev_p)
 	t_command	*single_command;
 	int			i;
 
+	last_cmnd = NULL;
 	if ((*current) && (*current)->type == WORD && !(*current)->empty_expand)
 		single_command = create_simple_command
 			((*current)->value, arg_l, ev_p->ev);

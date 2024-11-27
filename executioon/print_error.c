@@ -6,13 +6,13 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 13:43:58 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/21 06:08:24 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:53:04 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	print_error(char *err, int type, t_status **p_, int exit_s)
+void	print_error(char *err, int type, t_status *p_, int exit_s)
 {
 	char	*p;
 
@@ -36,13 +36,26 @@ void	print_error(char *err, int type, t_status **p_, int exit_s)
 		p = ft_strjoin(err, ": Not a directory\n");
 	write (2, p, ft_strlen(p));
 	if (exit_s != -1)
-		(*p_)->exit_status = exit_s;
+		p_->exit_status = exit_s;
 	free(p);
 }
 
-void	perror_(char *err, t_status **p)
+void	perror_(char *err, t_status *p)
 {
 	write (2, "minishell: cd: ", 15);
 	perror(err);
-	(*p)->exit_status = 1;
+	p->exit_status = 1;
+}
+
+void	free_splited(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }

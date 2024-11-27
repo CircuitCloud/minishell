@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/26 11:26:40 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:35:11 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
+void	heredocc(t_redirection *heredoc, t_ev *ev, t_status *p)
 {
 	static int	i;
 	char		*tmp;
@@ -25,13 +25,13 @@ void	heredocc(t_redirection *heredoc, t_ev *ev, t_status **p)
 	{
 		write (2, "minishell : ", 12);
 		perror("open");
-		(*p)->exit_status = 1;
-		exit ((*p)->exit_status);
+		p->exit_status = 1;
+		exit (p->exit_status);
 	}
 	all_heredocs(heredoc, ev, p);
 }
 
-int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
+int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status *p)
 {
 	char	*tmp;
 	char	*input;
@@ -58,11 +58,9 @@ int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status **p)
 	return (0);
 }
 
-void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
+void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status *p)
 {
 	int		status;
-	char	*input;
-	char	*tmp;
 	pid_t	pid;
 
 	signal(SIGINT, SIG_IGN);
@@ -75,16 +73,16 @@ void	all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p)
 		signals(2);
 		readline_loop(heredoc, ev, p);
 		close(heredoc->fd);
-		(*p)->exit_status = 0;
-		exit((*p)->exit_status);
+		p->exit_status = 0;
+		exit(p->exit_status);
 	}
 	waitpid(pid, &status, 0);
-	(*p)->exit_status = status_exec_program(status, 1);
-	if ((*p)->exit_status == 1)
-		(*p)->check_redir = 1;
+	p->exit_status = status_exec_program(status, 1);
+	if (p->exit_status == 1)
+		p->check_redir = 1;
 }
 
-void	last_heredocc(t_command *rt, t_redirection *hdc, t_status **p, int cmd)
+void	last_heredocc(t_command *rt, t_redirection *hdc, t_status *p, int cmd)
 {
 	if (cmd == -1)
 		return ;
@@ -93,8 +91,8 @@ void	last_heredocc(t_command *rt, t_redirection *hdc, t_status **p, int cmd)
 	{
 		write(2, "minishell : ", 12);
 		perror("open");
-		(*p)->check_redir = 1;
-		(*p)->exit_status = 1;
+		p->check_redir = 1;
+		p->exit_status = 1;
 		return ;
 	}
 	if (dup2(hdc->fd, 0) == -1)

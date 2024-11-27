@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 06:14:15 by cahaik            #+#    #+#             */
-/*   Updated: 2024/10/21 13:18:04 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:52:40 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int	i;
-	char			*ptr;
+	int		i;
+	char	*ptr;
 
 	i = 0;
 	if (!s || !f)

@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/26 12:35:48 by ykamboua         ###   ########.fr       */
+/*   Updated: 2024/11/27 04:44:37 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
 # include <signal.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
 
 # define PIPE 1
 # define I_RED 2
@@ -125,12 +125,13 @@ typedef struct s_grp_ev_p
 {
 	t_ev		*ev;
 	t_status	*p;
+	char		*str;
 }	t_grp_ev_p;
 
 t_command		*init_pipe_cmnd(t_ev *ev);
 t_command		*build_ast(t_tokens *tokens, t_ev *ev, t_status *p);
 t_command		*create_simple_command(char *cmnd, int args_index, t_ev *ev);
-t_redirection	*new_redir(t_redir_data *data_redir, t_ev *ev, t_status **p);
+t_redirection	*new_redir(t_redir_data *data_redir, t_ev *ev, t_status *p);
 t_tokens		*ft_lstneww(char *cmnd, int type);
 t_tokens		*ft_lstlastt(t_tokens *lst);
 void			free_tree(t_command *root);
@@ -141,7 +142,7 @@ int				quotes_handler(char *input, int start, char quote_char);
 char			*quotes_eliminator(char *token);
 int				is_whitespace(char c);
 int				lexer(t_command	*data);
-char			*get_env_token(char *token, t_ev *ev, t_status **p);
+char			*get_env_token(char *token, t_ev *ev, t_status *p);
 void			expand_env(t_tokens *tokens, t_ev *ev, t_status *p);
 char			*search_ev_value(char *exp_name, t_ev *env);
 void			remove_quotes(t_tokens *tokens);
@@ -151,7 +152,7 @@ int				is_valid_end(t_tokens *tokens);
 int				duplicate_operator(t_tokens *tokens, int type);
 int				syntaxe_validation(t_tokens *token, t_status *ex_status);
 void			free_tokens_list(t_tokens *tokens);
-char			*hdoc_expand(char *token, t_ev *ev, t_status **p);
+char			*hdoc_expand(char *token, t_ev *ev, t_status *p);
 char			*extract_var(char *str, int *pos);
 char			*safe_ft_strjoin(char *s1, char *s2, int flag);
 int				count_args_len(t_tokens *tokens);
@@ -166,8 +167,8 @@ void			cmd_(t_tokens **current,
 					t_command **root, int arg_l, t_grp_ev_p *ev_p);
 void			expand_single_quotes(t_expand_data *expand_data);
 void			expand_double_quotes(t_expand_data *expand_data, 
-					t_ev *ev, t_status **p);
-void			expd_no_quoted_word(t_expand_data *exp, t_ev *ev, t_status **p);
+					t_ev *ev, t_status *p);
+void			expd_no_quoted_word(t_expand_data *exp, t_ev *ev, t_status *p);
 char			*extract_var(char *str, int *pos);
 void			free_token(char **token);
 int				define_type(char c, char c_1);
@@ -177,64 +178,63 @@ char			*ft_strtrim_execution(char const *s1, char const *set);
 int				valide_var(char *arg);
 int				ft_strcmp(char *dest, char *src);
 int				create_struct(char *env, t_ev **ev);
-int				search(char **cmd, t_ev *ev, t_status **p);
-int				redirect_check(t_command *root, t_status **p);
-int				search_bin(char **cmd, char *p, t_status **p_);
+int				search(char **cmd, t_ev *ev, t_status *p);
+int				redirect_check(t_command *root, t_status *p);
+int				search_bin(char **cmd, char *p, t_status *p_);
 int				_spaces(char *str, int *sign, int *i, int func);
 int				in_redir(t_command *root, 
-					t_redirection *root_redir, t_status **p, int cmd);
+					t_redirection *root_redir, t_status *p, int cmd);
 int				out_redir(t_command *root, 
-					t_redirection *root_rdir, t_status **p, int cmd);
+					t_redirection *root_rdir, t_status *p, int cmd);
 int				append_redir(t_command *root, 
-					t_redirection *redir, t_status **p, int cmd);
+					t_redirection *redir, t_status *p, int cmd);
 int				ft_strncmp(const char *dest, const char *src, size_t n);
 void			free_redirect(t_redirection *redir);
 void			signals(int c);
-void			pwd_(t_ev *ev, t_status **p);
+void			pwd_(t_ev *ev, t_status *p);
 void			sig_handler_child(int sig);
 void			sig_handler(int sig);
-void			env_(t_ev *ev, t_status **p);
-void			exit_(t_command *root, char **arg, t_status **p);
-void			echo_(char **arg, t_status **p);
-void			perror_(char *err, t_status **p);
+void			env_(t_ev *ev, t_status *p);
+void			exit_(t_command *root, char **arg, t_status *p);
+void			echo_(char **arg, t_status *p);
+void			perror_(char *err, t_status *p);
 void			unset_helper(t_ev **ev, char *name);
-void			execution(t_command *root, t_status *p);
-void			cd_(t_ev **ev, char *arg, t_status **p);
+void			cd_(t_ev **ev, char *arg, t_status *p);
 void			ft_lstadd_back_env(t_ev **lst, t_ev *new);
-void			redirection(t_command *root, t_status **p);
-void			execute_pipe(t_command *root, t_status **p);
-void			unset_(t_ev **ev, char **name, t_status **p);
+void			redirection(t_command *root, t_status *p);
+void			execute_pipe(t_command *root, t_status *p);
+void			unset_(t_ev **ev, char **name, t_status *p);
 void			value_helper(char **value, char *arg, char c);
-void			export_(char **args, t_ev **ev, t_status **p);
-int				execute_program(t_command *root, t_status **p);
+void			export_(char **args, t_ev **ev, t_status *p);
+int				execute_program(t_command *root, t_status *p);
 void			exit_many_args(t_command *root, 
-					t_status **p, int err, char *arg);
+					t_status *p, int err, char *arg);
 void			last_heredocc(t_command *rt, 
-					t_redirection *hdc, t_status **p, int cmd);
+					t_redirection *hdc, t_status *p, int cmd);
 void			out_redirect(t_command *root, 
-					t_redirection *root_redir, t_status **p);
+					t_redirection *root_redir, t_status *p);
 void			input_redirect(t_command *root, 
-					t_redirection *root_redir, t_status **p);
-void			print_error(char *err, int type, t_status **p_, int exit_s);
+					t_redirection *root_redir, t_status *p);
+void			print_error(char *err, int type, t_status *p_, int exit_s);
 t_ev			*environ(char **env);
 t_ev			*ft_lstlast_env(t_ev *lst);
 long long		atoi_exit(char *str, int *err);
 t_ev			*ft_lst_new_env(char *line, char *name, char *value);
 void			heredocc(t_redirection *heredoc, 
-					t_ev *ev, t_status **p);
-void			all_heredocs(t_redirection *heredoc, t_ev *ev, t_status **p);
-int				last_herdoc_number(t_command copy, int option);
+					t_ev *ev, t_status *p);
+void			all_heredocs(t_redirection *heredoc, t_ev *ev, t_status *p);
+int				last_herdoc_number(t_command copy);
 int				status_exec_program(int status, int c);
-void			dup_failed(t_command *root, t_status **p, int c);
+void			dup_failed(t_command *root, t_status *p, int c);
 void			free_env(t_ev *ev);
 void			ft_free(t_command *root, t_status *p, int i);
-void			lot_of_args(t_command *root, char **arg, t_status **p);
+void			lot_of_args(t_command *root, char **arg, t_status *p);
 int				exit_helper(char *arg, int *err);
 void			free_splited(char **str);
 char			**store_env(t_command *root, t_ev *ev, t_status *p);
-void			fork_failed(t_status **p);
-void			original_fd(t_command *root, t_status **p);
-int				if_builtin(t_command *root, t_status **p);
+void			fork_failed(t_status *p);
+void			original_fd(t_command *root, t_status *p);
+int				if_builtin(t_command *root, t_status *p);
 
 void			print_ast(t_command *node, int level);//todelte
 #endif
