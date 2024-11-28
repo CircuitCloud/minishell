@@ -2,7 +2,7 @@ NAME := libft.a
 
 CC := cc
 
-CFLAGS := -Wall -Wextra -Werror  # -g -fsanitize=address 
+CFLAGS := -Wall -Wextra -Werror 
 
 SRCS := ft_isalpha.c    ft_memcmp.c     ft_putstr_fd.c  ft_strlen.c     ft_tolower.c \
     ft_isascii.c    ft_memcpy.c     ft_strchr.c     ft_strmapi.c    ft_toupper.c \
@@ -12,14 +12,8 @@ SRCS := ft_isalpha.c    ft_memcmp.c     ft_putstr_fd.c  ft_strlen.c     ft_tolow
 	ft_calloc.c     ft_putendl_fd.c ft_strlcat.c    ft_strtrim.c ft_split.c\
 	ft_isalnum.c    ft_memchr.c     ft_putnbr_fd.c  ft_strlcpy.c    ft_substr.c \
 
-BONUSRC := ft_lstnew_bonus.c ft_lstsize_bonus.c \
-	ft_lstadd_front_bonus.c ft_lstadd_back_bonus.c \
-	ft_lstlast_bonus.c ft_lstdelone_bonus.c  ft_lstclear_bonus.c \
-	ft_lstiter_bonus.c ft_lstmap_bonus.c \
-
 OBJS = $(SRCS:.c=.o)
 
-OBJNS = $(BONUSRC:.c=.o)
 
 all: $(NAME)
 
@@ -29,15 +23,12 @@ $(NAME): $(OBJS)
 %.o : %.c libft.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJNS)
-	ar rcs $(NAME) $(OBJNS)
-
 clean: 
-	rm -f $(OBJS) $(OBJNS)
+	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

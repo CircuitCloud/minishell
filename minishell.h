@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/27 04:44:37 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/28 23:36:08 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ typedef struct s_ev
 	char		*name;
 	char		*value;
 	struct s_ev	*next;
-	struct s_ev	*previous;
 }	t_ev;
 
 typedef struct s_command
