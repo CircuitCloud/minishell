@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 07:54:31 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/27 00:41:08 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/29 00:19:44 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	unlink_(t_command root)
 	while (root.redir)
 	{
 		if (root.redir->file && root.redir->type == HERDOC)
+		{
 			unlink(root.redir->file);
+		}
 		root.redir = root.redir->next_redir;
 	}
 }

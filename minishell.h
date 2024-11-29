@@ -6,7 +6,7 @@
 /*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:32:37 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/28 23:36:08 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/29 00:44:49 by cahaik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,4 @@ char			**store_env(t_command *root, t_ev *ev, t_status *p);
 void			fork_failed(t_status *p);
 void			original_fd(t_command *root, t_status *p);
 int				if_builtin(t_command *root, t_status *p);
-
-void			print_ast(t_command *node, int level);//todelte
 #endif
