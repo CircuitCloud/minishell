@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 00:15:56 by ykamboua          #+#    #+#             */
-/*   Updated: 2024/11/27 04:31:55 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/29 06:30:42 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	expand_env(t_tokens *tokens, t_ev *ev, t_status *p)
 			else
 			{
 				tokens->hdoc_expand = 1;
-				if (tokens->next && tokens->next->type == WORD)
-					tokens->raw_delimiter = ft_strdup(tokens->next->value);
 			}
+			if (tokens->next && tokens->next->type == WORD)
+				tokens->raw_delimiter = ft_strdup(tokens->next->value);
 		}
 		if (tokens->type == WORD)
 		{

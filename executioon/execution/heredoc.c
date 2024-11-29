@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cahaik <cahaik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ykamboua <ykamboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/05 21:54:21 by cahaik            #+#    #+#             */
-/*   Updated: 2024/11/29 00:28:03 by cahaik           ###   ########.fr       */
+/*   Updated: 2024/11/29 06:31:18 by ykamboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ int	readline_loop(t_redirection *heredoc, t_ev *ev, t_status *p)
 		input = readline(">");
 		if (!input)
 			return (write(1, "\n", 1), 0);
+		heredoc->delimiter_be4expand 
+			= quotes_eliminator(heredoc->delimiter_be4expand);
 		if (ft_strcmp(input, heredoc->delimiter_be4expand) == 0)
 			return (free(input), 0);
 		if (heredoc->hdoc_need_expand == 1)
 		{
 			tmp = hdoc_expand(input, ev, p);
-			free(input); 
+			free(input);
 			input = tmp;
 		}
 		write(heredoc->fd, input, ft_strlen(input));

@@ -25,11 +25,10 @@ all : $(EXECUTABLE)
 
 $(EXECUTABLE) : $(OBJ)
 	make -C libft
-	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ) $(LIBFT) -lreadline 
-#-L/goinfre/cahaik/homebrew/opt/readline/lib
+	$(CC) $(CFLAGS) -o $(EXECUTABLE) $(OBJ) $(LIBFT) -lreadline -L$(HOME)/readline/lib
+
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ 
-#-I/goinfre/cahaik/homebrew/opt/readline/include
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(HOME)/readline/include
 
 clean :
 	make -C libft clean
